@@ -16,7 +16,6 @@ export default function Resume() {
         isDarkMode ? "bg-bg-2" : "bg-gray-50"
       }`}
     >
-
       <section className="container-custom py-[100px]">
         {/* HEADER */}
         <div className="text-center mb-12">

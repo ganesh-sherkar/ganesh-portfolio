@@ -6,13 +6,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import DotBurst from "@/components/DotBurst";
-import { 
-  FiMail, 
-  FiSun, 
-  FiMoon, 
-  FiMenu, 
-  FiX, 
+import {
+  FiMail,
+  FiSun,
+  FiMoon,
+  FiMenu,
+  FiX,
   FiArrowRight,
+  FiCode,
+  FiBriefcase ,
   FiHome,
   FiUser,
   FiSettings,
@@ -29,7 +31,7 @@ import {
   FiPhone,
   FiMessageSquare,
   FiCheckCircle,
-  FiAlertCircle
+  FiAlertCircle,
 } from "react-icons/fi";
 
 const API_URL = "";
@@ -44,7 +46,7 @@ export default function Header() {
     name: "",
     email: "",
     phone: "",
-    message: ""
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ type: "", message: "" });
@@ -88,15 +90,23 @@ export default function Header() {
   const navItems = [
     { name: "Home", path: "/", icon: FiHome },
     { name: "About", path: "/about", icon: FiUser },
-    { name: "Services", path: "/services", icon: FiSettings },
-    { name: "Portfolio", path: "/Portfolio", icon: FiFolder },
-    { name: "Resume", path: "/Resume", icon: FiFileText },
-    { name: "Contact", path: "/Contact", icon: FiMailIcon },
+    { name: "Skills", path: "/skills", icon: FiCode },
+    { name: "Projects", path: "/projects", icon: FiFolder },
+    { name: "Experience", path: "/experience", icon: FiBriefcase },
+    { name: "Contact", path: "/contact", icon: FiMail },
+    { name: "Resume", path: "/resume", icon: FiFileText },
   ];
-
   const socialLinks = [
-    { icon: FiGithub, href: "https://github.com/musku-nishitha", label: "GitHub" },
-    { icon: FiLinkedin, href: "https://linkedin.com/in/musku-nishitha", label: "LinkedIn" },
+    {
+      icon: FiGithub,
+      href: "https://github.com/musku-nishitha",
+      label: "GitHub",
+    },
+    {
+      icon: FiLinkedin,
+      href: "https://linkedin.com/in/musku-nishitha",
+      label: "LinkedIn",
+    },
     { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
   ];
 
@@ -115,7 +125,7 @@ export default function Header() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const validateForm = () => {
@@ -129,7 +139,10 @@ export default function Header() {
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setSubmitStatus({ type: "error", message: "Please enter a valid email address" });
+      setSubmitStatus({
+        type: "error",
+        message: "Please enter a valid email address",
+      });
       return false;
     }
     if (!formData.message.trim()) {
@@ -141,7 +154,7 @@ export default function Header() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       setTimeout(() => {
         setSubmitStatus({ type: "", message: "" });
@@ -162,7 +175,7 @@ export default function Header() {
           name: formData.name.trim(),
           email: formData.email.trim(),
           message: formData.message.trim(),
-          phone: formData.phone?.trim() || ""
+          phone: formData.phone?.trim() || "",
         }),
       });
 
@@ -171,10 +184,11 @@ export default function Header() {
       if (response.ok) {
         setSubmitStatus({
           type: "success",
-          message: "✓ Message sent successfully! I'll get back to you within 24 hours."
+          message:
+            "✓ Message sent successfully! I'll get back to you within 24 hours.",
         });
         setFormData({ name: "", email: "", phone: "", message: "" });
-        
+
         // Auto close modal after 2 seconds on success
         setTimeout(() => {
           setIsModalOpen(false);
@@ -187,9 +201,11 @@ export default function Header() {
       console.error("Error submitting form:", error);
       setSubmitStatus({
         type: "error",
-        message: error.message || "Network error. Please check your connection and try again."
+        message:
+          error.message ||
+          "Network error. Please check your connection and try again.",
       });
-      
+
       // Clear error after 4 seconds
       setTimeout(() => {
         setSubmitStatus({ type: "", message: "" });
@@ -216,12 +232,24 @@ export default function Header() {
 
   const headerVariants = {
     initial: { y: -100, opacity: 0 },
-    animate: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
+    animate: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
   };
 
   const mobileMenuVariants = {
-    closed: { opacity: 0, x: "100%", transition: { duration: 0.3, ease: "easeInOut" } },
-    open: { opacity: 1, x: 0, transition: { duration: 0.3, ease: "easeInOut" } },
+    closed: {
+      opacity: 0,
+      x: "100%",
+      transition: { duration: 0.3, ease: "easeInOut" },
+    },
+    open: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.3, ease: "easeInOut" },
+    },
   };
 
   const navItemVariants = {
@@ -235,29 +263,29 @@ export default function Header() {
 
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.95, y: -20 },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
+    visible: {
+      opacity: 1,
+      scale: 1,
       y: 0,
-      transition: { 
-        type: "spring", 
-        damping: 25, 
+      transition: {
+        type: "spring",
+        damping: 25,
         stiffness: 300,
-        duration: 0.4 
-      }
+        duration: 0.4,
+      },
     },
-    exit: { 
-      opacity: 0, 
-      scale: 0.95, 
+    exit: {
+      opacity: 0,
+      scale: 0.95,
       y: -20,
-      transition: { duration: 0.3 }
-    }
+      transition: { duration: 0.3 },
+    },
   };
 
   const backdropVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.3 } },
-    exit: { opacity: 0, transition: { duration: 0.3 } }
+    exit: { opacity: 0, transition: { duration: 0.3 } },
   };
 
   const getLogoPath = () => {
@@ -281,12 +309,12 @@ export default function Header() {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
-            <Link 
-              href="/" 
-              className="group relative flex-shrink-0" 
+            <Link
+              href="/"
+              className="group relative flex-shrink-0"
               onClick={() => handleNavClick("/")}
             >
-              <motion.div 
+              <motion.div
                 className="relative w-[90px] sm:w-[110px] lg:w-[130px] h-[40px] sm:h-[55px] lg:h-[65px] transition-all duration-300 group-hover:scale-105"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -316,22 +344,26 @@ export default function Header() {
                     activeItem === item.path
                       ? "text-primary"
                       : isDarkMode
-                      ? "text-gray-300 hover:text-primary"
-                      : "text-gray-700 hover:text-primary"
+                        ? "text-gray-300 hover:text-primary"
+                        : "text-gray-700 hover:text-primary"
                   }`}
                 >
                   <span className="relative z-10">{item.name}</span>
-                  
+
                   {activeItem === item.path && (
                     <motion.span
                       layoutId="activeNav"
                       className={`absolute inset-0 rounded-lg ${
                         isDarkMode ? "bg-primary/20" : "bg-primary/10"
                       }`}
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      transition={{
+                        type: "spring",
+                        bounce: 0.2,
+                        duration: 0.6,
+                      }}
                     />
                   )}
-                  
+
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-1/2" />
                 </Link>
               ))}
@@ -351,8 +383,8 @@ export default function Header() {
                     activeItem === item.path
                       ? "text-primary"
                       : isDarkMode
-                      ? "text-gray-300 hover:text-primary"
-                      : "text-gray-700 hover:text-primary"
+                        ? "text-gray-300 hover:text-primary"
+                        : "text-gray-700 hover:text-primary"
                   }`}
                 >
                   {item.name}
@@ -360,7 +392,11 @@ export default function Header() {
                     <motion.span
                       layoutId="activeNavTablet"
                       className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      transition={{
+                        type: "spring",
+                        bounce: 0.2,
+                        duration: 0.6,
+                      }}
                     />
                   )}
                 </Link>
@@ -430,18 +466,20 @@ export default function Header() {
             {/* Mobile Menu Button */}
             <motion.button
               className={`md:hidden flex items-center justify-center w-10 h-10 rounded-lg transition-colors ${
-                isDarkMode
-                  ? "hover:bg-gray-800"
-                  : "hover:bg-gray-100"
+                isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-100"
               }`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               whileTap={{ scale: 0.95 }}
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
-                <FiX className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? "text-gray-200" : "text-gray-800"}`} />
+                <FiX
+                  className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? "text-gray-200" : "text-gray-800"}`}
+                />
               ) : (
-                <FiMenu className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? "text-gray-200" : "text-gray-800"}`} />
+                <FiMenu
+                  className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? "text-gray-200" : "text-gray-800"}`}
+                />
               )}
             </motion.button>
           </div>
@@ -461,7 +499,7 @@ export default function Header() {
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
-            
+
             {/* Menu Panel */}
             <motion.div
               variants={mobileMenuVariants}
@@ -474,9 +512,11 @@ export default function Header() {
             >
               <div className="flex flex-col h-full">
                 {/* Header */}
-                <div className={`flex items-center justify-between p-5 sm:p-6 border-b ${
-                  isDarkMode ? "border-gray-800" : "border-gray-200"
-                }`}>
+                <div
+                  className={`flex items-center justify-between p-5 sm:p-6 border-b ${
+                    isDarkMode ? "border-gray-800" : "border-gray-200"
+                  }`}
+                >
                   <div className="relative w-24 h-12 sm:w-28 sm:h-14">
                     <Image
                       src={getLogoPath()}
@@ -489,13 +529,13 @@ export default function Header() {
                   <motion.button
                     onClick={() => setMobileMenuOpen(false)}
                     className={`p-2 rounded-full transition-colors ${
-                      isDarkMode
-                        ? "hover:bg-gray-800"
-                        : "hover:bg-gray-100"
+                      isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-100"
                     }`}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <FiX className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? "text-gray-200" : "text-gray-800"}`} />
+                    <FiX
+                      className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? "text-gray-200" : "text-gray-800"}`}
+                    />
                   </motion.button>
                 </div>
 
@@ -518,7 +558,10 @@ export default function Header() {
                             triggerNavDots(item.path);
                             // give a tiny time for dots animation before menu closes
                             setActiveItem(item.path);
-                            window.setTimeout(() => setMobileMenuOpen(false), 220);
+                            window.setTimeout(
+                              () => setMobileMenuOpen(false),
+                              220,
+                            );
                           }}
                           className={`flex items-center gap-3 sm:gap-4 py-3.5 sm:py-4 px-3 sm:px-4 rounded-xl transition-all duration-300 mb-2 group ${
                             isActive
@@ -526,8 +569,8 @@ export default function Header() {
                                 ? "bg-primary/20 text-primary"
                                 : "bg-primary/10 text-primary"
                               : isDarkMode
-                              ? "text-gray-300 hover:bg-gray-800"
-                              : "text-gray-700 hover:bg-gray-100"
+                                ? "text-gray-300 hover:bg-gray-800"
+                                : "text-gray-700 hover:bg-gray-100"
                           }`}
                         >
                           <span className="relative grid place-items-center w-6 h-6 sm:w-7 sm:h-7">
@@ -536,26 +579,35 @@ export default function Header() {
                                 isActive
                                   ? "text-primary"
                                   : isDarkMode
-                                  ? "text-gray-400 group-hover:text-primary"
-                                  : "text-gray-500 group-hover:text-primary"
+                                    ? "text-gray-400 group-hover:text-primary"
+                                    : "text-gray-500 group-hover:text-primary"
                               }`}
                             />
-                            {navBurst.path === item.path && navBurst.id !== 0 && (
-                              <DotBurst seed={navBurst.id} />
-                            )}
+                            {navBurst.path === item.path &&
+                              navBurst.id !== 0 && (
+                                <DotBurst seed={navBurst.id} />
+                              )}
                           </span>
-                          <span className="text-sm sm:text-base font-medium flex-1">{item.name}</span>
+                          <span className="text-sm sm:text-base font-medium flex-1">
+                            {item.name}
+                          </span>
                           {isActive && (
                             <motion.div
                               layoutId="activeMobile"
                               className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full"
-                              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                              transition={{
+                                type: "spring",
+                                stiffness: 500,
+                                damping: 30,
+                              }}
                             />
                           )}
                           {!isActive && (
-                            <FiChevronRight className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                              isDarkMode ? "text-gray-600" : "text-gray-400"
-                            } group-hover:translate-x-1 transition-transform`} />
+                            <FiChevronRight
+                              className={`w-4 h-4 sm:w-5 sm:h-5 ${
+                                isDarkMode ? "text-gray-600" : "text-gray-400"
+                              } group-hover:translate-x-1 transition-transform`}
+                            />
                           )}
                         </Link>
                       </motion.div>
@@ -563,12 +615,16 @@ export default function Header() {
                   })}
 
                   {/* Social Links in Mobile */}
-                  <div className={`mt-6 pt-4 border-t ${
-                    isDarkMode ? "border-gray-800" : "border-gray-200"
-                  }`}>
-                    <h3 className={`text-xs font-semibold uppercase tracking-wider mb-3 px-4 ${
-                      isDarkMode ? "text-gray-400" : "text-gray-500"
-                    }`}>
+                  <div
+                    className={`mt-6 pt-4 border-t ${
+                      isDarkMode ? "border-gray-800" : "border-gray-200"
+                    }`}
+                  >
+                    <h3
+                      className={`text-xs font-semibold uppercase tracking-wider mb-3 px-4 ${
+                        isDarkMode ? "text-gray-400" : "text-gray-500"
+                      }`}
+                    >
                       Connect With Me
                     </h3>
                     <div className="flex gap-2 sm:gap-3 px-4">
@@ -597,50 +653,66 @@ export default function Header() {
                 </nav>
 
                 {/* Footer */}
-                <div className={`p-5 sm:p-6 border-t space-y-3 sm:space-y-4 ${
-                  isDarkMode ? "border-gray-800" : "border-gray-200"
-                }`}>
+                <div
+                  className={`p-5 sm:p-6 border-t space-y-3 sm:space-y-4 ${
+                    isDarkMode ? "border-gray-800" : "border-gray-200"
+                  }`}
+                >
                   {/* Email */}
                   <a
-                    href="mailto:mnishithareddy8765@gmail.com"
+                    href="mailto:muskunishitha2003@gmail.com"
                     className={`flex items-center gap-3 p-3 sm:p-4 rounded-xl transition-all group ${
                       isDarkMode
                         ? "bg-gray-800/50 hover:bg-primary/10"
                         : "bg-gray-50 hover:bg-primary/5"
                     }`}
                   >
-                    <div className={`p-2 rounded-lg shadow-sm ${
-                      isDarkMode ? "bg-gray-700" : "bg-white"
-                    }`}>
+                    <div
+                      className={`p-2 rounded-lg shadow-sm ${
+                        isDarkMode ? "bg-gray-700" : "bg-white"
+                      }`}
+                    >
                       <FiMail className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-xs ${
-                        isDarkMode ? "text-gray-400" : "text-gray-500"
-                      }`}>
+                      <p
+                        className={`text-xs ${
+                          isDarkMode ? "text-gray-400" : "text-gray-500"
+                        }`}
+                      >
                         Email Me
                       </p>
-                      <p className={`text-xs sm:text-sm font-medium truncate transition-colors ${
-                        isDarkMode
-                          ? "text-gray-300 group-hover:text-primary"
-                          : "text-gray-700 group-hover:text-primary"
-                      }`}>
-                        mnishithareddy8765@gmail.com
+                      <p
+                        className={`text-xs sm:text-sm font-medium truncate transition-colors ${
+                          isDarkMode
+                            ? "text-gray-300 group-hover:text-primary"
+                            : "text-gray-700 group-hover:text-primary"
+                        }`}
+                      >
+                        muskunishitha2003@gmail.com
                       </p>
                     </div>
-                    <FiArrowRight className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all ${
-                      isDarkMode ? "text-gray-500 group-hover:text-primary group-hover:translate-x-1" : "text-gray-400 group-hover:text-primary group-hover:translate-x-1"
-                    }`} />
+                    <FiArrowRight
+                      className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all ${
+                        isDarkMode
+                          ? "text-gray-500 group-hover:text-primary group-hover:translate-x-1"
+                          : "text-gray-400 group-hover:text-primary group-hover:translate-x-1"
+                      }`}
+                    />
                   </a>
 
                   {/* Theme Toggle */}
-                  <div className={`flex items-center justify-between p-3 sm:p-4 rounded-xl transition-colors ${
-                    isDarkMode ? "bg-gray-800/50" : "bg-gray-50"
-                  }`}>
+                  <div
+                    className={`flex items-center justify-between p-3 sm:p-4 rounded-xl transition-colors ${
+                      isDarkMode ? "bg-gray-800/50" : "bg-gray-50"
+                    }`}
+                  >
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg shadow-sm ${
-                        isDarkMode ? "bg-gray-700" : "bg-white"
-                      }`}>
+                      <div
+                        className={`p-2 rounded-lg shadow-sm ${
+                          isDarkMode ? "bg-gray-700" : "bg-white"
+                        }`}
+                      >
                         {!isDarkMode ? (
                           <FiSun className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
                         ) : (
@@ -648,14 +720,18 @@ export default function Header() {
                         )}
                       </div>
                       <div>
-                        <p className={`text-xs ${
-                          isDarkMode ? "text-gray-400" : "text-gray-500"
-                        }`}>
+                        <p
+                          className={`text-xs ${
+                            isDarkMode ? "text-gray-400" : "text-gray-500"
+                          }`}
+                        >
                           Theme
                         </p>
-                        <p className={`text-xs sm:text-sm font-medium ${
-                          isDarkMode ? "text-gray-300" : "text-gray-700"
-                        }`}>
+                        <p
+                          className={`text-xs sm:text-sm font-medium ${
+                            isDarkMode ? "text-gray-300" : "text-gray-700"
+                          }`}
+                        >
                           {isDarkMode ? "Dark Mode" : "Light Mode"}
                         </p>
                       </div>
@@ -669,7 +745,11 @@ export default function Header() {
                     >
                       <motion.span
                         animate={{ x: isDarkMode ? "20px" : "2px" }}
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 30,
+                        }}
                         className="h-5 w-5 bg-white rounded-full shadow-md absolute"
                       />
                     </button>
@@ -722,51 +802,67 @@ export default function Header() {
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header - Sticky */}
-                <div className={`sticky top-0 z-10 px-4 sm:px-6 py-4 sm:py-5 border-b ${
-                  isDarkMode ? "border-gray-800 bg-gray-900" : "border-gray-200 bg-white"
-                }`}>
+                <div
+                  className={`sticky top-0 z-10 px-4 sm:px-6 py-4 sm:py-5 border-b ${
+                    isDarkMode
+                      ? "border-gray-800 bg-gray-900"
+                      : "border-gray-200 bg-white"
+                  }`}
+                >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className={`text-lg sm:text-xl font-bold ${
-                        isDarkMode ? "text-white" : "text-gray-900"
-                      }`}>
+                      <h3
+                        className={`text-lg sm:text-xl font-bold ${
+                          isDarkMode ? "text-white" : "text-gray-900"
+                        }`}
+                      >
                         Hire Me
                       </h3>
-                      <p className={`text-xs sm:text-sm mt-0.5 sm:mt-1 ${
-                        isDarkMode ? "text-gray-400" : "text-gray-600"
-                      }`}>
-                        Fill out the form and I&apos;ll get back to you within 24 hours
+                      <p
+                        className={`text-xs sm:text-sm mt-0.5 sm:mt-1 ${
+                          isDarkMode ? "text-gray-400" : "text-gray-600"
+                        }`}
+                      >
+                        Fill out the form and I&apos;ll get back to you within
+                        24 hours
                       </p>
                     </div>
                     <button
                       onClick={closeModal}
                       disabled={isSubmitting}
                       className={`p-1.5 sm:p-2 rounded-lg transition-colors ${
-                        isDarkMode
-                          ? "hover:bg-gray-800"
-                          : "hover:bg-gray-100"
+                        isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-100"
                       } disabled:opacity-50`}
                     >
-                      <FiX className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                        isDarkMode ? "text-gray-400" : "text-gray-600"
-                      }`} />
+                      <FiX
+                        className={`w-4 h-4 sm:w-5 sm:h-5 ${
+                          isDarkMode ? "text-gray-400" : "text-gray-600"
+                        }`}
+                      />
                     </button>
                   </div>
                 </div>
 
                 {/* Form - Scrollable */}
-                <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 space-y-3 sm:space-y-4">
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 space-y-3 sm:space-y-4"
+                >
                   {/* Name Field */}
                   <div>
-                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
-                      isDarkMode ? "text-gray-300" : "text-gray-700"
-                    }`}>
+                    <label
+                      className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
+                        isDarkMode ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       Full Name *
                     </label>
                     <div className="relative">
-                      <FiUserIcon className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
-                        isDarkMode ? "text-gray-500" : "text-gray-400"
-                      }`} />
+                      <FiUserIcon
+                        className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
+                          isDarkMode ? "text-gray-500" : "text-gray-400"
+                        }`}
+                      />
                       <input
                         type="text"
                         name="name"
@@ -785,15 +881,19 @@ export default function Header() {
 
                   {/* Email Field */}
                   <div>
-                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
-                      isDarkMode ? "text-gray-300" : "text-gray-700"
-                    }`}>
+                    <label
+                      className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
+                        isDarkMode ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       Email Address *
                     </label>
                     <div className="relative">
-                      <FiMail className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
-                        isDarkMode ? "text-gray-500" : "text-gray-400"
-                      }`} />
+                      <FiMail
+                        className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
+                          isDarkMode ? "text-gray-500" : "text-gray-400"
+                        }`}
+                      />
                       <input
                         type="email"
                         name="email"
@@ -812,15 +912,19 @@ export default function Header() {
 
                   {/* Phone Field */}
                   <div>
-                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
-                      isDarkMode ? "text-gray-300" : "text-gray-700"
-                    }`}>
+                    <label
+                      className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
+                        isDarkMode ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       Phone Number (Optional)
                     </label>
                     <div className="relative">
-                      <FiPhone className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
-                        isDarkMode ? "text-gray-500" : "text-gray-400"
-                      }`} />
+                      <FiPhone
+                        className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
+                          isDarkMode ? "text-gray-500" : "text-gray-400"
+                        }`}
+                      />
                       <input
                         type="tel"
                         name="phone"
@@ -838,15 +942,19 @@ export default function Header() {
 
                   {/* Message Field */}
                   <div>
-                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
-                      isDarkMode ? "text-gray-300" : "text-gray-700"
-                    }`}>
+                    <label
+                      className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
+                        isDarkMode ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       Message / Project Details *
                     </label>
                     <div className="relative">
-                      <FiMessageSquare className={`absolute left-3 top-3 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
-                        isDarkMode ? "text-gray-500" : "text-gray-400"
-                      }`} />
+                      <FiMessageSquare
+                        className={`absolute left-3 top-3 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
+                          isDarkMode ? "text-gray-500" : "text-gray-400"
+                        }`}
+                      />
                       <textarea
                         name="message"
                         value={formData.message}
@@ -876,8 +984,8 @@ export default function Header() {
                               ? "bg-green-900/20 text-green-400 border border-green-800"
                               : "bg-green-50 text-green-700 border border-green-200"
                             : isDarkMode
-                            ? "bg-red-900/20 text-red-400 border border-red-800"
-                            : "bg-red-50 text-red-700 border border-red-200"
+                              ? "bg-red-900/20 text-red-400 border border-red-800"
+                              : "bg-red-50 text-red-700 border border-red-200"
                         }`}
                       >
                         {submitStatus.type === "success" ? (
@@ -898,15 +1006,33 @@ export default function Header() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <span className={`inline-flex items-center justify-center gap-2 transition-all ${isSubmitting ? "opacity-0" : "opacity-100"}`}>
+                    <span
+                      className={`inline-flex items-center justify-center gap-2 transition-all ${isSubmitting ? "opacity-0" : "opacity-100"}`}
+                    >
                       Send Message
                       <FiSend className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </span>
                     {isSubmitting && (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg
+                          className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                       </div>
                     )}
@@ -914,13 +1040,20 @@ export default function Header() {
                 </form>
 
                 {/* Footer - Sticky */}
-                <div className={`sticky bottom-0 px-4 sm:px-6 py-3 sm:py-4 border-t ${
-                  isDarkMode ? "border-gray-800 bg-gray-800/30" : "border-gray-200 bg-gray-50"
-                }`}>
-                  <p className={`text-[10px] sm:text-xs text-center ${
-                    isDarkMode ? "text-gray-400" : "text-gray-500"
-                  }`}>
-                    I&apos;ll respond within 24 hours. Your information is safe with me.
+                <div
+                  className={`sticky bottom-0 px-4 sm:px-6 py-3 sm:py-4 border-t ${
+                    isDarkMode
+                      ? "border-gray-800 bg-gray-800/30"
+                      : "border-gray-200 bg-gray-50"
+                  }`}
+                >
+                  <p
+                    className={`text-[10px] sm:text-xs text-center ${
+                      isDarkMode ? "text-gray-400" : "text-gray-500"
+                    }`}
+                  >
+                    I&apos;ll respond within 24 hours. Your information is safe
+                    with me.
                   </p>
                 </div>
               </motion.div>

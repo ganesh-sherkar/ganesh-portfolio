@@ -13,7 +13,7 @@ export const socialMediaLinks = {
   email: {
     name: "Email",
     icon: "MdEmail",
-    link: "mailto:mnishithareddy8765@gmail.com"
+    link: "mailto:muskunishitha2003@gmail.com"
   },
   phone: {
     name: "Phone",

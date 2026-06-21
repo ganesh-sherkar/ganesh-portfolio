@@ -8,9 +8,7 @@ import {
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
-import HeaderBanner from "@/global/HeaderBanner";
 import { useTheme } from "@/components/ThemeProvider";
-import { ContactSkeleton } from "@/components/SkeletonLoaders";
 import { FaGithub, FaLinkedin, FaPhone } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { socialLinksArray, socialMediaLinks } from "@/global/SocialMediaLinks";
@@ -18,9 +16,7 @@ import { socialLinksArray, socialMediaLinks } from "@/global/SocialMediaLinks";
 export default function Contact() {
   const { isDarkMode } = useTheme();
   const dispatch = useDispatch();
-  const { formStatus, error, content, contentLoading } = useSelector(
-    (state) => state.contact,
-  );
+  const { formStatus, error, content } = useSelector((state) => state.contact);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -32,6 +28,7 @@ export default function Contact() {
   });
 
   const [focusedField, setFocusedField] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
     dispatch(fetchContactContent());
@@ -49,10 +46,66 @@ export default function Contact() {
           service: "",
           message: "",
         });
+        setValidationErrors({});
       }, 3000);
       return () => clearTimeout(timer);
     }
   }, [formStatus, dispatch]);
+
+  // Validation functions
+  const validateName = (name, fieldName) => {
+    if (!name || name.trim() === "") {
+      return `${fieldName} is required`;
+    }
+    if (name.trim().length < 2) {
+      return `${fieldName} must be at least 2 characters`;
+    }
+    if (!/^[a-zA-Z\s\-']+$/.test(name)) {
+      return `${fieldName} can only contain letters, spaces, hyphens, and apostrophes`;
+    }
+    return "";
+  };
+
+  const validateEmail = (email) => {
+    if (!email || email.trim() === "") {
+      return "Email is required";
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return "Please enter a valid email address";
+    }
+    return "";
+  };
+
+  const validatePhone = (phone) => {
+    if (!phone || phone.trim() === "") {
+      return "Phone number is required";
+    }
+    // Remove all non-digit characters for validation
+    const cleaned = phone.replace(/\D/g, "");
+    if (cleaned.length < 10) {
+      return "Phone number must be at least 10 digits";
+    }
+    if (cleaned.length > 15) {
+      return "Phone number must be less than 15 digits";
+    }
+    return "";
+  };
+
+  const validateField = (name, value) => {
+    switch (name) {
+      case "firstName":
+        return validateName(value, "First name");
+      case "lastName":
+        return validateName(value, "Last name");
+      case "email":
+        return validateEmail(value);
+      case "phone":
+        return validatePhone(value);
+      default:
+        return "";
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,10 +113,73 @@ export default function Contact() {
       ...prev,
       [name]: value,
     }));
+
+    // Validate on change
+    const error = validateField(name, value);
+    setValidationErrors((prev) => ({
+      ...prev,
+      [name]: error,
+    }));
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    const error = validateField(name, value);
+    setValidationErrors((prev) => ({
+      ...prev,
+      [name]: error,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate all fields before submission
+    const errors = {};
+    let hasErrors = false;
+
+    // Validate first name
+    const firstNameError = validateName(formData.firstName, "First name");
+    if (firstNameError) {
+      errors.firstName = firstNameError;
+      hasErrors = true;
+    }
+
+    // Validate last name
+    const lastNameError = validateName(formData.lastName, "Last name");
+    if (lastNameError) {
+      errors.lastName = lastNameError;
+      hasErrors = true;
+    }
+
+    // Validate email
+    const emailError = validateEmail(formData.email);
+    if (emailError) {
+      errors.email = emailError;
+      hasErrors = true;
+    }
+
+    // Validate phone
+    const phoneError = validatePhone(formData.phone);
+    if (phoneError) {
+      errors.phone = phoneError;
+      hasErrors = true;
+    }
+
+    if (hasErrors) {
+      setValidationErrors(errors);
+      // Focus the first field with an error
+      const firstErrorField = Object.keys(errors)[0];
+      const element = document.querySelector(`[name="${firstErrorField}"]`);
+      if (element) {
+        element.focus();
+      }
+      return;
+    }
+
+    // Clear any existing errors
+    setValidationErrors({});
+
     const submitData = {
       name: `${formData.firstName} ${formData.lastName}`.trim(),
       email: formData.email,
@@ -161,118 +277,91 @@ export default function Contact() {
     },
   ];
 
-  if (contentLoading) {
-    return (
-      <>
-        <HeaderBanner title={"Contact US"} />
-        <ContactSkeleton />
-      </>
-    );
-  }
-
   return (
-    <div className={`py-[100px] transition-colors duration-300 ${isDarkMode ? 'bg-bg-2' : 'bg-gray-50'
-      }`}>
-
-      <HeaderBanner title={"Contact US"} />
-
+    <div
+      className={`py-[30px] md:py-[90px] transition-colors duration-300 overflow-x-hidden ${isDarkMode ? "bg-bg-2" : "bg-gray-50"}`}
+    >
       <section
-        id="contact"
-        className="py-[50px] transition-colors duration-300 relative overflow-hidden"
+        className="py-[30px] md:py-[50px] transition-colors duration-300 relative overflow-hidden"
         style={{
-          backgroundColor: 'var(--bg)',
-          color: 'var(--text-body)'
+          backgroundColor: "var(--bg)",
+          color: "var(--text-body)",
         }}
       >
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div
-            className="absolute top-20 left-10 w-72 h-72 rounded-full blur-3xl"
-            style={{
-              background: `radial-gradient(circle, ${isDarkMode ? 'rgba(135,80,247,0.08)' : 'rgba(135,80,247,0.12)'} 0%, transparent 70%)`
-            }}
-          />
-          <div
-            className="absolute bottom-20 right-10 w-72 h-72 rounded-full blur-3xl"
-            style={{
-              background: `radial-gradient(circle, ${isDarkMode ? 'rgba(59,130,246,0.08)' : 'rgba(59,130,246,0.1)'} 0%, transparent 70%)`
-            }}
-          />
-
-          {/* Grid pattern background */}
-          <div
-            className="absolute inset-0 bg-[length:40px_40px] opacity-30"
-            style={{
-              backgroundImage: `linear-gradient(${isDarkMode ? 'rgba(135,80,247,0.03)' : 'rgba(135,80,247,0.04)'} 1px, transparent 1px), linear-gradient(90deg, ${isDarkMode ? 'rgba(135,80,247,0.03)' : 'rgba(135,80,247,0.04)'} 1px, transparent 1px)`
-            }}
-          />
-        </div>
-
-        <div className="container-custom relative z-10">
+        <div className="container-custom relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            className="text-center mb-8 md:mb-12"
           >
             <span
               className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4"
               style={{
-                backgroundColor: isDarkMode ? 'rgba(135,80,247,0.2)' : 'rgba(135,80,247,0.1)',
-                color: 'var(--primary)'
+                backgroundColor: isDarkMode
+                  ? "rgba(135,80,247,0.2)"
+                  : "rgba(135,80,247,0.1)",
+                color: "var(--primary)",
               }}
             >
               {content.subtitle || "Get In Touch"}
             </span>
             <h2
-              className="text-4xl md:text-5xl font-bold mb-4"
-              style={{ color: 'var(--text-heading)' }}
+              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
+              style={{ color: "var(--text-heading)" }}
             >
               {content.title || "Let's Work Together!"}
             </h2>
             <div
               className="w-24 h-1 mx-auto rounded-full"
               style={{
-                background: `linear-gradient(to right, var(--primary), var(--primary-2))`
+                background: `linear-gradient(to right, var(--primary), var(--primary-2))`,
               }}
             />
           </motion.div>
 
-          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-start">
+          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-12 xl:gap-20">
             {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              className="w-full min-w-0"
             >
               <div
-                className="rounded-3xl shadow-xl p-8 md:p-10 transition-colors duration-300"
+                className="rounded-3xl shadow-xl p-6 sm:p-8 md:p-10 transition-colors duration-300 w-full"
                 style={{
-                  backgroundColor: 'var(--bg-card)',
-                  border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`
+                  backgroundColor: "var(--bg-card)",
+                  border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
                 }}
               >
                 <h3
-                  className="text-2xl font-bold mb-6"
-                  style={{ color: 'var(--text-heading)' }}
+                  className="text-xl sm:text-2xl font-bold mb-6"
+                  style={{ color: "var(--text-heading)" }}
                 >
                   Send Me a Message
                 </h3>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-5 sm:space-y-6"
+                  noValidate
+                >
                   <AnimatePresence>
                     {error && (
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="p-4 rounded-xl text-sm flex items-center gap-2"
+                        className="p-3 sm:p-4 rounded-xl text-sm flex items-center gap-2"
                         style={{
-                          backgroundColor: isDarkMode ? 'rgba(239,68,68,0.1)' : 'rgba(239,68,68,0.05)',
-                          border: `1px solid ${isDarkMode ? 'rgba(239,68,68,0.2)' : 'rgba(239,68,68,0.1)'}`,
-                          color: isDarkMode ? '#f87171' : '#dc2626'
+                          backgroundColor: isDarkMode
+                            ? "rgba(239,68,68,0.1)"
+                            : "rgba(239,68,68,0.05)",
+                          border: `1px solid ${isDarkMode ? "rgba(239,68,68,0.2)" : "rgba(239,68,68,0.1)"}`,
+                          color: isDarkMode ? "#f87171" : "#dc2626",
                         }}
                       >
                         <svg
@@ -288,119 +377,167 @@ export default function Contact() {
                             d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
-                        {error}
+                        <span className="break-words">{error}</span>
                       </motion.div>
                     )}
                   </AnimatePresence>
 
-                  <div className="grid md:grid-cols-2 gap-5">
-                    {["firstName", "lastName"].map((field, index) => (
-                      <div key={field} className="space-y-2">
+                  <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
+                    {["firstName", "lastName"].map((field) => (
+                      <div key={field} className="space-y-2 min-w-0">
                         <label
                           className="block text-sm font-semibold"
-                          style={{ color: 'var(--text-body)' }}
+                          style={{ color: "var(--text-body)" }}
                         >
                           {field === "firstName" ? "First Name" : "Last Name"}
+                          <span className="text-red-500 ml-1">*</span>
                         </label>
-                        <div className="relative">
+                        <div className="relative w-full">
                           <input
                             type="text"
                             name={field}
                             value={formData[field]}
                             onChange={handleChange}
-                            required
-                            className="w-full px-4 py-3.5 rounded-xl outline-none transition-all duration-300 placeholder:text-gray-400"
+                            onBlur={(e) => {
+                              handleBlur(e); // validation
+                              setFocusedField(null); // your UI logic
+
+                              if (!validationErrors[field]) {
+                                e.currentTarget.style.borderColor = isDarkMode
+                                  ? "rgba(255,255,255,0.1)"
+                                  : "rgba(0,0,0,0.1)";
+                                e.currentTarget.style.boxShadow = "none";
+                              }
+                            }}
+                            className={`w-full min-w-0 px-3 sm:px-4 py-3 rounded-xl outline-none transition-all duration-300 placeholder:text-gray-400 ${
+                              validationErrors[field] ? "border-red-500" : ""
+                            }`}
                             style={{
-                              backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)',
-                              border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                              color: 'var(--text-heading)'
+                              backgroundColor: isDarkMode
+                                ? "rgba(255,255,255,0.05)"
+                                : "rgba(0,0,0,0.02)",
+                              border: `1px solid ${validationErrors[field] ? "#ef4444" : isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+                              color: "var(--text-heading)",
                             }}
                             onFocus={(e) => {
                               setFocusedField(field);
-                              e.currentTarget.style.borderColor = 'var(--primary)';
-                              e.currentTarget.style.boxShadow = `0 0 0 4px ${isDarkMode ? 'rgba(135,80,247,0.2)' : 'rgba(135,80,247,0.1)'}`;
-                            }}
-                            onBlur={(e) => {
-                              setFocusedField(null);
-                              e.currentTarget.style.borderColor = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-                              e.currentTarget.style.boxShadow = 'none';
+                              if (!validationErrors[field]) {
+                                e.currentTarget.style.borderColor =
+                                  "var(--primary)";
+                                e.currentTarget.style.boxShadow = `0 0 0 4px ${isDarkMode ? "rgba(135,80,247,0.2)" : "rgba(135,80,247,0.1)"}`;
+                              }
                             }}
                             placeholder={
-                              field === "firstName"
-                                ? "Enter FirstName"
-                                : "Enter Last Name"
+                              field === "firstName" ? "First Name" : "Last Name"
                             }
                           />
+                          {validationErrors[field] && (
+                            <motion.p
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="text-red-500 text-xs mt-1 flex items-center gap-1 break-words"
+                            >
+                              <span>⚠️</span>
+                              {validationErrors[field]}
+                            </motion.p>
+                          )}
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-5">
+                  <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
                     {["email", "phone"].map((field) => (
-                      <div key={field} className="space-y-2">
+                      <div key={field} className="space-y-2 min-w-0">
                         <label
                           className="block text-sm font-semibold"
-                          style={{ color: 'var(--text-body)' }}
+                          style={{ color: "var(--text-body)" }}
                         >
                           {field === "email" ? "Email Address" : "Phone Number"}
+                          <span className="text-red-500 ml-1">*</span>
                         </label>
                         <input
                           type={field === "email" ? "email" : "tel"}
                           name={field}
                           value={formData[field]}
                           onChange={handleChange}
-                          required={field === "email"}
-                          className="w-full px-4 py-3.5 rounded-xl outline-none transition-all duration-300 placeholder:text-gray-400"
+                          onBlur={(e) => {
+                            handleBlur(e);
+
+                            if (!validationErrors[field]) {
+                              e.currentTarget.style.borderColor = isDarkMode
+                                ? "rgba(255,255,255,0.1)"
+                                : "rgba(0,0,0,0.1)";
+                              e.currentTarget.style.boxShadow = "none";
+                            }
+                          }}
+                          className={`w-full min-w-0 px-3 sm:px-4 py-3 rounded-xl outline-none transition-all duration-300 placeholder:text-gray-400 ${
+                            validationErrors[field] ? "border-red-500" : ""
+                          }`}
                           style={{
-                            backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)',
-                            border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                            color: 'var(--text-heading)'
+                            backgroundColor: isDarkMode
+                              ? "rgba(255,255,255,0.05)"
+                              : "rgba(0,0,0,0.02)",
+                            border: `1px solid ${validationErrors[field] ? "#ef4444" : isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+                            color: "var(--text-heading)",
                           }}
                           onFocus={(e) => {
-                            e.currentTarget.style.borderColor = 'var(--primary)';
-                            e.currentTarget.style.boxShadow = `0 0 0 4px ${isDarkMode ? 'rgba(135,80,247,0.2)' : 'rgba(135,80,247,0.1)'}`;
-                          }}
-                          onBlur={(e) => {
-                            e.currentTarget.style.borderColor = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-                            e.currentTarget.style.boxShadow = 'none';
+                            if (!validationErrors[field]) {
+                              e.currentTarget.style.borderColor =
+                                "var(--primary)";
+                              e.currentTarget.style.boxShadow = `0 0 0 4px ${isDarkMode ? "rgba(135,80,247,0.2)" : "rgba(135,80,247,0.1)"}`;
+                            }
                           }}
                           placeholder={
                             field === "email"
-                              ? "Enter Email Address"
-                              : "Enter your Mobile Number"
+                              ? "your@email.com"
+                              : "Enter Mobile Number"
                           }
                         />
+                        {validationErrors[field] && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-red-500 text-xs mt-1 flex items-center gap-1 break-words"
+                          >
+                            <span>⚠️</span>
+                            {validationErrors[field]}
+                          </motion.p>
+                        )}
                       </div>
                     ))}
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-2 min-w-0">
                     <label
                       className="block text-sm font-semibold"
-                      style={{ color: 'var(--text-body)' }}
+                      style={{ color: "var(--text-body)" }}
                     >
                       Your Message
+                      <span className="text-red-500 ml-1">*</span>
                     </label>
                     <textarea
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      required
                       rows="5"
-                      className="w-full px-4 py-3.5 rounded-xl outline-none transition-all duration-300 placeholder:text-gray-400 resize-none"
+                      className="w-full min-w-0 px-3 sm:px-4 py-3 rounded-xl outline-none transition-all duration-300 placeholder:text-gray-400 resize-none"
                       style={{
-                        backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)',
-                        border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                        color: 'var(--text-heading)'
+                        backgroundColor: isDarkMode
+                          ? "rgba(255,255,255,0.05)"
+                          : "rgba(0,0,0,0.02)",
+                        border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+                        color: "var(--text-heading)",
                       }}
                       onFocus={(e) => {
-                        e.currentTarget.style.borderColor = 'var(--primary)';
-                        e.currentTarget.style.boxShadow = `0 0 0 4px ${isDarkMode ? 'rgba(135,80,247,0.2)' : 'rgba(135,80,247,0.1)'}`;
+                        e.currentTarget.style.borderColor = "var(--primary)";
+                        e.currentTarget.style.boxShadow = `0 0 0 4px ${isDarkMode ? "rgba(135,80,247,0.2)" : "rgba(135,80,247,0.1)"}`;
                       }}
                       onBlur={(e) => {
-                        e.currentTarget.style.borderColor = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-                        e.currentTarget.style.boxShadow = 'none';
+                        e.currentTarget.style.borderColor = isDarkMode
+                          ? "rgba(255,255,255,0.1)"
+                          : "rgba(0,0,0,0.1)";
+                        e.currentTarget.style.boxShadow = "none";
                       }}
                       placeholder="Tell me about your project..."
                     />
@@ -411,11 +548,12 @@ export default function Contact() {
                     disabled={
                       formStatus === "loading" || formStatus === "succeeded"
                     }
-                    className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
+                    className={`w-full py-3.5 sm:py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-sm sm:text-base`}
                     style={{
-                      background: formStatus === "succeeded"
-                        ? "linear-gradient(135deg, #22c55e, #16a34a)"
-                        : "linear-gradient(135deg, var(--primary), var(--primary-2))"
+                      background:
+                        formStatus === "succeeded"
+                          ? "linear-gradient(135deg, #22c55e, #16a34a)"
+                          : "linear-gradient(135deg, var(--primary), var(--primary-2))",
                     }}
                     whileHover={{ y: -2 }}
                     whileTap={{ y: 0 }}
@@ -509,18 +647,18 @@ export default function Contact() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="space-y-8"
+              className="space-y-6 md:space-y-8 w-full min-w-0"
             >
               <div>
                 <h3
-                  className="text-3xl md:text-4xl font-bold mb-4"
-                  style={{ color: 'var(--text-heading)' }}
+                  className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4"
+                  style={{ color: "var(--text-heading)" }}
                 >
                   Get In Touch
                 </h3>
                 <p
-                  className="leading-relaxed text-lg"
-                  style={{ color: 'var(--text-body)' }}
+                  className="leading-relaxed text-base sm:text-lg"
+                  style={{ color: "var(--text-body)" }}
                 >
                   I&apos;m always excited to hear about new projects and
                   opportunities. Whether you have a question or just want to say
@@ -528,7 +666,7 @@ export default function Contact() {
                 </p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {contactInfo.map((item, i) => (
                   <motion.div
                     key={i}
@@ -536,42 +674,49 @@ export default function Contact() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
-                    whileHover={{ x: 10 }}
-                    className="group relative"
+                    whileHover={{ x: 5 }}
+                    className="group relative w-full"
                   >
                     {item.link ? (
-                      <a href={item.link} className="block">
+                      <a href={item.link} className="block w-full">
                         <div
-                          className="relative flex items-start gap-5 p-6 rounded-2xl transition-all duration-300"
+                          className="relative flex items-center gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl transition-all duration-300 w-full"
                           style={{
-                            backgroundColor: 'var(--bg-card)',
-                            border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
-                            boxShadow: isDarkMode ? '0 4px 20px rgba(0,0,0,0.2)' : '0 4px 20px rgba(0,0,0,0.05)'
+                            backgroundColor: "var(--bg-card)",
+                            border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
+                            boxShadow: isDarkMode
+                              ? "0 4px 20px rgba(0,0,0,0.2)"
+                              : "0 4px 20px rgba(0,0,0,0.05)",
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = 'translateY(-4px)';
-                            e.currentTarget.style.boxShadow = isDarkMode ? '0 8px 30px rgba(0,0,0,0.3)' : '0 8px 30px rgba(0,0,0,0.1)';
+                            e.currentTarget.style.transform =
+                              "translateY(-4px)";
+                            e.currentTarget.style.boxShadow = isDarkMode
+                              ? "0 8px 30px rgba(0,0,0,0.3)"
+                              : "0 8px 30px rgba(0,0,0,0.1)";
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.boxShadow = isDarkMode ? '0 4px 20px rgba(0,0,0,0.2)' : '0 4px 20px rgba(0,0,0,0.05)';
+                            e.currentTarget.style.transform = "translateY(0)";
+                            e.currentTarget.style.boxShadow = isDarkMode
+                              ? "0 4px 20px rgba(0,0,0,0.2)"
+                              : "0 4px 20px rgba(0,0,0,0.05)";
                           }}
                         >
                           <div
-                            className={`flex-shrink-0 w-14 h-14 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center text-white shadow-lg`}
+                            className={`flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center text-white shadow-lg`}
                           >
                             {item.icon}
                           </div>
-                          <div>
+                          <div className="min-w-0 flex-1">
                             <div
-                              className="text-sm font-medium mb-1"
-                              style={{ color: 'var(--text-muted)' }}
+                              className="text-xs sm:text-sm font-medium mb-0.5 sm:mb-1"
+                              style={{ color: "var(--text-muted)" }}
                             >
                               {item.label}
                             </div>
                             <div
-                              className="text-base font-semibold"
-                              style={{ color: 'var(--text-heading)' }}
+                              className="text-sm sm:text-base font-semibold break-words"
+                              style={{ color: "var(--text-heading)" }}
                             >
                               {item.value}
                             </div>
@@ -580,28 +725,30 @@ export default function Contact() {
                       </a>
                     ) : (
                       <div
-                        className="relative flex items-start gap-5 p-6 rounded-2xl transition-all duration-300"
+                        className="relative flex items-center gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl transition-all duration-300 w-full"
                         style={{
-                          backgroundColor: 'var(--bg-card)',
-                          border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
-                          boxShadow: isDarkMode ? '0 4px 20px rgba(0,0,0,0.2)' : '0 4px 20px rgba(0,0,0,0.05)'
+                          backgroundColor: "var(--bg-card)",
+                          border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
+                          boxShadow: isDarkMode
+                            ? "0 4px 20px rgba(0,0,0,0.2)"
+                            : "0 4px 20px rgba(0,0,0,0.05)",
                         }}
                       >
                         <div
-                          className={`flex-shrink-0 w-14 h-14 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center text-white shadow-lg`}
+                          className={`flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center text-white shadow-lg`}
                         >
                           {item.icon}
                         </div>
-                        <div>
+                        <div className="min-w-0 flex-1">
                           <div
-                            className="text-sm font-medium mb-1"
-                            style={{ color: 'var(--text-muted)' }}
+                            className="text-xs sm:text-sm font-medium mb-0.5 sm:mb-1"
+                            style={{ color: "var(--text-muted)" }}
                           >
                             {item.label}
                           </div>
                           <div
-                            className="text-base font-semibold"
-                            style={{ color: 'var(--text-heading)' }}
+                            className="text-sm sm:text-base font-semibold break-words"
+                            style={{ color: "var(--text-heading)" }}
                           >
                             {item.value}
                           </div>
@@ -613,14 +760,14 @@ export default function Contact() {
               </div>
 
               {/* Social Links */}
-              <div className="pt-6">
+              <div className="pt-4 sm:pt-6">
                 <h4
-                  className="text-sm font-semibold uppercase tracking-wider mb-4"
-                  style={{ color: 'var(--text-muted)' }}
+                  className="text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3 sm:mb-4"
+                  style={{ color: "var(--text-muted)" }}
                 >
                   Follow Me
                 </h4>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {socialLinksArray.map((social, i) => (
                     <motion.a
                       key={social.name}
@@ -629,19 +776,21 @@ export default function Contact() {
                       rel="noopener noreferrer"
                       whileHover={{ y: -3 }}
                       whileTap={{ scale: 0.95 }}
-                      className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300"
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all duration-300"
                       style={{
-                        backgroundColor: 'var(--bg-card)',
-                        color: 'var(--text-body)',
-                        border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`
+                        backgroundColor: "var(--bg-card)",
+                        color: "var(--text-body)",
+                        border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.color = 'var(--primary)';
-                        e.currentTarget.style.borderColor = 'var(--primary)';
+                        e.currentTarget.style.color = "var(--primary)";
+                        e.currentTarget.style.borderColor = "var(--primary)";
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.color = 'var(--text-body)';
-                        e.currentTarget.style.borderColor = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+                        e.currentTarget.style.color = "var(--text-body)";
+                        e.currentTarget.style.borderColor = isDarkMode
+                          ? "rgba(255,255,255,0.08)"
+                          : "rgba(0,0,0,0.06)";
                       }}
                     >
                       <span className="sr-only">{social.name}</span>

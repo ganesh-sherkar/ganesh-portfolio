@@ -19,7 +19,7 @@ export const fallbackHero = {
   socials: {
     linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b/",
     github: "https://github.com/MuskuNishitha",
-    email: "mailto:mnishithareddy8765@gmail.com",
+    email: "mailto:muskunishitha2003@gmail.com",
   },
 };
 
@@ -27,7 +27,7 @@ export const fallbackPortfolio = {
   categories: [
     { id: "all", name: "All Work" },
     { id: "ecommerce", name: "Web Development" },
-    { id: "mobile", name: "Applications" },
+    // { id: "mobile", name: "Applications" },
     { id: "dashboard", name: "Dashboards" },
   ],
   projects: [
@@ -153,29 +153,39 @@ export const fallbackPortfolio = {
 export const fallbackResume = {
   experiences: [
     {
-      time: "Jun 2024 - Present",
-      title: "MERN Stack & React Native Developer",
-      place:
-        "AI Apps Hub Private Limited (formerly Dexterous Technology), Hyderabad",
-      achievements: [
-        "Delivered scalable web and mobile applications",
-        "Optimised backend APIs to reduce response time",
-        "Built secure authentication and file management using JWT + REST APIs",
-        "Built responsive UIs with React, React Native, Next.js, and Redux Toolkit",
-        "Integrated Firebase Cloud Messaging and Google Maps API",
+      role: "MERN Stack & React Native Developer",
+      company: "Dexterous Technology",
+      duration: "Jun 2024 - Present",
+      points: [
+        "Developed scalable web & mobile apps using MERN + React Native",
+        "Improved API performance by ~30% with optimized queries",
+        "Built authentication, dashboards, and real-time features",
+        "Handled production deployment & bug fixing",
       ],
+      tech: ["React", "Next.js", "Node.js", "MongoDB", "Redux"],
     },
     {
-      time: "Apr 2024 - May 2024",
-      title: "Intern",
-      place:
-        "AI Apps Hub Private Limited (formerly Dexterous Technology), Hyderabad",
-      achievements: [
-        "Developed responsive components using HTML, CSS, and JavaScript",
-        "Supported API integration and backend development using Node.js and Express.js",
-        "Debugged UI/functional issues to improve stability",
-        "Worked in Agile workflows with real delivery ownership",
+      role: "Intern Developer",
+      company: "Dexterous Technology",
+      duration: "Apr 2024 - May 2024",
+      points: [
+        "Built responsive UI components using React",
+        "Integrated REST APIs and improved data flow",
+        "Fixed bugs and improved application stability",
       ],
+      tech: ["React", "Node.js", "Express"],
+    },
+    {
+      role: "Full Stack Trainee",
+      company: "JSpiders, Punjagutta",
+      duration: "Jun 2023 - Apr 2024",
+      points: [
+        "Learned full-stack development (JS, React, Node, MongoDB)",
+        "Built CRUD & API-based mini projects",
+        "Practiced DSA and problem-solving daily",
+        "Worked with Git and real-world project structure",
+      ],
+      tech: ["JavaScript", "React", "Node.js", "MongoDB"],
     },
   ],
   education: [
@@ -201,19 +211,19 @@ export const fallbackResume = {
     },
     {
       title: "Best Performer of the Month",
-      issuer: "AI Apps Hub Private Limited",
+      issuer: "Dexterous Technology",
       year: "2024",
       icon: "🏆",
     },
     {
       title: "Zero Critical Bugs Achievement",
-      issuer: "AI Apps Hub Private Limited",
+      issuer: "Dexterous Technology",
       year: "2024",
       icon: "🐛",
     },
     {
       title: "95%+ Task Completion",
-      issuer: "AI Apps Hub Private Limited",
+      issuer: "Dexterous Technology",
       year: "2024",
       icon: "✅",
     },
@@ -267,41 +277,61 @@ export const fallbackAbout = {
     ],
     tagline: "React & React Native Developer | Building Modern Apps",
     description:
-      "I am a passionate React and React Native developer with 2 years of experience in building modern web and mobile applications.",
+      "Passionate full-stack MERN & React Native developer with 2+ years of professional experience building production-ready web and mobile applications, integrating REST APIs, and delivering on time.",
     birthdate: "2003-08-11",
     available: true,
-    address: "Brahmanpally Kamareddy",
+    address: "Sr Nagar, Hyderabad",
     experience: "2",
     nationality: "Indian",
     completedProjects: "6",
     happyCustomers: "3",
     languages: ["English", "Telugu", "Hindi"],
-    email: "mnishithareddy8765@gmail.com",
+    email: "muskunishitha2003@gmail.com",
     phone: "7416264657",
     freelance: true,
     socialLinks: {
       github: "https://github.com/MuskuNishitha",
       linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b",
-      instagram: "mnishithareddy8765@gmail.com",
+      instagram: "muskunishitha2003@gmail.com",
     },
   },
   skills: [
-    { name: "React.js", percentage: 92, icon: "React" },
-    { name: "React Native", percentage: 88, icon: "Mobile" },
+    { name: "React.js", percentage: 85, icon: "React" },
+    { name: "React Native", percentage: 83, icon: "Mobile" },
     { name: "Next.js", percentage: 85, icon: "Next" },
-    { name: "Node.js", percentage: 86, icon: "Node" },
+    { name: "Node.js", percentage: 80, icon: "Node" },
     { name: "Express.js", percentage: 84, icon: "API" },
     { name: "MongoDB", percentage: 82, icon: "DB" },
-    { name: "Redux Toolkit", percentage: 88, icon: "State" },
-    { name: "Tailwind CSS", percentage: 90, icon: "UI" },
-    { name: "JavaScript", percentage: 89, icon: "JS" },
+    { name: "Redux Toolkit", percentage: 82, icon: "State" },
+    { name: "Tailwind CSS", percentage: 86, icon: "UI" },
+    { name: "JavaScript", percentage: 82, icon: "JS" },
   ],
   education: fallbackResume.education,
   experience: fallbackResume.experiences,
   stats: [
-    { value: "2+", label: "Years Experience", icon: "Work", color: "from-primary to-secondary" },
-    { value: "6+", label: "Projects Completed", icon: "Projects", color: "from-blue-500 to-cyan-500" },
-    { value: "3+", label: "Happy Clients", icon: "Clients", color: "from-green-500 to-emerald-500" },
-    { value: "Open", label: "Availability", icon: "Status", color: "from-orange-500 to-red-500" },
+    {
+      value: "2+",
+      label: "Years Experience",
+      icon: "Work",
+      color: "from-primary to-secondary",
+    },
+    {
+      value: "6+",
+      label: "Projects Completed",
+      icon: "Projects",
+      color: "from-blue-500 to-cyan-500",
+    },
+    {
+      value: "3+",
+      label: "Happy Clients",
+      icon: "Clients",
+      color: "from-green-500 to-emerald-500",
+    },
+    {
+      value: "Open",
+      label: "Availability",
+      icon: "Status",
+      color: "from-orange-500 to-red-500",
+    },
   ],
 };

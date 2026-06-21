@@ -14,13 +14,13 @@ import FloatingChatButton from "@/components/FloatingChatButton"; // Import the 
 
 const navigationItems = [
   { name: "Home", href: "/" },
-  { name: "Services", href: "/services" },
-  { name: "Portfolio", href: "/Portfolio" },
-  { name: "Resume", href: "/Resume" },
-  // { name: "Blog", href: "/Blog" },
-  { name: "Contact", href: "/Contact" },
+  { name: "About", href: "/about" },
+  { name: "Skills", href: "/skills" },
+  { name: "Projects", href: "/projects" },
+  { name: "Experience", href: "/experience" },
+  { name: "Contact", href: "/contact" },
+  { name: "Resume", href: "/resume" },
 ];
-
 // Map icon strings to actual components
 const iconMap = {
   FaGithub: FaGithub,

@@ -44,7 +44,7 @@ const contactSlice = createSlice({
         "I design and code beautifully simple things and I love what I do. Just simple like that!",
       contactInfo: [
         { icon: "📞", label: "Phone", value: "+01 123 654 8096" },
-        { icon: "✉️", label: "Email", value: "mnishithareddy8765@gmail.com" },
+        { icon: "✉️", label: "Email", value: "muskunishitha2003@gmail.com" },
         {
           icon: "📍",
           label: "Address",

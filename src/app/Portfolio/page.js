@@ -1,12 +1,11 @@
-import Portfolio from '@/mainPages/portfolioPages/Portfolio';
-import React from 'react';
+import React from 'react'
 
 const page = () => {
   return (
     <div>
-      <Portfolio />
+      <>Portfolio</>
     </div>
-  );
+  )
 }
 
-export default page;
+export default page

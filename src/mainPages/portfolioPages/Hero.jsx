@@ -48,12 +48,12 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-10 items-center relative z-10">
         {/* LEFT CONTENT */}
         <div className="text-center md:text-left px-2 animate-fade-up">
-          <h2
+          <p
             className="text-xs sm:text-sm tracking-widest mb-3 pt-10 md:pt-0"
             style={{ color: "var(--primary)" }}
           >
             WELCOME TO MY PORTFOLIO
-          </h2>
+          </p>
 
           <h1
             className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight mb-4"
@@ -62,9 +62,9 @@ export default function Hero() {
             Hi, I&apos;m <span className="gradient-text">{content.name}</span>
           </h1>
 
-          <h3 className="text-base sm:text-lg md:text-2xl mb-4 opacity-80 leading-snug">
+          <h2 className="text-base sm:text-lg md:text-2xl mb-4 opacity-80 leading-snug">
             {content.role}
-          </h3>
+          </h2>
           <div className="mb-4 space-y-2">
             {content.highlight.map((item, i) => (
               <div key={i} className="flex items-start gap-2">
@@ -148,7 +148,7 @@ export default function Hero() {
           >
             <Image
               src={content.image}
-              alt="profile"
+              alt="Nishitha Reddy Musku - React Native & MERN Stack Developer Profile Photo - Hyderabad, India"
               fill
               className="object-cover"
             />

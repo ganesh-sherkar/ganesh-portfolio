@@ -1,32 +1,34 @@
-"use client";
-import { motion } from "framer-motion";
+import { generateMetadata } from "@/lib/seo-utils";
 import Hero from "@/mainPages/portfolioPages/Hero";
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
+export const metadata = generateMetadata({
+  title: "Home",
+  description:
+    "Welcome to the portfolio of Nishitha Reddy Musku, a skilled React Native & MERN Stack Developer with 2+ years of experience. Explore projects, skills, and experience in building scalable mobile and web applications.",
+  path: "/",
+  keywords: [
+    "Nishitha Reddy Musku Portfolio",
+    "React Native Developer Portfolio",
+    "MERN Stack Developer Portfolio",
+    "Hyderabad Web Developer",
+  ],
+  type: "website",
+});
 
 export default function Home() {
   return (
     <>
-      {/* ✅ SEO Heading (VERY IMPORTANT) */}
-      <h1 style={{ display: "none" }}>
-        Nishitha Reddy Musku - React Native & MERN Stack Developer Portfolio
-      </h1>
+      {/* SEO Heading - Visible to users and search engines */}
+      <section className="sr-only" aria-hidden="false">
+        <h1>Nishitha Reddy Musku - React Native & MERN Stack Developer Portfolio</h1>
+        <p>
+          Welcome to the portfolio of Nishitha Reddy Musku, a skilled React Native & MERN Stack Developer 
+          with 2+ years of experience. Specializing in building scalable mobile applications, 
+          web applications, and modern UI/UX design. Based in Hyderabad, India.
+        </p>
+      </section>
 
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={fadeInUp}
-      >
-        <Hero />
-      </motion.div>
+      <Hero />
     </>
   );
 }

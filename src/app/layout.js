@@ -1,4 +1,4 @@
-import { Sora, Russo_One } from "next/font/google";
+import { Sora, Russo_One, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/global/Header";
 import Footer from "@/global/Footer";
@@ -8,6 +8,7 @@ import { Providers } from "@/components/ReduxProvider";
 import CustomCursor from "@/components/CustomCursor";
 import RouteTransition from "@/components/RouteTransition";
 import Script from "next/script";
+import { getPersonSchema, getWebsiteSchema, getLocalBusinessSchema } from "@/lib/seo-utils";
 
 const BASE_URL = "https://muskunishitha.vercel.app";
 
@@ -16,6 +17,7 @@ const sora = Sora({
   weight: ["300", "400", "600", "700", "800"],
   variable: "--font-sora",
   display: "swap",
+  preload: true,
 });
 
 const russoOne = Russo_One({
@@ -23,40 +25,70 @@ const russoOne = Russo_One({
   weight: ["400"],
   variable: "--font-russo",
   display: "swap",
+  preload: true,
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+  preload: false,
 });
 
 export const viewport = {
   width: "device-width",
   initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#111827" },
+  ],
 };
 
 export const metadata = {
   metadataBase: new URL(BASE_URL),
 
   title: {
-    default: "Nishitha Reddy Musku | React Native & MERN Stack Developer",
+    default: "Nishitha Reddy Musku | React Native & MERN Stack Developer Portfolio",
     template: "%s | Nishitha Reddy Musku",
   },
 
   description:
-    "Portfolio of Nishitha Reddy Musku, React Native & MERN Stack Developer specializing in scalable mobile apps, web apps, and modern UI/UX.",
+    "Portfolio of Nishitha Reddy Musku, a skilled React Native & MERN Stack Developer with 2+ years of experience. Specializing in building scalable mobile apps, web applications, and modern UI/UX design. Available for freelance and full-time opportunities.",
 
   keywords: [
     "Nishitha Reddy Musku",
+    "Musku Nishitha Reddy",
     "React Native Developer India",
     "MERN Stack Developer",
     "Frontend Developer Portfolio",
     "React Developer Hyderabad",
+    "Mobile App Developer",
+    "Web Developer Portfolio",
+    "Full Stack Developer",
+    "JavaScript Developer",
+    "Freelance React Native Developer",
+    "Hyderabad Software Developer",
+    "React Native Developer Hyderabad",
+    "MERN Stack Freelancer",
+    "Portfolio Website Developer",
   ],
 
-  authors: [{ name: "Nishitha Reddy Musku", url: BASE_URL }],
+  authors: [
+    { name: "Nishitha Reddy Musku", url: BASE_URL },
+    { name: "Musku Nishitha Reddy", url: BASE_URL },
+  ],
   creator: "Nishitha Reddy Musku",
   publisher: "Nishitha Reddy Musku",
+  generator: "Next.js",
+  applicationName: "Nishitha Reddy Musku Portfolio",
+  referrer: "origin-when-cross-origin",
 
   openGraph: {
     title: "Nishitha Reddy Musku | React Native & MERN Stack Developer",
     description:
-      "Explore projects, skills, and experience in React Native, MERN Stack, and frontend development. Building scalable mobile and web applications.",
+      "Explore the portfolio of Nishitha Reddy Musku, showcasing projects, skills, and experience in React Native, MERN Stack, and frontend development. Building scalable mobile and web applications with modern technologies.",
     url: BASE_URL,
     siteName: "Nishitha Reddy Musku Portfolio",
     images: [
@@ -64,21 +96,30 @@ export const metadata = {
         url: `${BASE_URL}/main_photo_seo.png`,
         width: 1200,
         height: 630,
-        alt: "Nishitha Reddy Musku - React Native & MERN Stack Developer Portfolio",
+        alt: "Nishitha Reddy Musku - React Native & MERN Stack Developer Portfolio - Hyderabad, India",
         type: "image/png",
         secureUrl: `${BASE_URL}/main_photo_seo.png`,
+      },
+      {
+        url: `${BASE_URL}/og-image.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Nishitha Reddy Musku Portfolio",
+        type: "image/jpeg",
+        secureUrl: `${BASE_URL}/og-image.jpg`,
       },
     ],
     locale: "en_IN",
     type: "website",
     determiner: "auto",
+    countryName: "India",
   },
 
   twitter: {
     card: "summary_large_image",
     title: "Nishitha Reddy Musku | React Native & MERN Stack Developer",
     description:
-      "Portfolio of Nishitha Reddy Musku - React Native & MERN Stack Developer building scalable apps with modern UI/UX.",
+      "Portfolio of Nishitha Reddy Musku - React Native & MERN Stack Developer with 2+ years of experience building scalable apps with modern UI/UX.",
     creator: "@nishithareddy",
     site: "@nishithareddy",
     images: [`${BASE_URL}/main_photo_seo.png`],
@@ -87,9 +128,12 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
+    nocache: false,
     googleBot: {
       index: true,
       follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
       "max-image-preview": "large",
       "max-snippet": -1,
     },
@@ -99,38 +143,126 @@ export const metadata = {
     canonical: BASE_URL,
     languages: {
       "en-US": BASE_URL,
+      "en-IN": BASE_URL,
+    },
+    types: {
+      "application/rss+xml": `${BASE_URL}/rss.xml`,
     },
   },
 
   icons: {
     icon: [
-      { url: "/main_photo_seo.png", sizes: "any" },
-      { url: "/main_photo_seo.png", sizes: "16x16", type: "image/png" },
-      { url: "/main_photo_seo.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.jpg", sizes: "16x16", type: "image/jpeg" },
+      { url: "/favicon-32x32.jpg", sizes: "32x32", type: "image/jpeg" },
+      { url: "/main_photo_seo.png", sizes: "192x192", type: "image/png" },
+      { url: "/main_photo_seo.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/apple-touch-icon.jpg", sizes: "180x180", type: "image/jpeg" },
     ],
     shortcut: ["/favicon.ico"],
+    other: [
+      {
+        rel: "apple-touch-icon-precomposed",
+        url: "/apple-touch-icon.jpg",
+      },
+    ],
   },
+
+  manifest: `${BASE_URL}/manifest.json`,
+
   category: "technology",
+  classification: "Portfolio Website",
+  pageInfo: {
+    image: `${BASE_URL}/main_photo_seo.png`,
+  },
 
   verification: {
-    google: "d0rdKhmxIWpDC4lXnL_h7Bynf697jpQDh5YzSgC2ZWo", // Add your Google Search Console code
+    google: "d0rdKhmxIWpDC4lXnL_h7Bynf697jpQDh5YzSgC2ZWo",
+    yandex: "",
+    yahoo: "",
+    bing: "",
   },
 
   other: {
-    "facebook-domain-verification": "your-facebook-verification-code", // Optional
+    "facebook-domain-verification": "your-facebook-verification-code",
+    "google-site-verification": "d0rdKhmxIWpDC4lXnL_h7Bynf697jpQDh5YzSgC2ZWo",
+    "msvalidate.01": "",
+    "yandex-verification": "",
   },
+
+  appleWebApp: {
+    capable: true,
+    title: "Nishitha Portfolio",
+    statusBarStyle: "black-translucent",
+  },
+
+  formatDetection: {
+    telephone: true,
+    email: true,
+    address: true,
+  },
+
+  bookmarks: BASE_URL,
 };
 
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${sora.variable} ${russoOne.variable}`}
+      className={`${sora.variable} ${russoOne.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Preconnect to critical origins */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+        {/* RSS Feed */}
+        <link rel="alternate" type="application/rss+xml" title="Nishitha Reddy Musku Portfolio RSS Feed" href={`${BASE_URL}/rss.xml`} />
+
+        {/* Mobile App Links */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Nishitha Portfolio" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="HandheldFriendly" content="True" />
+        <meta name="MobileOptimized" content="width" />
+
+        {/* Geo Tags */}
+        <meta name="geo.region" content="IN-TG" />
+        <meta name="geo.placename" content="Hyderabad" />
+        <meta name="geo.position" content="17.3850;78.4867" />
+        <meta name="ICBM" content="17.3850, 78.4867" />
+
+        {/* Copyright */}
+        <meta name="copyright" content="Copyright © 2024 Nishitha Reddy Musku. All Rights Reserved." />
+
+        {/* Revisit After */}
+        <meta name="revisit-after" content="7 days" />
+
+        {/* Rating */}
+        <meta name="rating" content="general" />
+
+        {/* Target Audience */}
+        <meta name="target" content="all" />
+
+        {/* Distribution */}
+        <meta name="distribution" content="global" />
+
+        {/* Co-Author */}
+        <meta name="coverage" content="Worldwide" />
+
+        {/* Resource Hints */}
+        <link rel="preload" as="image" href="/main_photo_seo.png" />
+        <link rel="preload" as="image" href="/profile.jpg" />
+      </head>
       <body className="font-sora overflow-x-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
         {/* Default theme-color meta tag */}
         <Script id="theme-script" strategy="afterInteractive">
@@ -139,7 +271,6 @@ export default function RootLayout({ children }) {
       function updateThemeColor() {
         try {
           const isDark = document.documentElement.classList.contains('dark');
-          // 🔥 Read from data-primary attribute (not localStorage)
           const savedColor = document.documentElement.getAttribute('data-primary') || 'purple';
           
           const colors = {
@@ -163,11 +294,9 @@ export default function RootLayout({ children }) {
             document.head.appendChild(meta);
           }
           meta.content = themeColor;
-          console.log('Status bar:', themeColor);
         } catch(e) { console.error(e); }
       }
       
-      // Initial setup
       const savedTheme = localStorage.getItem('theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
@@ -180,18 +309,18 @@ export default function RootLayout({ children }) {
       document.documentElement.setAttribute('data-primary', savedColor);
       updateThemeColor();
       
-      // 🔥 Watch for BOTH class and data-primary changes
       const observer = new MutationObserver(() => updateThemeColor());
       observer.observe(document.documentElement, { 
         attributes: true, 
         attributeFilter: ['class', 'data-primary'] 
       });
       
-      // Listen for custom event from ColorPicker
       window.addEventListener('primaryColorChanged', () => updateThemeColor());
     })();
   `}
         </Script>
+
+        {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-87R1TGZ3MT"
           strategy="afterInteractive"
@@ -201,94 +330,128 @@ export default function RootLayout({ children }) {
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-87R1TGZ3MT');
+      gtag('config', 'G-87R1TGZ3MT', {
+        page_path: window.location.pathname,
+        send_page_view: true
+      });
     `}
         </Script>
-        {/* Structured Data - Person */}
+
+        {/* Performance monitoring - Core Web Vitals */}
+        <Script id="web-vitals" strategy="afterInteractive">
+          {`
+      if (window.performance && window.performance.timing) {
+        window.addEventListener('load', function() {
+          setTimeout(function() {
+            const timing = window.performance.timing;
+            const loadTime = timing.loadEventEnd - timing.navigationStart;
+            if (loadTime > 0) {
+              gtag('event', 'performance', {
+                'load_time': loadTime,
+                'dom_ready': timing.domContentLoadedEventEnd - timing.navigationStart
+              });
+            }
+          }, 0);
+        });
+      }
+    `}
+        </Script>
+
+        {/* Structured Data - Person (Enhanced) */}
         <Script
           id="person-json-ld"
           type="application/ld+json"
           strategy="afterInteractive"
-        >
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Person",
-            name: "Nishitha Reddy Musku",
-            url: BASE_URL,
-            image: `${BASE_URL}/profile.jpg`,
-            sameAs: [
-              "https://github.com/muskunishitha",
-              "https://linkedin.com/in/muskunishitha",
-              "https://twitter.com/nishithareddy",
-            ],
-            jobTitle: "React Native & MERN Stack Developer",
-            worksFor: {
-              "@type": "Organization",
-              name: "Freelance Developer",
-            },
-            knowsAbout: [
-              "React Native",
-              "MERN Stack",
-              "Node.js",
-              "Express.js",
-              "MongoDB",
-              "Next.js",
-            ],
-            alumniOf: {
-              "@type": "EducationalOrganization",
-              name: "Your University Name",
-            },
-            description:
-              "React Native & MERN Stack Developer specializing in building scalable mobile and web applications with modern technologies.",
-          })}
-        </Script>
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(getPersonSchema()),
+          }}
+        />
 
-        {/* Structured Data - Website */}
+        {/* Structured Data - Website (Enhanced) */}
         <Script
           id="website-json-ld"
           type="application/ld+json"
           strategy="afterInteractive"
-        >
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "Nishitha Reddy Musku Portfolio",
-            url: BASE_URL,
-            description:
-              "Portfolio of Nishitha Reddy Musku, React Native & MERN Stack Developer",
-            potentialAction: {
-              "@type": "SearchAction",
-              target: `${BASE_URL}/search?q={search_term_string}`,
-              "query-input": "required name=search_term_string",
-            },
-          })}
-        </Script>
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(getWebsiteSchema()),
+          }}
+        />
+
+        {/* Structured Data - Local Business */}
+        <Script
+          id="local-business-json-ld"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(getLocalBusinessSchema()),
+          }}
+        />
 
         {/* Structured Data - BreadcrumbList */}
         <Script
           id="breadcrumb-json-ld"
           type="application/ld+json"
           strategy="afterInteractive"
-        >
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: BASE_URL,
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: BASE_URL,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Portfolio",
+                  item: `${BASE_URL}/Portfolio`,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: "Nishitha Reddy Musku",
+                  item: BASE_URL,
+                },
+              ],
+            }),
+          }}
+        />
+
+        {/* Structured Data - WebPage */}
+        <Script
+          id="webpage-json-ld"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              name: "Nishitha Reddy Musku Portfolio",
+              description:
+                "Portfolio of Nishitha Reddy Musku, React Native & MERN Stack Developer",
+              url: BASE_URL,
+              isPartOf: {
+                "@type": "WebSite",
+                name: "Nishitha Reddy Musku Portfolio",
+                url: BASE_URL,
               },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "Portfolio",
-                item: `${BASE_URL}/portfolio`,
+              about: {
+                "@type": "Person",
+                name: "Nishitha Reddy Musku",
               },
-            ],
-          })}
-        </Script>
+              primaryImageOfPage: {
+                "@type": "ImageObject",
+                url: `${BASE_URL}/main_photo_seo.png`,
+              },
+              inLanguage: "en-US",
+              dateCreated: "2024-01-01",
+              dateModified: new Date().toISOString(),
+            }),
+          }}
+        />
 
         <Providers>
           <ThemeProvider>

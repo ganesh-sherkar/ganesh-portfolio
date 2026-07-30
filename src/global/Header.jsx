@@ -321,7 +321,7 @@ export default function Header() {
               >
                 <Image
                   src={getLogoPath()}
-                  alt="Logo"
+                  alt="Nishitha Reddy Musku - Logo"
                   fill
                   className="object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.18)]"
                   priority
@@ -520,7 +520,7 @@ export default function Header() {
                   <div className="relative w-24 h-12 sm:w-28 sm:h-14">
                     <Image
                       src={getLogoPath()}
-                      alt="Logo"
+                      alt="Nishitha Reddy Musku - Logo"
                       fill
                       className="object-contain"
                       sizes="(max-width: 640px) 96px, 112px"

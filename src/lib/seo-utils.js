@@ -347,7 +347,7 @@ export function getFAQSchema(faqs) {
   };
 }
 
-export default {
+const seoUtils = {
   generateMetadata,
   getPersonSchema,
   getWebsiteSchema,
@@ -356,3 +356,5 @@ export default {
   getLocalBusinessSchema,
   getFAQSchema,
 };
+
+export default seoUtils;

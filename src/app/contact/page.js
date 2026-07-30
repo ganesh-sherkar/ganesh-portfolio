@@ -38,7 +38,7 @@ export default function ContactPage() {
         <h1>Contact Nishitha Reddy Musku - React Native & MERN Stack Developer</h1>
         <p>
           Have a project in mind? Get in touch with Nishitha Reddy Musku for freelance 
-          opportunities, full-time positions, or collaboration. Let's build something amazing together.
+          opportunities, full-time positions, or collaboration. Let&apos;s build something amazing together.
         </p>
       </section>
       <Contact />

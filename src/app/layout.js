@@ -61,12 +61,12 @@ export const metadata = {
     siteName: "Nishitha Reddy Musku Portfolio",
     images: [
       {
-        url: `${BASE_URL}/resized_image.png`,
+        url: `${BASE_URL}/main_photo_seo.png`,
         width: 1200,
         height: 630,
         alt: "Nishitha Reddy Musku - React Native & MERN Stack Developer Portfolio",
         type: "image/png",
-        secureUrl: `${BASE_URL}/resized_image.png`,
+        secureUrl: `${BASE_URL}/main_photo_seo.png`,
       },
     ],
     locale: "en_IN",
@@ -81,7 +81,7 @@ export const metadata = {
       "Portfolio of Nishitha Reddy Musku - React Native & MERN Stack Developer building scalable apps with modern UI/UX.",
     creator: "@nishithareddy",
     site: "@nishithareddy",
-    images: [`${BASE_URL}/resized_image.png`],
+    images: [`${BASE_URL}/main_photo_seo.png`],
   },
 
   robots: {
@@ -104,9 +104,9 @@ export const metadata = {
 
   icons: {
     icon: [
-      { url: "/resized_image.png", sizes: "any" },
-      { url: "/resized_image.png", sizes: "16x16", type: "image/png" },
-      { url: "/resized_image.png", sizes: "32x32", type: "image/png" },
+      { url: "/main_photo_seo.png", sizes: "any" },
+      { url: "/main_photo_seo.png", sizes: "16x16", type: "image/png" },
+      { url: "/main_photo_seo.png", sizes: "32x32", type: "image/png" },
     ],
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },

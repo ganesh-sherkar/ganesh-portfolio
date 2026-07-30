@@ -1,9 +1,9 @@
 export const fallbackHero = {
-  badge: "FULL STACK MERN & REACT NATIVE DEVELOPER",
+  badge: "REACT.JS | REACT NATIVE | MERN STACK DEVELOPER",
   name: "Musku Nishitha",
   headline: "Hi, I'm",
   summary:
-    "Full-stack MERN & React Native developer with 2+ years of experience building scalable web and mobile apps, optimising performance, and delivering projects on time.",
+    "React.js | React Native | MERN Stack Developer with 2+ years of experience building scalable web and mobile applications across e-commerce and enterprise platforms. Track record of cutting backend API response time by 40%, growing user engagement by 25%+, and sustaining 95%+ on-time Agile delivery.",
   techStack: [
     "React.js",
     "React Native",
@@ -14,7 +14,7 @@ export const fallbackHero = {
     "Redux Toolkit",
     "Tailwind CSS",
   ],
-  resumeUrl: "/Musku_Nishitha_2_Y.OE_Mernstack.pdf",
+  resumeUrl: "/MUSKU NISHITHA.pdf",
   profileImageUrl: "/assets/ProfileMain.jpeg",
   socials: {
     linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b/",
@@ -39,17 +39,17 @@ export const fallbackPortfolio = {
       period: "Jun 2024 - Present",
       image: "/assets/projects/Ewshooping.png",
       description:
-        "Full-scale multi-vendor e-commerce platform with customer website, admin panel, seller panel, and mobile app.",
+        "Full-scale multi-vendor e-commerce platform spanning customer website, admin panel, seller panel, and mobile app — supporting 4,000+ vendors and 28,000+ users.",
       features: [
-        "Next.js customer website with improved SEO and performance",
-        "Admin & Seller dashboards with React and Tailwind CSS",
-        "Cross-platform mobile app with React Native",
-        "Firebase for real-time updates",
-        "Production deployment with high uptime",
+        "Next.js customer website, improving performance and SEO by 20%",
+        "Admin & Seller dashboards with React (Vite) and Tailwind CSS for 4,000+ vendors",
+        "Cross-platform mobile app with React Native serving 28,000+ users",
+        "Real-time updates via Firebase, cutting data sync delay by 50%",
+        "Deployed and hosted on Hostinger, maintaining 99% uptime",
       ],
       tech: [
         "Next.js",
-        "React.js",
+        "React.js (Vite)",
         "React Native",
         "Node.js",
         "Express.js",
@@ -57,12 +57,12 @@ export const fallbackPortfolio = {
         "Tailwind CSS",
         "Firebase",
       ],
-      liveLink: "https://ewshopping-demo.vercel.app",
+      liveLink: "https://ewshopping.com/",
       githubLink: "https://github.com/MuskuNishitha/ewshopping",
       challenges:
         "Implementing real-time inventory sync across multiple vendors and platforms.",
       solution:
-        "Used realtime updates + optimised DB queries to keep inventory accurate and fast.",
+        "Used realtime updates + optimised DB queries to keep inventory accurate and fast, cutting sync delay by 50%.",
     },
     {
       id: 2,
@@ -72,16 +72,15 @@ export const fallbackPortfolio = {
       period: "Apr 2025 - Present",
       image: "/assets/projects/KiranaWorld.png",
       description:
-        "Grocery e-commerce platform enabling online orders of fruits, vegetables, and household essentials.",
+        "Grocery e-commerce platform enabling online orders of fruits, vegetables, and household essentials for 1,000+ customers.",
       features: [
-        "Responsive customer website with React and Tailwind CSS",
-        "Admin panel for inventory and order management",
-        "Cross-platform mobile app with React Native",
-        "Scalable backend with Node.js, Express.js, and MongoDB",
-        "Smooth checkout across devices",
+        "Responsive customer website with React.js (Vite), improving UX by 30%",
+        "Admin panel using React (Vite) and Tailwind CSS for inventory and order management",
+        "Cross-platform mobile app with React Native for a smooth checkout flow",
+        "Backend services connected with Node.js, Express.js, and MongoDB",
       ],
       tech: [
-        "React.js",
+        "React.js (Vite)",
         "React Native",
         "Node.js",
         "Express.js",
@@ -89,7 +88,7 @@ export const fallbackPortfolio = {
         "Tailwind CSS",
         "Redux Toolkit",
       ],
-      liveLink: "https://kiranaworld-demo.vercel.app",
+      liveLink: "https://kiranaworld.in",
       githubLink: "https://github.com/MuskuNishitha/kiranaworld",
       challenges:
         "Managing inventory updates and preventing overselling during peak hours.",
@@ -98,24 +97,54 @@ export const fallbackPortfolio = {
     },
     {
       id: 3,
+      title: "Primera Dental Hub",
+      category: "ecommerce",
+      subcategory: "Web Development",
+      period: "Jul 2025 - Present",
+      image: "/assets/projects/Primeradental.png",
+      description:
+        "Specialised dental e-commerce platform for products, instruments, and equipment, supporting 500+ registered users.",
+      features: [
+        "Next.js customer website, improving performance and SEO by 25%",
+        "Firebase Authentication for secure login, supporting 500+ registered users",
+        "Admin panel built with React and Tailwind CSS for products, orders, and user management",
+        "Customer and Service mobile apps with React Native, serving 200+ active users",
+        "SMS and email notifications for orders/authentication, plus usage-analytics dashboards",
+      ],
+      tech: [
+        "Next.js",
+        "React.js (Vite)",
+        "React Native",
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+        "Firebase",
+        "Tailwind CSS",
+      ],
+      liveLink: "https://primeradentalhub.com",
+      githubLink: "https://github.com/MuskuNishitha/primeradental",
+      challenges: "Handling catalogue scale and fast search.",
+      solution: "Improved indexing and query patterns for quick results.",
+    },
+    {
+      id: 4,
       title: "POT Dashboard",
       category: "dashboard",
       subcategory: "Dashboard",
       period: "Nov 2025 - Jan 2026",
       image: "/assets/projects/POT.png",
       description:
-        "Mobile dashboard for visualising construction project metrics including cost, manpower, and progress.",
+        "Mobile dashboard visualising construction project metrics — cost, manpower, and progress — across 20+ construction sites.",
       features: [
-        "Charts and graphs for quick decision-making",
-        "Responsive UI for mobile and tablet",
-        "State management with Redux Toolkit",
-        "Real-time-ish visualisation patterns",
+        "Dynamic charts and graphs for real-time insights, cutting reporting time by 35%",
+        "Optimised responsive UI for mobile and tablet, improving field usability by 40%",
+        "State management and real-time updates with Redux Toolkit",
         "Export-ready reporting",
       ],
       tech: [
         "React Native",
         "Redux Toolkit",
-        "Chart.js",
+        "Chart Libraries",
         "Node.js",
         "Express.js",
         "MongoDB",
@@ -126,27 +155,6 @@ export const fallbackPortfolio = {
       solution:
         "Used aggregation and memoisation to reduce render work and payload size.",
     },
-    {
-      id: 4,
-      title: "Primera Dental Hub",
-      category: "ecommerce",
-      subcategory: "Web Development",
-      period: "Jul 2025 - Present",
-      image: "/assets/projects/Primeradental.png",
-      description:
-        "Specialised dental e-commerce platform for products, instruments, and equipment.",
-      features: [
-        "Next.js customer website with performance-first pages",
-        "Admin workflow for products and orders",
-        "Optimised search and listing UX",
-        "Secure auth patterns and role-based access",
-      ],
-      tech: ["Next.js", "React.js", "Node.js", "Express.js", "MongoDB"],
-      liveLink: "https://primeradental-demo.vercel.app",
-      githubLink: "https://github.com/MuskuNishitha/primeradental",
-      challenges: "Handling catalogue scale and fast search.",
-      solution: "Improved indexing and query patterns for quick results.",
-    },
   ],
 };
 
@@ -154,28 +162,31 @@ export const fallbackResume = {
   experiences: [
     {
       role: "MERN Stack & React Native Developer",
-      company: "Dexterous Technology",
+      company: "AI Apps Hub Private Limited (formerly Dexterous Technology)",
       duration: "Jun 2024 - Present",
       points: [
-        "Developed scalable web & mobile apps using MERN + React Native",
-        "Improved API performance by ~30% with optimized queries",
-        "Built authentication, dashboards, and real-time features",
-        "Handled production deployment & bug fixing",
+        "Delivered 3+ scalable web and mobile applications, boosting user engagement by 25% across 2 platforms",
+        "Optimized backend RESTful APIs, reducing response time by 40% for 1,000+ daily active users",
+        "Architected secure JWT-based authentication and file management systems with zero unauthorized access incidents across 3+ production apps",
+        "Engineered responsive, high-performance UIs with React.js, React Native, Next.js, and Redux Toolkit, cutting average page load time by 30%",
+        "Integrated Firebase Cloud Messaging and Google Maps API, increasing user retention by 20%",
+        "Collaborated in an Agile/Scrum environment, sustaining 95%+ on-time feature delivery across 10+ sprints",
       ],
-      tech: ["React", "Next.js", "Node.js", "MongoDB", "Redux"],
+      tech: ["React.js", "React Native", "Next.js", "Node.js", "Express.js", "MongoDB", "Redux Toolkit"],
     },
     {
-      role: "Intern Developer",
-      company: "Dexterous Technology",
+      role: "Software Development Intern",
+      company: "AI Apps Hub Private Limited (formerly Dexterous Technology)",
       duration: "Apr 2024 - May 2024",
       points: [
-        "Built responsive UI components using React",
-        "Integrated REST APIs and improved data flow",
-        "Fixed bugs and improved application stability",
+        "Built 5+ responsive frontend components using HTML, CSS, and JavaScript, reducing UI inconsistencies by 25%",
+        "Assisted with API integration and backend development using Node.js and Express.js, supporting 10+ REST endpoints",
+        "Resolved 15+ UI and functional issues, improving application stability by 30%",
+        "Gained hands-on experience in full-stack development and Agile workflows across 2 sprint cycles",
       ],
       tech: ["React", "Node.js", "Express"],
     },
-    {
+        {
       role: "Full Stack Trainee",
       company: "JSpiders, Punjagutta",
       duration: "Jun 2023 - Apr 2024",
@@ -186,7 +197,8 @@ export const fallbackResume = {
         "Worked with Git and real-world project structure",
       ],
       tech: ["JavaScript", "React", "Node.js", "MongoDB"],
-    },
+    }
+
   ],
   education: [
     {
@@ -209,26 +221,25 @@ export const fallbackResume = {
       year: "2023",
       icon: "☕",
     },
+  ],
+  achievements: [
     {
       title: "Best Performer of the Month",
-      issuer: "Dexterous Technology",
-      year: "2024",
+      desc: "Recognized for delivering multiple projects ahead of schedule",
       icon: "🏆",
     },
     {
-      title: "Zero Critical Bugs Achievement",
-      issuer: "Dexterous Technology",
-      year: "2024",
+      title: "Zero Critical Bugs",
+      desc: "Deployed production applications with zero critical post-launch bugs",
       icon: "🐛",
     },
     {
       title: "95%+ Task Completion",
-      issuer: "Dexterous Technology",
-      year: "2024",
+      desc: "Sustained 95%+ task completion rate in an Agile environment",
       icon: "✅",
     },
   ],
-  resumeUrl: "/Musku_Nishitha_2_Y.OE_Mernstack.pdf",
+  resumeUrl: "/MUSKU NISHITHA.pdf",
 };
 
 export const fallbackSettings = {
@@ -240,27 +251,27 @@ export const fallbackServices = {
   title: "My Quality Services",
   subtitle: "What I Do",
   description:
-    "I transform ideas into scalable web and mobile solutions that are clean, fast, and reliable.",
+    "I transform ideas into scalable web and mobile solutions that cut response times, grow engagement, and ship on schedule.",
   services: [
     {
       num: "01",
       name: "Full-Stack MERN Development",
-      desc: "Build end-to-end web applications with React.js, Next.js, Node.js, Express.js, and MongoDB.",
+      desc: "Build end-to-end web applications with React.js, Next.js, Node.js, Express.js, and MongoDB. Implement JWT-based authentication, REST APIs, and state management with Redux Toolkit for scalable, high-performance solutions.",
     },
     {
       num: "02",
       name: "Cross-Platform Mobile Apps",
-      desc: "Create React Native apps with smooth UI, API integration, and production-ready flows.",
+      desc: "Create React Native apps with smooth UI, API integration, Firebase Cloud Messaging, Google Maps API, and production-ready flows.",
     },
     {
       num: "03",
       name: "E-Commerce Platforms",
-      desc: "Develop modern commerce experiences with customer sites, admin panels, and mobile apps.",
+      desc: "Develop modern multi-vendor commerce experiences with customer sites, admin/seller panels, and mobile apps — built to handle thousands of vendors and users.",
     },
     {
       num: "04",
       name: "Dashboards & Analytics",
-      desc: "Ship admin dashboards and reporting tools that make data easy to manage and act on.",
+      desc: "Ship admin dashboards and reporting tools with real-time charts that cut reporting time and make data easy to act on.",
     },
   ],
 };
@@ -270,14 +281,13 @@ export const fallbackAbout = {
     firstName: "Musku",
     lastName: "Nishitha",
     role: [
-      "Frontend Developer",
       "React.js Developer",
+      "React Native Developer",
       "MERN Stack Developer",
-      "Mobile App Developer",
     ],
-    tagline: "React & React Native Developer | Building Modern Apps",
+    tagline: "React.js | React Native | MERN Stack Developer",
     description:
-      "Passionate full-stack MERN & React Native developer with 2+ years of professional experience building production-ready web and mobile applications, integrating REST APIs, and delivering on time.",
+      "React.js | React Native | MERN Stack Developer with 2+ years of experience creating scalable web and mobile applications across e-commerce and enterprise platforms. Track record of cutting backend API response time by 40%, growing user engagement by 25%+, and sustaining 95%+ on-time Agile delivery across production releases.",
     birthdate: "2003-08-11",
     available: true,
     address: "Sr Nagar, Hyderabad",

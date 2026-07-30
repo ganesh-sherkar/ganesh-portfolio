@@ -6,20 +6,19 @@ import Link from "next/link";
 export default function Hero() {
   const content = {
     name: "Nishitha",
-    role: "Full Stack MERN & React Native Developer",
-
+    role: "React & React Native Developer | Full Stack MERN Developer",
     summary:
-      "I build scalable e-commerce platforms, admin dashboards, and cross-platform mobile apps using React, Next.js, and React Native. Focused on performance, clean architecture, and real-world impact.",
+      "React.js | React Native | MERN Stack Developer with 2+ years of experience building scalable web and mobile apps for e-commerce and enterprise platforms.",
 
     highlight: [
-      "🚀 Improved API performance by 30%",
-      "🏗 Built scalable multi-vendor systems",
-      "👥 Supported 1000+ active users",
+      "🚀 Cut backend API response time by 40%",
+      "📈 Grew user engagement by 25%+",
+      "✅ Sustained 95%+ on-time Agile delivery",
     ],
 
     image: "/assets/ProfileMain.jpeg",
 
-    resume: "/Musku_Nishitha_2_Y.OE_Mernstack.pdf",
+    resume: "/MUSKU NISHITHA.pdf",
 
     socials: {
       github: "https://github.com/MuskuNishitha",

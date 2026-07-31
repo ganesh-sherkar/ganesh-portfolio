@@ -162,7 +162,7 @@ export const fallbackResume = {
   experiences: [
     {
       role: "MERN Stack & React Native Developer",
-      company: "AI Apps Hub Private Limited (formerly Dexterous Technology)",
+      company: "Dexterous Technology",
       duration: "Jun 2024 - Present",
       points: [
         "Delivered 3+ scalable web and mobile applications, boosting user engagement by 25% across 2 platforms",
@@ -176,7 +176,7 @@ export const fallbackResume = {
     },
     {
       role: "Software Development Intern",
-      company: "AI Apps Hub Private Limited (formerly Dexterous Technology)",
+      company: "Dexterous Technology",
       duration: "Apr 2024 - May 2024",
       points: [
         "Built 5+ responsive frontend components using HTML, CSS, and JavaScript, reducing UI inconsistencies by 25%",

@@ -48,6 +48,7 @@ import {
   SiVite,
 } from "react-icons/si";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AboutUs() {
   const { isDarkMode } = useTheme();
@@ -601,16 +602,17 @@ export default function AboutUs() {
                     sm:rounded-[1.5rem]
                   "
                 >
-                  <img
+                  <Image
                     src="/aboutus.png"
                     alt="About Musku Nishitha"
+                    fill
+                    priority
+                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 470px"
                     className="
-                      w-full
-                      h-full
-                      object-contain
-                      scale-[1.03]
-                      sm:scale-[1.06]
-                    "
+      object-contain
+      scale-[1.03]
+      sm:scale-[1.06]
+    "
                   />
                 </div>
 

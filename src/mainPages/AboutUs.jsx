@@ -926,7 +926,7 @@ export default function AboutUs() {
                     : "rgba(0,0,0,0.10)",
                 }}
               >
-                Let's Connect
+                {"Let's Connect"}
                 <FaArrowRight className="text-xs" />
               </Link>
             </div>

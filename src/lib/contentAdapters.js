@@ -75,7 +75,7 @@ export function mapPortfolioContent(works) {
     category: work.category || "general",
     subcategory: mapCategoryName(work.category),
     period: formatPeriod(work.startDate, work.endDate),
-    image: work.images?.[0] || fallbackPortfolio.projects[index % fallbackPortfolio.projects.length]?.image || "/assets/ProfileMain.jpeg",
+    image: work.images?.[0] || fallbackPortfolio.projects[index % fallbackPortfolio.projects.length]?.image || "/assets/Professional.jpg",
     description: work.shortDescription || work.description || "Project details coming soon.",
     features: work.description
       ? work.description

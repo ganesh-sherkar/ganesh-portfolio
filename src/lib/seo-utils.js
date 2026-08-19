@@ -113,7 +113,7 @@ export function getPersonSchema() {
     familyName: "Musku",
     alternateName: "Musku Nishitha Reddy",
     url: BASE_URL,
-    image: `${BASE_URL}/profile.jpg`,
+    image: `${BASE_URL}/Professional.jpg`,
     sameAs: [
       "https://github.com/musku-nishitha",
       "https://github.com/muskunishitha",
@@ -269,7 +269,7 @@ export function getLocalBusinessSchema() {
     url: BASE_URL,
     telephone: "+91-XXXXXXXXXX",
     email: "muskunishitha2003@gmail.com",
-    image: `${BASE_URL}/profile.jpg`,
+    image: `${BASE_URL}/Professional.jpg`,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Hyderabad",

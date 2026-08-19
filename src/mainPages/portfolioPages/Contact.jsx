@@ -5,18 +5,42 @@ import {
   resetFormStatus,
   submitContactForm,
 } from "@/redux/contact/contactSlice";
+
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { motion, AnimatePresence } from "framer-motion";
+
 import { useTheme } from "@/components/ThemeProvider";
-import { FaGithub, FaLinkedin, FaPhone } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+
+import {
+  FiArrowUpRight,
+  FiCheck,
+  FiGithub,
+  FiLinkedin,
+  FiMail,
+  FiMapPin,
+  FiMessageCircle,
+  FiPhone,
+  FiSend,
+  FiUser,
+  FiX,
+} from "react-icons/fi";
+
 import { socialLinksArray, socialMediaLinks } from "@/global/SocialMediaLinks";
 
 export default function Contact() {
   const { isDarkMode } = useTheme();
+
   const dispatch = useDispatch();
-  const { formStatus, error, content } = useSelector((state) => state.contact);
+
+  const { formStatus, error, content } = useSelector(
+    (state) => state.contact
+  );
+
+  /* =========================================================
+     FORM STATE
+  ========================================================= */
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -30,14 +54,23 @@ export default function Contact() {
   const [focusedField, setFocusedField] = useState(null);
   const [validationErrors, setValidationErrors] = useState({});
 
+  /* =========================================================
+     FETCH CONTENT
+  ========================================================= */
+
   useEffect(() => {
     dispatch(fetchContactContent());
   }, [dispatch]);
+
+  /* =========================================================
+     RESET AFTER SUCCESS
+  ========================================================= */
 
   useEffect(() => {
     if (formStatus === "succeeded") {
       const timer = setTimeout(() => {
         dispatch(resetFormStatus());
+
         setFormData({
           firstName: "",
           lastName: "",
@@ -46,23 +79,31 @@ export default function Contact() {
           service: "",
           message: "",
         });
+
         setValidationErrors({});
       }, 3000);
+
       return () => clearTimeout(timer);
     }
   }, [formStatus, dispatch]);
 
-  // Validation functions
+  /* =========================================================
+     VALIDATION
+  ========================================================= */
+
   const validateName = (name, fieldName) => {
     if (!name || name.trim() === "") {
       return `${fieldName} is required`;
     }
+
     if (name.trim().length < 2) {
       return `${fieldName} must be at least 2 characters`;
     }
+
     if (!/^[a-zA-Z\s\-']+$/.test(name)) {
       return `${fieldName} can only contain letters, spaces, hyphens, and apostrophes`;
     }
+
     return "";
   };
 
@@ -70,10 +111,13 @@ export default function Contact() {
     if (!email || email.trim() === "") {
       return "Email is required";
     }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!emailRegex.test(email)) {
       return "Please enter a valid email address";
     }
+
     return "";
   };
 
@@ -81,14 +125,17 @@ export default function Contact() {
     if (!phone || phone.trim() === "") {
       return "Phone number is required";
     }
-    // Remove all non-digit characters for validation
+
     const cleaned = phone.replace(/\D/g, "");
+
     if (cleaned.length < 10) {
       return "Phone number must be at least 10 digits";
     }
+
     if (cleaned.length > 15) {
       return "Phone number must be less than 15 digits";
     }
+
     return "";
   };
 
@@ -96,71 +143,97 @@ export default function Contact() {
     switch (name) {
       case "firstName":
         return validateName(value, "First name");
+
       case "lastName":
         return validateName(value, "Last name");
+
       case "email":
         return validateEmail(value);
+
       case "phone":
         return validatePhone(value);
+
       default:
         return "";
     }
   };
 
+  /* =========================================================
+     CHANGE
+  ========================================================= */
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
 
-    // Validate on change
-    const error = validateField(name, value);
+    const fieldError = validateField(name, value);
+
     setValidationErrors((prev) => ({
       ...prev,
-      [name]: error,
+      [name]: fieldError,
     }));
   };
 
+  /* =========================================================
+     BLUR
+  ========================================================= */
+
   const handleBlur = (e) => {
     const { name, value } = e.target;
-    const error = validateField(name, value);
+
+    const fieldError = validateField(name, value);
+
     setValidationErrors((prev) => ({
       ...prev,
-      [name]: error,
+      [name]: fieldError,
     }));
+
+    setFocusedField(null);
   };
+
+  /* =========================================================
+     SUBMIT
+  ========================================================= */
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate all fields before submission
     const errors = {};
     let hasErrors = false;
 
-    // Validate first name
-    const firstNameError = validateName(formData.firstName, "First name");
+    const firstNameError = validateName(
+      formData.firstName,
+      "First name"
+    );
+
     if (firstNameError) {
       errors.firstName = firstNameError;
       hasErrors = true;
     }
 
-    // Validate last name
-    const lastNameError = validateName(formData.lastName, "Last name");
+    const lastNameError = validateName(
+      formData.lastName,
+      "Last name"
+    );
+
     if (lastNameError) {
       errors.lastName = lastNameError;
       hasErrors = true;
     }
 
-    // Validate email
     const emailError = validateEmail(formData.email);
+
     if (emailError) {
       errors.email = emailError;
       hasErrors = true;
     }
 
-    // Validate phone
     const phoneError = validatePhone(formData.phone);
+
     if (phoneError) {
       errors.phone = phoneError;
       hasErrors = true;
@@ -168,16 +241,20 @@ export default function Contact() {
 
     if (hasErrors) {
       setValidationErrors(errors);
-      // Focus the first field with an error
+
       const firstErrorField = Object.keys(errors)[0];
-      const element = document.querySelector(`[name="${firstErrorField}"]`);
+
+      const element = document.querySelector(
+        `[name="${firstErrorField}"]`
+      );
+
       if (element) {
         element.focus();
       }
+
       return;
     }
 
-    // Clear any existing errors
     setValidationErrors({});
 
     const submitData = {
@@ -187,622 +264,1025 @@ export default function Contact() {
       service: formData.service,
       message: formData.message,
     };
+
     dispatch(submitContactForm(submitData));
   };
 
-  // Map icon names to components
-  const getIconComponent = (iconName) => {
-    switch (iconName) {
-      case "FaGithub":
-        return <FaGithub className="w-5 h-5" />;
-      case "FaLinkedin":
-        return <FaLinkedin className="w-5 h-5" />;
-      case "MdEmail":
-        return <MdEmail className="w-5 h-5" />;
-      case "FaPhone":
-        return <FaPhone className="w-5 h-5" />;
-      default:
-        return null;
-    }
-  };
+  /* =========================================================
+     CONTACT INFORMATION
+  ========================================================= */
 
   const contactInfo = [
     {
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-          />
-        </svg>
-      ),
       label: "Phone",
       value: socialMediaLinks.phone.link.replace("tel:", ""),
       link: socialMediaLinks.phone.link,
-      color: "from-blue-500 to-cyan-500",
+      icon: FiPhone,
     },
     {
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-          />
-        </svg>
-      ),
       label: "Email",
       value: socialMediaLinks.email.link.replace("mailto:", ""),
       link: socialMediaLinks.email.link,
-      color: "from-purple-500 to-pink-500",
+      icon: FiMail,
     },
     {
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-        </svg>
-      ),
-      label: "Address",
-      value: "Sr nagar, Hyderabad, Telangana, India",
-      color: "from-amber-500 to-orange-500",
+      label: "Location",
+      value: "Sr Nagar, Hyderabad, Telangana",
+      link: null,
+      icon: FiMapPin,
     },
   ];
 
+  /* =========================================================
+     INPUT CLASS
+  ========================================================= */
+
+  const inputBase = `
+    w-full
+    rounded-xl
+    border
+    px-4
+    py-3.5
+    outline-none
+    text-sm
+    transition-all
+    duration-300
+    placeholder:text-gray-500
+  `;
+
   return (
-    <div
-      className={`py-[30px] md:py-[90px] transition-colors duration-300 overflow-x-hidden ${isDarkMode ? "bg-bg-2" : "bg-gray-50"}`}
+    <main
+      className={`relative min-h-screen overflow-hidden transition-colors duration-500 ${
+        isDarkMode
+          ? "bg-[#05060d] text-white"
+          : "bg-[#f7f7fa] text-gray-900"
+      }`}
     >
-      <section
-        className="py-[30px] md:py-[50px] transition-colors duration-300 relative overflow-hidden"
+      {/* =====================================================
+          BACKGROUND DECORATION
+      ===================================================== */}
+
+      <div
+        className="pointer-events-none absolute -top-48 left-1/2 h-[550px] w-[550px] -translate-x-1/2 rounded-full blur-3xl opacity-[0.07]"
         style={{
-          backgroundColor: "var(--bg)",
-          color: "var(--text-body)",
+          background: "var(--primary)",
         }}
-      >
-        <div className="container-custom relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-8 md:mb-12"
-          >
+      />
+
+      <div
+        className="pointer-events-none absolute top-[35%] -left-60 h-[400px] w-[400px] rounded-full blur-3xl opacity-[0.05]"
+        style={{
+          background: "var(--primary)",
+        }}
+      />
+
+      <div
+        className="pointer-events-none absolute bottom-0 -right-60 h-[450px] w-[450px] rounded-full blur-3xl opacity-[0.05]"
+        style={{
+          background: "var(--primary)",
+        }}
+      />
+
+      {/* =====================================================
+          PAGE
+      ===================================================== */}
+
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28">
+        {/* ===================================================
+            HEADER
+        =================================================== */}
+
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 25,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.3,
+          }}
+          transition={{
+            duration: 0.55,
+          }}
+          className="max-w-3xl mx-auto text-center mb-14 sm:mb-16"
+        >
+          {/* LABEL */}
+
+          <div className="inline-flex items-center gap-2 mb-5">
             <span
-              className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4"
+              className="h-px w-8"
               style={{
-                backgroundColor: isDarkMode
-                  ? "rgba(135,80,247,0.2)"
-                  : "rgba(135,80,247,0.1)",
+                background: "var(--primary)",
+              }}
+            />
+
+            <span
+              className="text-xs sm:text-sm font-semibold uppercase tracking-[0.22em]"
+              style={{
                 color: "var(--primary)",
               }}
             >
-              {content.subtitle || "Get In Touch"}
+              {content?.subtitle || "Get In Touch"}
             </span>
-            <h2
-              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
-              style={{ color: "var(--text-heading)" }}
-            >
-              {content.title || "Let's Work Together!"}
-            </h2>
-            <div
-              className="w-24 h-1 mx-auto rounded-full"
+
+            <span
+              className="h-px w-8"
               style={{
-                background: `linear-gradient(to right, var(--primary), var(--primary-2))`,
+                background: "var(--primary)",
               }}
             />
-          </motion.div>
+          </div>
 
-          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-12 xl:gap-20">
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="w-full min-w-0"
+          {/* TITLE */}
+
+          <h1
+            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight"
+            style={{
+              color: "var(--text-heading)",
+            }}
+          >
+            {content?.title || "Let's Work "}
+            <span
+              style={{
+                color: "var(--primary)",
+              }}
             >
+              Together
+            </span>
+          </h1>
+
+          {/* DIVIDER */}
+
+          <div
+            className="w-20 h-1 mx-auto mt-5 rounded-full"
+            style={{
+              background:
+                "linear-gradient(to right, var(--primary), var(--primary-2))",
+            }}
+          />
+
+          {/* DESCRIPTION */}
+
+          <p
+            className={`mt-5 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed ${
+              isDarkMode ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
+            {content?.description ||
+              "Have a project, idea, or opportunity in mind? Tell me what you're building and let's create something meaningful together."}
+          </p>
+        </motion.div>
+
+        {/* ===================================================
+            MAIN CONTENT
+        =================================================== */}
+
+        <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-10 xl:gap-14 items-start">
+          {/* =================================================
+              LEFT INFORMATION PANEL
+          ================================================= */}
+
+          <motion.div
+            initial={{
+              opacity: 0,
+              x: -35,
+            }}
+            whileInView={{
+              opacity: 1,
+              x: 0,
+            }}
+            viewport={{
+              once: true,
+              amount: 0.2,
+            }}
+            transition={{
+              duration: 0.55,
+            }}
+            className="relative"
+          >
+            <div
+              className={`relative overflow-hidden rounded-3xl border p-6 sm:p-8 lg:p-9 ${
+                isDarkMode
+                  ? "bg-white/[0.035] border-white/10"
+                  : "bg-white border-gray-200 shadow-sm"
+              }`}
+            >
+              {/* TOP ACCENT */}
+
               <div
-                className="rounded-3xl shadow-xl p-6 sm:p-8 md:p-10 transition-colors duration-300 w-full"
+                className="absolute top-0 left-0 right-0 h-px"
                 style={{
-                  backgroundColor: "var(--bg-card)",
-                  border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
+                  background:
+                    "linear-gradient(to right, transparent, var(--primary), transparent)",
+                }}
+              />
+
+              {/* DECORATIVE NUMBER */}
+
+              <div
+                className="pointer-events-none absolute -right-2 -top-8 text-[120px] font-black leading-none opacity-[0.025]"
+                style={{
+                  color: "var(--primary)",
                 }}
               >
-                <h3
-                  className="text-xl sm:text-2xl font-bold mb-6"
-                  style={{ color: "var(--text-heading)" }}
-                >
-                  Send Me a Message
-                </h3>
-
-                <form
-                  onSubmit={handleSubmit}
-                  className="space-y-5 sm:space-y-6"
-                  noValidate
-                >
-                  <AnimatePresence>
-                    {error && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="p-3 sm:p-4 rounded-xl text-sm flex items-center gap-2"
-                        style={{
-                          backgroundColor: isDarkMode
-                            ? "rgba(239,68,68,0.1)"
-                            : "rgba(239,68,68,0.05)",
-                          border: `1px solid ${isDarkMode ? "rgba(239,68,68,0.2)" : "rgba(239,68,68,0.1)"}`,
-                          color: isDarkMode ? "#f87171" : "#dc2626",
-                        }}
-                      >
-                        <svg
-                          className="w-5 h-5 flex-shrink-0"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                        <span className="break-words">{error}</span>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
-                    {["firstName", "lastName"].map((field) => (
-                      <div key={field} className="space-y-2 min-w-0">
-                        <label
-                          className="block text-sm font-semibold"
-                          style={{ color: "var(--text-body)" }}
-                        >
-                          {field === "firstName" ? "First Name" : "Last Name"}
-                          <span className="text-red-500 ml-1">*</span>
-                        </label>
-                        <div className="relative w-full">
-                          <input
-                            type="text"
-                            name={field}
-                            value={formData[field]}
-                            onChange={handleChange}
-                            onBlur={(e) => {
-                              handleBlur(e); // validation
-                              setFocusedField(null); // your UI logic
-
-                              if (!validationErrors[field]) {
-                                e.currentTarget.style.borderColor = isDarkMode
-                                  ? "rgba(255,255,255,0.1)"
-                                  : "rgba(0,0,0,0.1)";
-                                e.currentTarget.style.boxShadow = "none";
-                              }
-                            }}
-                            className={`w-full min-w-0 px-3 sm:px-4 py-3 rounded-xl outline-none transition-all duration-300 placeholder:text-gray-400 ${
-                              validationErrors[field] ? "border-red-500" : ""
-                            }`}
-                            style={{
-                              backgroundColor: isDarkMode
-                                ? "rgba(255,255,255,0.05)"
-                                : "rgba(0,0,0,0.02)",
-                              border: `1px solid ${validationErrors[field] ? "#ef4444" : isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-                              color: "var(--text-heading)",
-                            }}
-                            onFocus={(e) => {
-                              setFocusedField(field);
-                              if (!validationErrors[field]) {
-                                e.currentTarget.style.borderColor =
-                                  "var(--primary)";
-                                e.currentTarget.style.boxShadow = `0 0 0 4px ${isDarkMode ? "rgba(135,80,247,0.2)" : "rgba(135,80,247,0.1)"}`;
-                              }
-                            }}
-                            placeholder={
-                              field === "firstName" ? "First Name" : "Last Name"
-                            }
-                          />
-                          {validationErrors[field] && (
-                            <motion.p
-                              initial={{ opacity: 0, y: -10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              className="text-red-500 text-xs mt-1 flex items-center gap-1 break-words"
-                            >
-                              <span>⚠️</span>
-                              {validationErrors[field]}
-                            </motion.p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
-                    {["email", "phone"].map((field) => (
-                      <div key={field} className="space-y-2 min-w-0">
-                        <label
-                          className="block text-sm font-semibold"
-                          style={{ color: "var(--text-body)" }}
-                        >
-                          {field === "email" ? "Email Address" : "Phone Number"}
-                          <span className="text-red-500 ml-1">*</span>
-                        </label>
-                        <input
-                          type={field === "email" ? "email" : "tel"}
-                          name={field}
-                          value={formData[field]}
-                          onChange={handleChange}
-                          onBlur={(e) => {
-                            handleBlur(e);
-
-                            if (!validationErrors[field]) {
-                              e.currentTarget.style.borderColor = isDarkMode
-                                ? "rgba(255,255,255,0.1)"
-                                : "rgba(0,0,0,0.1)";
-                              e.currentTarget.style.boxShadow = "none";
-                            }
-                          }}
-                          className={`w-full min-w-0 px-3 sm:px-4 py-3 rounded-xl outline-none transition-all duration-300 placeholder:text-gray-400 ${
-                            validationErrors[field] ? "border-red-500" : ""
-                          }`}
-                          style={{
-                            backgroundColor: isDarkMode
-                              ? "rgba(255,255,255,0.05)"
-                              : "rgba(0,0,0,0.02)",
-                            border: `1px solid ${validationErrors[field] ? "#ef4444" : isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-                            color: "var(--text-heading)",
-                          }}
-                          onFocus={(e) => {
-                            if (!validationErrors[field]) {
-                              e.currentTarget.style.borderColor =
-                                "var(--primary)";
-                              e.currentTarget.style.boxShadow = `0 0 0 4px ${isDarkMode ? "rgba(135,80,247,0.2)" : "rgba(135,80,247,0.1)"}`;
-                            }
-                          }}
-                          placeholder={
-                            field === "email"
-                              ? "your@email.com"
-                              : "Enter Mobile Number"
-                          }
-                        />
-                        {validationErrors[field] && (
-                          <motion.p
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-red-500 text-xs mt-1 flex items-center gap-1 break-words"
-                          >
-                            <span>⚠️</span>
-                            {validationErrors[field]}
-                          </motion.p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="space-y-2 min-w-0">
-                    <label
-                      className="block text-sm font-semibold"
-                      style={{ color: "var(--text-body)" }}
-                    >
-                      Your Message
-                      <span className="text-red-500 ml-1">*</span>
-                    </label>
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      rows="5"
-                      className="w-full min-w-0 px-3 sm:px-4 py-3 rounded-xl outline-none transition-all duration-300 placeholder:text-gray-400 resize-none"
-                      style={{
-                        backgroundColor: isDarkMode
-                          ? "rgba(255,255,255,0.05)"
-                          : "rgba(0,0,0,0.02)",
-                        border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-                        color: "var(--text-heading)",
-                      }}
-                      onFocus={(e) => {
-                        e.currentTarget.style.borderColor = "var(--primary)";
-                        e.currentTarget.style.boxShadow = `0 0 0 4px ${isDarkMode ? "rgba(135,80,247,0.2)" : "rgba(135,80,247,0.1)"}`;
-                      }}
-                      onBlur={(e) => {
-                        e.currentTarget.style.borderColor = isDarkMode
-                          ? "rgba(255,255,255,0.1)"
-                          : "rgba(0,0,0,0.1)";
-                        e.currentTarget.style.boxShadow = "none";
-                      }}
-                      placeholder="Tell me about your project..."
-                    />
-                  </div>
-
-                  <motion.button
-                    type="submit"
-                    disabled={
-                      formStatus === "loading" || formStatus === "succeeded"
-                    }
-                    className={`w-full py-3.5 sm:py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-sm sm:text-base`}
-                    style={{
-                      background:
-                        formStatus === "succeeded"
-                          ? "linear-gradient(135deg, #22c55e, #16a34a)"
-                          : "linear-gradient(135deg, var(--primary), var(--primary-2))",
-                    }}
-                    whileHover={{ y: -2 }}
-                    whileTap={{ y: 0 }}
-                  >
-                    {formStatus === "idle" && (
-                      <span className="flex items-center justify-center gap-2">
-                        Send Message
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                          />
-                        </svg>
-                      </span>
-                    )}
-                    {formStatus === "loading" && (
-                      <span className="flex items-center justify-center gap-2">
-                        <svg
-                          className="animate-spin h-5 w-5"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                            fill="none"
-                          />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          />
-                        </svg>
-                        Sending...
-                      </span>
-                    )}
-                    {formStatus === "succeeded" && (
-                      <span className="flex items-center justify-center gap-2">
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                        Message Sent!
-                      </span>
-                    )}
-                    {formStatus === "failed" && (
-                      <span className="flex items-center justify-center gap-2">
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                        Failed - Try Again
-                      </span>
-                    )}
-                  </motion.button>
-                </form>
+                01
               </div>
-            </motion.div>
 
-            {/* Contact Information */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="space-y-6 md:space-y-8 w-full min-w-0"
-            >
-              <div>
-                <h3
-                  className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4"
-                  style={{ color: "var(--text-heading)" }}
+              {/* HEADING */}
+
+              <div className="relative">
+                <div
+                  className="flex h-12 w-12 items-center justify-center rounded-xl mb-5"
+                  style={{
+                    color: "var(--primary)",
+                    background:
+                      "color-mix(in srgb, var(--primary) 10%, transparent)",
+                  }}
                 >
-                  Get In Touch
-                </h3>
+                  <FiMessageCircle size={22} />
+                </div>
+
+                <h2
+                  className="text-2xl sm:text-3xl font-bold"
+                  style={{
+                    color: "var(--text-heading)",
+                  }}
+                >
+                  Let&apos;s connect
+                </h2>
+
                 <p
-                  className="leading-relaxed text-base sm:text-lg"
-                  style={{ color: "var(--text-body)" }}
+                  className={`mt-3 text-sm sm:text-base leading-relaxed ${
+                    isDarkMode
+                      ? "text-gray-400"
+                      : "text-gray-600"
+                  }`}
                 >
-                  I&apos;m always excited to hear about new projects and
-                  opportunities. Whether you have a question or just want to say
-                  hi, I&apos;ll get back to you!
+                  I&apos;m open to discussing new projects,
+                  freelance opportunities, and interesting ideas.
                 </p>
               </div>
 
-              <div className="space-y-3 sm:space-y-4">
-                {contactInfo.map((item, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    whileHover={{ x: 5 }}
-                    className="group relative w-full"
-                  >
-                    {item.link ? (
-                      <a href={item.link} className="block w-full">
-                        <div
-                          className="relative flex items-center gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl transition-all duration-300 w-full"
-                          style={{
-                            backgroundColor: "var(--bg-card)",
-                            border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
-                            boxShadow: isDarkMode
-                              ? "0 4px 20px rgba(0,0,0,0.2)"
-                              : "0 4px 20px rgba(0,0,0,0.05)",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.transform =
-                              "translateY(-4px)";
-                            e.currentTarget.style.boxShadow = isDarkMode
-                              ? "0 8px 30px rgba(0,0,0,0.3)"
-                              : "0 8px 30px rgba(0,0,0,0.1)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = "translateY(0)";
-                            e.currentTarget.style.boxShadow = isDarkMode
-                              ? "0 4px 20px rgba(0,0,0,0.2)"
-                              : "0 4px 20px rgba(0,0,0,0.05)";
-                          }}
-                        >
-                          <div
-                            className={`flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center text-white shadow-lg`}
-                          >
-                            {item.icon}
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <div
-                              className="text-xs sm:text-sm font-medium mb-0.5 sm:mb-1"
-                              style={{ color: "var(--text-muted)" }}
-                            >
-                              {item.label}
-                            </div>
-                            <div
-                              className="text-sm sm:text-base font-semibold break-words"
-                              style={{ color: "var(--text-heading)" }}
-                            >
-                              {item.value}
-                            </div>
-                          </div>
-                        </div>
-                      </a>
-                    ) : (
-                      <div
-                        className="relative flex items-center gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl transition-all duration-300 w-full"
-                        style={{
-                          backgroundColor: "var(--bg-card)",
-                          border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
-                          boxShadow: isDarkMode
-                            ? "0 4px 20px rgba(0,0,0,0.2)"
-                            : "0 4px 20px rgba(0,0,0,0.05)",
-                        }}
-                      >
-                        <div
-                          className={`flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center text-white shadow-lg`}
-                        >
-                          {item.icon}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div
-                            className="text-xs sm:text-sm font-medium mb-0.5 sm:mb-1"
-                            style={{ color: "var(--text-muted)" }}
-                          >
-                            {item.label}
-                          </div>
-                          <div
-                            className="text-sm sm:text-base font-semibold break-words"
-                            style={{ color: "var(--text-heading)" }}
-                          >
-                            {item.value}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </motion.div>
-                ))}
-              </div>
+              {/* AVAILABILITY */}
 
-              {/* Social Links */}
-              <div className="pt-4 sm:pt-6">
-                <h4
-                  className="text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3 sm:mb-4"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  Follow Me
-                </h4>
-                <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {socialLinksArray.map((social, i) => (
-                    <motion.a
-                      key={social.name}
-                      href={social.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ y: -3 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all duration-300"
+              <div
+                className={`mt-7 rounded-2xl border p-4 ${
+                  isDarkMode
+                    ? "bg-white/[0.025] border-white/10"
+                    : "bg-gray-50 border-gray-200"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="relative flex h-3 w-3">
+                    <span
+                      className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
                       style={{
-                        backgroundColor: "var(--bg-card)",
-                        color: "var(--text-body)",
-                        border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
+                        background: "var(--primary)",
                       }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = "var(--primary)";
-                        e.currentTarget.style.borderColor = "var(--primary)";
+                    />
+
+                    <span
+                      className="relative inline-flex h-3 w-3 rounded-full"
+                      style={{
+                        background: "var(--primary)",
                       }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color = "var(--text-body)";
-                        e.currentTarget.style.borderColor = isDarkMode
-                          ? "rgba(255,255,255,0.08)"
-                          : "rgba(0,0,0,0.06)";
+                    />
+                  </span>
+
+                  <div>
+                    <p
+                      className="text-sm font-semibold"
+                      style={{
+                        color: "var(--text-heading)",
                       }}
                     >
-                      <span className="sr-only">{social.name}</span>
-                      {getIconComponent(social.icon)}
-                    </motion.a>
-                  ))}
+                      Available for opportunities
+                    </p>
+
+                    <p
+                      className={`text-xs mt-0.5 ${
+                        isDarkMode
+                          ? "text-gray-500"
+                          : "text-gray-500"
+                      }`}
+                    >
+                      Usually responds within 24 hours
+                    </p>
+                  </div>
                 </div>
               </div>
-            </motion.div>
-          </div>
+
+              {/* CONTACT DETAILS */}
+
+              <div className="mt-7 space-y-3">
+                {contactInfo.map((item, index) => {
+                  const Icon = item.icon;
+
+                  const content = (
+                    <div
+                      className={`group flex items-center gap-4 rounded-2xl border p-4 transition-all duration-300 ${
+                        isDarkMode
+                          ? "bg-white/[0.02] border-white/10 hover:bg-white/[0.05] hover:border-white/20"
+                          : "bg-gray-50 border-gray-200 hover:bg-white hover:border-gray-300"
+                      }`}
+                    >
+                      <span
+                        className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl"
+                        style={{
+                          color: "var(--primary)",
+                          background:
+                            "color-mix(in srgb, var(--primary) 10%, transparent)",
+                        }}
+                      >
+                        <Icon size={18} />
+                      </span>
+
+                      <div className="min-w-0 flex-1">
+                        <p
+                          className={`text-[11px] uppercase tracking-wider font-semibold ${
+                            isDarkMode
+                              ? "text-gray-500"
+                              : "text-gray-400"
+                          }`}
+                        >
+                          {item.label}
+                        </p>
+
+                        <p
+                          className="mt-1 text-sm font-medium break-words"
+                          style={{
+                            color: "var(--text-heading)",
+                          }}
+                        >
+                          {item.value}
+                        </p>
+                      </div>
+
+                      {item.link && (
+                        <FiArrowUpRight
+                          size={16}
+                          className="flex-shrink-0 opacity-40 transition-all duration-200 group-hover:opacity-100 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                          style={{
+                            color: "var(--primary)",
+                          }}
+                        />
+                      )}
+                    </div>
+                  );
+
+                  return item.link ? (
+                    <a
+                      key={index}
+                      href={item.link}
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <div key={index}>{content}</div>
+                  );
+                })}
+              </div>
+
+              {/* SOCIAL */}
+
+              <div
+                className={`mt-7 pt-6 border-t ${
+                  isDarkMode
+                    ? "border-white/10"
+                    : "border-gray-200"
+                }`}
+              >
+                <p
+                  className={`text-[11px] uppercase tracking-[0.18em] font-semibold mb-4 ${
+                    isDarkMode
+                      ? "text-gray-500"
+                      : "text-gray-400"
+                  }`}
+                >
+                  Find me online
+                </p>
+
+                <div className="flex flex-wrap gap-2.5">
+                  {socialLinksArray.map((social) => {
+                    let Icon = null;
+
+                    if (social.icon === "FaGithub") {
+                      Icon = FiGithub;
+                    }
+
+                    if (social.icon === "FaLinkedin") {
+                      Icon = FiLinkedin;
+                    }
+
+                    if (social.icon === "MdEmail") {
+                      Icon = FiMail;
+                    }
+
+                    if (social.icon === "FaPhone") {
+                      Icon = FiPhone;
+                    }
+
+                    if (!Icon) return null;
+
+                    return (
+                      <motion.a
+                        key={social.name}
+                        href={social.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{
+                          y: -3,
+                        }}
+                        whileTap={{
+                          scale: 0.96,
+                        }}
+                        className={`flex items-center gap-2 rounded-xl border px-3.5 py-2.5 text-xs font-medium transition-all duration-300 ${
+                          isDarkMode
+                            ? "border-white/10 bg-white/[0.02] hover:bg-white/[0.06]"
+                            : "border-gray-200 bg-gray-50 hover:bg-white"
+                        }`}
+                        style={{
+                          color: "var(--text-body)",
+                        }}
+                      >
+                        <Icon size={15} />
+
+                        {social.name}
+                      </motion.a>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* =================================================
+              FORM
+          ================================================= */}
+
+          <motion.div
+            initial={{
+              opacity: 0,
+              x: 35,
+            }}
+            whileInView={{
+              opacity: 1,
+              x: 0,
+            }}
+            viewport={{
+              once: true,
+              amount: 0.2,
+            }}
+            transition={{
+              duration: 0.55,
+              delay: 0.1,
+            }}
+          >
+            <div
+              className={`relative overflow-hidden rounded-3xl border p-6 sm:p-8 lg:p-9 ${
+                isDarkMode
+                  ? "bg-white/[0.045] border-white/10"
+                  : "bg-white border-gray-200 shadow-sm"
+              }`}
+            >
+              {/* TOP ACCENT */}
+
+              <div
+                className="absolute top-0 left-0 right-0 h-px"
+                style={{
+                  background:
+                    "linear-gradient(to right, transparent, var(--primary), transparent)",
+                }}
+              />
+
+              {/* HEADER */}
+
+              <div className="relative flex items-start justify-between gap-5 mb-7">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span
+                      className="text-xs font-semibold uppercase tracking-[0.18em]"
+                      style={{
+                        color: "var(--primary)",
+                      }}
+                    >
+                      Start a conversation
+                    </span>
+                  </div>
+
+                  <h2
+                    className="text-2xl sm:text-3xl font-bold"
+                    style={{
+                      color: "var(--text-heading)",
+                    }}
+                  >
+                    Send me a message
+                  </h2>
+
+                  <p
+                    className={`mt-2 text-sm ${
+                      isDarkMode
+                        ? "text-gray-500"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    Tell me a little about what you need.
+                  </p>
+                </div>
+
+                <div
+                  className="hidden sm:flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl"
+                  style={{
+                    color: "var(--primary)",
+                    background:
+                      "color-mix(in srgb, var(--primary) 10%, transparent)",
+                  }}
+                >
+                  <FiSend size={20} />
+                </div>
+              </div>
+
+              {/* ERROR */}
+
+              <AnimatePresence mode="wait">
+                {error && (
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                      y: -10,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      y: -10,
+                    }}
+                    className="mb-5 flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-500"
+                  >
+                    <FiX
+                      size={17}
+                      className="mt-0.5 flex-shrink-0"
+                    />
+
+                    <span className="break-words">
+                      {error}
+                    </span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* SUCCESS */}
+
+              <AnimatePresence>
+                {formStatus === "succeeded" && (
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                      scale: 0.96,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      scale: 0.96,
+                    }}
+                    className="mb-5 flex items-center gap-3 rounded-xl border border-green-500/20 bg-green-500/5 p-4"
+                  >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
+                      <FiCheck size={16} />
+                    </span>
+
+                    <div>
+                      <p className="text-sm font-semibold text-green-500">
+                        Message sent successfully
+                      </p>
+
+                      <p
+                        className={`text-xs mt-0.5 ${
+                          isDarkMode
+                            ? "text-gray-500"
+                            : "text-gray-500"
+                        }`}
+                      >
+                        Thanks for reaching out. I&apos;ll get back
+                        to you soon.
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* FORM */}
+
+              <form
+                onSubmit={handleSubmit}
+                noValidate
+                className="space-y-5"
+              >
+                {/* NAME */}
+
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <FormField
+                    label="First Name"
+                    name="firstName"
+                    value={formData.firstName}
+                    placeholder="Your first name"
+                    required
+                    error={validationErrors.firstName}
+                    focused={focusedField === "firstName"}
+                    isDarkMode={isDarkMode}
+                    inputBase={inputBase}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    onFocus={() =>
+                      setFocusedField("firstName")
+                    }
+                    icon={<FiUser size={15} />}
+                  />
+
+                  <FormField
+                    label="Last Name"
+                    name="lastName"
+                    value={formData.lastName}
+                    placeholder="Your last name"
+                    required
+                    error={validationErrors.lastName}
+                    focused={focusedField === "lastName"}
+                    isDarkMode={isDarkMode}
+                    inputBase={inputBase}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    onFocus={() =>
+                      setFocusedField("lastName")
+                    }
+                  />
+                </div>
+
+                {/* EMAIL + PHONE */}
+
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <FormField
+                    label="Email Address"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    placeholder="you@example.com"
+                    required
+                    error={validationErrors.email}
+                    focused={focusedField === "email"}
+                    isDarkMode={isDarkMode}
+                    inputBase={inputBase}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    onFocus={() =>
+                      setFocusedField("email")
+                    }
+                    icon={<FiMail size={15} />}
+                  />
+
+                  <FormField
+                    label="Phone Number"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    placeholder="Enter mobile number"
+                    required
+                    error={validationErrors.phone}
+                    focused={focusedField === "phone"}
+                    isDarkMode={isDarkMode}
+                    inputBase={inputBase}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    onFocus={() =>
+                      setFocusedField("phone")
+                    }
+                    icon={<FiPhone size={15} />}
+                  />
+                </div>
+
+                {/* SERVICE */}
+
+                <div>
+                  <label
+                    htmlFor="service"
+                    className="mb-2 block text-xs font-semibold uppercase tracking-wider"
+                    style={{
+                      color: "var(--text-body)",
+                    }}
+                  >
+                    What can I help you with?
+                  </label>
+
+                  <select
+                    id="service"
+                    name="service"
+                    value={formData.service}
+                    onChange={handleChange}
+                    className={`${inputBase} cursor-pointer appearance-none`}
+                    style={{
+                      backgroundColor: isDarkMode
+                        ? "rgba(255,255,255,0.04)"
+                        : "rgba(0,0,0,0.02)",
+                      borderColor:
+                        isDarkMode
+                          ? "rgba(255,255,255,0.1)"
+                          : "rgba(0,0,0,0.1)",
+                      color: formData.service
+                        ? "var(--text-heading)"
+                        : isDarkMode
+                        ? "#6b7280"
+                        : "#9ca3af",
+                    }}
+                  >
+                    <option value="">
+                      Select a service
+                    </option>
+
+                    <option value="Web Development">
+                      Web Development
+                    </option>
+
+                    <option value="React Native Development">
+                      React Native Development
+                    </option>
+
+                    <option value="MERN Stack Development">
+                      MERN Stack Development
+                    </option>
+
+                    <option value="E-Commerce Development">
+                      E-Commerce Development
+                    </option>
+
+                    <option value="Dashboard Development">
+                      Dashboard Development
+                    </option>
+
+                    <option value="Other">
+                      Other
+                    </option>
+                  </select>
+                </div>
+
+                {/* MESSAGE */}
+
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="mb-2 block text-xs font-semibold uppercase tracking-wider"
+                    style={{
+                      color: "var(--text-body)",
+                    }}
+                  >
+                    Your Message
+                  </label>
+
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows={6}
+                    placeholder="Tell me about your project, goals, timeline, or anything else you'd like to discuss..."
+                    className={`${inputBase} resize-none`}
+                    style={{
+                      backgroundColor: isDarkMode
+                        ? "rgba(255,255,255,0.04)"
+                        : "rgba(0,0,0,0.02)",
+                      borderColor:
+                        focusedField === "message"
+                          ? "var(--primary)"
+                          : isDarkMode
+                          ? "rgba(255,255,255,0.1)"
+                          : "rgba(0,0,0,0.1)",
+                      color: "var(--text-heading)",
+                      boxShadow:
+                        focusedField === "message"
+                          ? `0 0 0 4px ${
+                              isDarkMode
+                                ? "rgba(135,80,247,0.12)"
+                                : "rgba(135,80,247,0.08)"
+                            }`
+                          : "none",
+                    }}
+                    onFocus={() =>
+                      setFocusedField("message")
+                    }
+                    onBlur={() =>
+                      setFocusedField(null)
+                    }
+                  />
+                </div>
+
+                {/* SUBMIT */}
+
+                <motion.button
+                  type="submit"
+                  disabled={
+                    formStatus === "loading" ||
+                    formStatus === "succeeded"
+                  }
+                  whileHover={{
+                    y: -2,
+                  }}
+                  whileTap={{
+                    scale: 0.985,
+                  }}
+                  className="group relative w-full overflow-hidden rounded-xl py-4 px-6 font-semibold text-white transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-60"
+                  style={{
+                    background:
+                      formStatus === "succeeded"
+                        ? "linear-gradient(135deg,#22c55e,#16a34a)"
+                        : "linear-gradient(135deg,var(--primary),var(--primary-2))",
+                    boxShadow:
+                      formStatus === "succeeded"
+                        ? "none"
+                        : "0 12px 30px color-mix(in srgb, var(--primary) 20%, transparent)",
+                  }}
+                >
+                  {/* SHINE */}
+
+                  {formStatus === "idle" && (
+                    <span className="absolute inset-0 -translate-x-full bg-white/10 transition-transform duration-700 group-hover:translate-x-full" />
+                  )}
+
+                  <span className="relative flex items-center justify-center gap-2">
+                    {formStatus === "idle" && (
+                      <>
+                        Send Message
+                        <FiArrowUpRight
+                          size={17}
+                          className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        />
+                      </>
+                    )}
+
+                    {formStatus === "loading" && (
+                      <>
+                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                        Sending...
+                      </>
+                    )}
+
+                    {formStatus === "succeeded" && (
+                      <>
+                        <FiCheck size={18} />
+                        Message Sent
+                      </>
+                    )}
+
+                    {formStatus === "failed" && (
+                      <>
+                        Try Again
+                        <FiArrowUpRight size={17} />
+                      </>
+                    )}
+                  </span>
+                </motion.button>
+
+                <p
+                  className={`text-center text-[11px] ${
+                    isDarkMode
+                      ? "text-gray-600"
+                      : "text-gray-400"
+                  }`}
+                >
+                  Your information is only used to respond to
+                  your enquiry.
+                </p>
+              </form>
+            </div>
+          </motion.div>
         </div>
       </section>
+    </main>
+  );
+}
+
+/* =============================================================
+   FORM FIELD
+============================================================= */
+
+function FormField({
+  label,
+  name,
+  type = "text",
+  value,
+  placeholder,
+  required,
+  error,
+  focused,
+  isDarkMode,
+  inputBase,
+  onChange,
+  onBlur,
+  onFocus,
+  icon,
+}) {
+  return (
+    <div className="min-w-0">
+      <label
+        htmlFor={name}
+        className="mb-2 block text-xs font-semibold uppercase tracking-wider"
+        style={{
+          color: "var(--text-body)",
+        }}
+      >
+        {label}
+
+        {required && (
+          <span className="ml-1 text-red-500">
+            *
+          </span>
+        )}
+      </label>
+
+      <div className="relative">
+        {icon && (
+          <span
+            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2"
+            style={{
+              color: focused
+                ? "var(--primary)"
+                : isDarkMode
+                ? "#6b7280"
+                : "#9ca3af",
+            }}
+          >
+            {icon}
+          </span>
+        )}
+
+        <input
+          id={name}
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          placeholder={placeholder}
+          className={`${inputBase} ${
+            icon ? "pl-11" : ""
+          }`}
+          style={{
+            backgroundColor: isDarkMode
+              ? "rgba(255,255,255,0.04)"
+              : "rgba(0,0,0,0.02)",
+            borderColor: error
+              ? "#ef4444"
+              : focused
+              ? "var(--primary)"
+              : isDarkMode
+              ? "rgba(255,255,255,0.1)"
+              : "rgba(0,0,0,0.1)",
+            color: "var(--text-heading)",
+            boxShadow: error
+              ? "0 0 0 3px rgba(239,68,68,0.08)"
+              : focused
+              ? `0 0 0 4px ${
+                  isDarkMode
+                    ? "rgba(135,80,247,0.12)"
+                    : "rgba(135,80,247,0.08)"
+                }`
+              : "none",
+          }}
+        />
+      </div>
+
+      <AnimatePresence>
+        {error && (
+          <motion.p
+            initial={{
+              opacity: 0,
+              height: 0,
+              y: -5,
+            }}
+            animate={{
+              opacity: 1,
+              height: "auto",
+              y: 0,
+            }}
+            exit={{
+              opacity: 0,
+              height: 0,
+              y: -5,
+            }}
+            className="mt-1.5 flex items-center gap-1 text-[11px] text-red-500"
+          >
+            <FiX size={12} />
+            {error}
+          </motion.p>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

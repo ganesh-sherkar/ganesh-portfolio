@@ -90,7 +90,7 @@ export default function Header() {
   const navItems = [
     { name: "Home", path: "/", icon: FiHome },
     { name: "About", path: "/about", icon: FiUser },
-    { name: "Skills", path: "/skills", icon: FiCode },
+    // { name: "Skills", path: "/skills", icon: FiCode },
     { name: "Projects", path: "/projects", icon: FiFolder },
     { name: "Experience", path: "/experience", icon: FiBriefcase },
     { name: "Contact", path: "/contact", icon: FiMail },

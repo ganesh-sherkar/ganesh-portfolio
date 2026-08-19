@@ -15,7 +15,7 @@ import FloatingChatButton from "@/components/FloatingChatButton"; // Import the 
 const navigationItems = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { name: "Skills", href: "/skills" },
+  // { name: "Skills", href: "/skills" },
   { name: "Projects", href: "/projects" },
   { name: "Experience", href: "/experience" },
   { name: "Contact", href: "/contact" },
@@ -46,16 +46,14 @@ export default function Footer() {
 
   return (
     <>
-      <footer className={`relative border-t transition-colors duration-300 overflow-hidden ${
+      {/* <footer className={`relative border-t transition-colors duration-300 overflow-hidden ${
         isDarkMode 
           ? "bg-gradient-to-b from-gray-900 to-gray-900/95 border-gray-800" 
           : "bg-gradient-to-b from-gray-50 to-white border-gray-200"
       }`}>
-        {/* Decorative Top Border */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent" />
         
         <div className="container-custom py-12 md:py-16">
-          {/* Logo */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -79,8 +77,6 @@ export default function Footer() {
               </div>
             </Link>
           </motion.div>
-
-          {/* Navigation Links */}
           <motion.nav 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -109,7 +105,6 @@ export default function Footer() {
             </ul>
           </motion.nav>
 
-          {/* Social Links */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -142,7 +137,6 @@ export default function Footer() {
             })}
           </motion.div>
 
-          {/* Copyright */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -163,7 +157,7 @@ export default function Footer() {
             </p>
           </motion.div>
         </div>
-      </footer>
+      </footer> */}
 
       {/* Scroll to Top Button with Water Effect - Right Side */}
       <ScrollToTopFooter />

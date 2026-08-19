@@ -93,12 +93,12 @@ export const metadata = {
     siteName: "Nishitha Reddy Musku Portfolio",
     images: [
       {
-        url: `${BASE_URL}/main_photo_seo.png`,
+        url: `${BASE_URL}/seo_image.png`,
         width: 1200,
         height: 630,
         alt: "Nishitha Reddy Musku - React Native & MERN Stack Developer Portfolio - Hyderabad, India",
         type: "image/png",
-        secureUrl: `${BASE_URL}/main_photo_seo.png`,
+        secureUrl: `${BASE_URL}/seo_image.png`,
       },
       {
         url: `${BASE_URL}/og-image.jpg`,
@@ -122,7 +122,7 @@ export const metadata = {
       "Portfolio of Nishitha Reddy Musku - React Native & MERN Stack Developer with 2+ years of experience building scalable apps with modern UI/UX.",
     creator: "@nishithareddy",
     site: "@nishithareddy",
-    images: [`${BASE_URL}/main_photo_seo.png`],
+    images: [`${BASE_URL}/seo_image.png`],
   },
 
   robots: {
@@ -153,10 +153,10 @@ export const metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon-16x16.jpg", sizes: "16x16", type: "image/jpeg" },
-      { url: "/favicon-32x32.jpg", sizes: "32x32", type: "image/jpeg" },
-      { url: "/main_photo_seo.png", sizes: "192x192", type: "image/png" },
-      { url: "/main_photo_seo.png", sizes: "512x512", type: "image/png" },
+      { url: "/image16.jpg", sizes: "16x16", type: "image/jpeg" },
+      { url: "/image32.jpg", sizes: "32x32", type: "image/jpeg" },
+      { url: "/seo_image.png", sizes: "192x192", type: "image/png" },
+      { url: "/seo_image.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [
       { url: "/apple-touch-icon.jpg", sizes: "180x180", type: "image/jpeg" },
@@ -175,7 +175,7 @@ export const metadata = {
   category: "technology",
   classification: "Portfolio Website",
   pageInfo: {
-    image: `${BASE_URL}/main_photo_seo.png`,
+    image: `${BASE_URL}/seo_image.png`,
   },
 
   verification: {
@@ -259,8 +259,8 @@ export default function RootLayout({ children }) {
         <meta name="coverage" content="Worldwide" />
 
         {/* Resource Hints */}
-        <link rel="preload" as="image" href="/main_photo_seo.png" />
-        <link rel="preload" as="image" href="/profile.jpg" />
+        <link rel="preload" as="image" href="/seo_image.png" />
+        <link rel="preload" as="image" href="/Professional.jpg" />
       </head>
       <body className="font-sora overflow-x-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
         {/* Default theme-color meta tag */}
@@ -443,7 +443,7 @@ export default function RootLayout({ children }) {
               },
               primaryImageOfPage: {
                 "@type": "ImageObject",
-                url: `${BASE_URL}/main_photo_seo.png`,
+                url: `${BASE_URL}/seo_image.png`,
               },
               inLanguage: "en-US",
               dateCreated: "2024-01-01",

@@ -15,7 +15,7 @@ export const fallbackHero = {
     "Tailwind CSS",
   ],
   resumeUrl: "/MUSKU NISHITHA.pdf",
-  profileImageUrl: "/assets/ProfileMain.jpeg",
+  profileImageUrl: "/assets/Professional.jpg",
   socials: {
     linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b/",
     github: "https://github.com/MuskuNishitha",
@@ -58,7 +58,13 @@ export const fallbackPortfolio = {
         "Firebase",
       ],
       liveLink: "https://ewshopping.com/",
-      githubLink: "https://github.com/MuskuNishitha/ewshopping",
+      playstoreLinks: [
+        {
+          name: "Play Store",
+          url: "https://play.google.com/store/apps/details?id=com.ewsapp",
+        },
+      ],
+      githubLink: "",
       challenges:
         "Implementing real-time inventory sync across multiple vendors and platforms.",
       solution:
@@ -89,7 +95,13 @@ export const fallbackPortfolio = {
         "Redux Toolkit",
       ],
       liveLink: "https://kiranaworld.in",
-      githubLink: "https://github.com/MuskuNishitha/kiranaworld",
+      githubLink: "",
+      playstoreLinks: [
+        {
+          name: "Play Store",
+          url: "https://play.google.com/store/apps/details?id=suprmarket.kiranaworld.app",
+        },
+      ],
       challenges:
         "Managing inventory updates and preventing overselling during peak hours.",
       solution:
@@ -122,7 +134,17 @@ export const fallbackPortfolio = {
         "Tailwind CSS",
       ],
       liveLink: "https://primeradentalhub.com",
-      githubLink: "https://github.com/MuskuNishitha/primeradental",
+      githubLink: "",
+      playstoreLinks: [
+        {
+          name: "Play Store",
+          url: "https://play.google.com/store/apps/details?id=com.primeradental",
+        },
+        {
+          name: "Play Store",
+          url: "https://play.google.com/store/apps/details?id=com.primeradentalpartner",
+        },
+      ],
       challenges: "Handling catalogue scale and fast search.",
       solution: "Improved indexing and query patterns for quick results.",
     },
@@ -149,8 +171,9 @@ export const fallbackPortfolio = {
         "Express.js",
         "MongoDB",
       ],
-      liveLink: "https://pot-dashboard-demo.vercel.app",
-      githubLink: "https://github.com/MuskuNishitha/pot-dashboard",
+      liveLink: "",
+      playstoreLinks: [],
+      githubLink: "",
       challenges: "Keeping chart updates smooth with large datasets on mobile.",
       solution:
         "Used aggregation and memoisation to reduce render work and payload size.",
@@ -172,7 +195,15 @@ export const fallbackResume = {
         "Integrated Firebase Cloud Messaging and Google Maps API, increasing user retention by 20%",
         "Collaborated in an Agile/Scrum environment, sustaining 95%+ on-time feature delivery across 10+ sprints",
       ],
-      tech: ["React.js", "React Native", "Next.js", "Node.js", "Express.js", "MongoDB", "Redux Toolkit"],
+      tech: [
+        "React.js",
+        "React Native",
+        "Next.js",
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+        "Redux Toolkit",
+      ],
     },
     {
       role: "Software Development Intern",
@@ -186,7 +217,7 @@ export const fallbackResume = {
       ],
       tech: ["React", "Node.js", "Express"],
     },
-        {
+    {
       role: "Full Stack Trainee",
       company: "JSpiders, Punjagutta",
       duration: "Jun 2023 - Apr 2024",
@@ -197,8 +228,7 @@ export const fallbackResume = {
         "Worked with Git and real-world project structure",
       ],
       tech: ["JavaScript", "React", "Node.js", "MongoDB"],
-    }
-
+    },
   ],
   education: [
     {
@@ -275,7 +305,6 @@ export const fallbackServices = {
     },
   ],
 };
-
 export const fallbackAbout = {
   profile: {
     firstName: "Musku",
@@ -285,9 +314,9 @@ export const fallbackAbout = {
       "React Native Developer",
       "MERN Stack Developer",
     ],
-    tagline: "React.js | React Native | MERN Stack Developer",
+    tagline: "Building fast, scalable web & mobile products",
     description:
-      "React.js | React Native | MERN Stack Developer with 2+ years of experience creating scalable web and mobile applications across e-commerce and enterprise platforms. Track record of cutting backend API response time by 40%, growing user engagement by 25%+, and sustaining 95%+ on-time Agile delivery across production releases.",
+      "I specialize in shipping production-grade applications end-to-end — from architecting REST APIs and database schemas to building polished, responsive UIs in React, React Native, and Next.js. My focus is on performance and reliability: optimized queries, real-time sync, and clean state management with Redux Toolkit. I've worked across e-commerce, healthcare, and dashboard products, consistently delivering within Agile sprint cycles and keeping post-launch bugs at zero.",
     birthdate: "2003-08-11",
     available: true,
     address: "Sr Nagar, Hyderabad",
@@ -302,7 +331,7 @@ export const fallbackAbout = {
     socialLinks: {
       github: "https://github.com/MuskuNishitha",
       linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b",
-      instagram: "muskunishitha2003@gmail.com",
+      instagram: "", // add your real handle here, or remove this field if unused
     },
   },
   skills: [
@@ -333,7 +362,7 @@ export const fallbackAbout = {
     },
     {
       value: "3+",
-      label: "Happy Clients",
+      label: "Freelance Clients",
       icon: "Clients",
       color: "from-green-500 to-emerald-500",
     },

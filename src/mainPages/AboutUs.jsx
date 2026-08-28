@@ -253,9 +253,9 @@ export default function AboutUs() {
         px-4
         sm:px-6
         lg:px-8
-        py-1
-        sm:py-8
-        md:py-10
+        py-8
+        sm:py-12
+        md:py-16
       "
       style={{
         background: "var(--bg)",
@@ -342,7 +342,8 @@ export default function AboutUs() {
             gap-8
             lg:gap-10
             xl:gap-14
-            items-center
+            items-start
+            lg:items-center
           "
         >
           {/* =================================================
@@ -561,6 +562,9 @@ export default function AboutUs() {
               justify-center
               lg:justify-end
               order-2
+              px-2
+              sm:px-3
+              md:px-4
             "
           >
             {/* Ambient Glow */}
@@ -631,13 +635,15 @@ export default function AboutUs() {
                 relative
                 z-10
                 w-full
-                max-w-[320px]
-                xs:max-w-[350px]
-                sm:max-w-[370px]
-                lg:max-w-[380px]
+                max-w-[380px]
+                xs:max-w-[400px]
+                sm:max-w-[420px]
+                lg:max-w-[440px]
                 flex
                 flex-col
                 gap-3
+                mx-auto
+                lg:mx-0
               "
             >
               <motion.div
@@ -684,16 +690,16 @@ export default function AboutUs() {
                   }}
                 />
 
-                {/* Compact Video Wrapper */}
+                {/* Compact Video Wrapper - INCREASED HEIGHT & WIDTH WITH PADDING */}
 
                 <div
                   className="
                     relative
                     w-full
-                    h-[320px]
-                    xs:h-[380px]
-                    sm:h-[390px]
-                    lg:h-[420px]
+                    h-[420px]
+                    sm:h-[480px]
+                    md:h-[520px]
+                    lg:h-[560px]
                     flex
                     items-center
                     justify-center
@@ -712,6 +718,8 @@ export default function AboutUs() {
                     playsInline
                     preload="metadata"
                     className="
+                      absolute
+                      inset-0
                       w-full
                       h-full
                       object-cover
@@ -719,7 +727,7 @@ export default function AboutUs() {
                       sm:rounded-[1.4rem]
                     "
                   >
-                    <source src="/video/ganeshaivideo.mp4" type="video/mp4" />
+                    <source src="/video/gs.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
 

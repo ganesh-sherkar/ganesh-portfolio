@@ -691,9 +691,9 @@ export default function AboutUs() {
                     relative
                     w-full
                     h-[320px]
-                    xs:h-[350px]
-                    sm:h-[380px]
-                    lg:h-[400px]
+                    xs:h-[380px]
+                    sm:h-[390px]
+                    lg:h-[420px]
                     flex
                     items-center
                     justify-center

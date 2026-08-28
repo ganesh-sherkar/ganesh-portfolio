@@ -705,7 +705,6 @@ export default function AboutUs() {
                 >
                   <video
                     ref={videoRef}
-                    // src="/video/ganeshaivideo.mp4"
                     src="/video/gs.mp4"
                     autoPlay
                     loop

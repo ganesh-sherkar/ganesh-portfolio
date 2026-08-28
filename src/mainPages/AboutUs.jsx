@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useTheme } from "@/components/ThemeProvider";
 import { fallbackAbout } from "@/lib/publicContent";
 
@@ -32,6 +32,8 @@ import {
   FaPhone,
   FaLanguage,
   FaUserTie,
+  FaVolumeUp,
+  FaVolumeMute,
 } from "react-icons/fa";
 
 import {
@@ -49,12 +51,26 @@ import {
 } from "react-icons/si";
 import Link from "next/link";
 import Image from "next/image";
+import DevCodingBackground from "@/components/DevCodingBackground";
 
 export default function AboutUs() {
   const { isDarkMode } = useTheme();
   const [activeCategory, setActiveCategory] = useState("All");
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef(null);
 
-  const { profile, stats } = fallbackAbout;
+  const toggleAudio = () => {
+    if (videoRef.current) {
+      const nextMuted = !isMuted;
+      videoRef.current.muted = nextMuted;
+      setIsMuted(nextMuted);
+      if (!nextMuted) {
+        videoRef.current.play().catch(() => {});
+      }
+    }
+  };
+
+  const { profile } = fallbackAbout;
 
   /* =========================================================
      TECHNICAL SKILLS
@@ -65,12 +81,6 @@ export default function AboutUs() {
       name: "JavaScript",
       icon: <SiJavascript />,
       color: "#f7df1e",
-      category: "Languages",
-    },
-    {
-      name: "TypeScript",
-      icon: <SiTypescript />,
-      color: "#3178c6",
       category: "Languages",
     },
     {
@@ -85,12 +95,7 @@ export default function AboutUs() {
       color: "#264de4",
       category: "Languages",
     },
-    {
-      name: "Java Basics",
-      icon: <FaCode />,
-      color: "#007396",
-      category: "Languages",
-    },
+  
 
     {
       name: "React.js",
@@ -98,12 +103,7 @@ export default function AboutUs() {
       color: "#61dafb",
       category: "Frontend",
     },
-    {
-      name: "React Native",
-      icon: <FaMobileAlt />,
-      color: "#61dafb",
-      category: "Frontend",
-    },
+   
     {
       name: "Next.js",
       icon: <SiNextdotjs />,
@@ -142,12 +142,6 @@ export default function AboutUs() {
       category: "Backend",
     },
     {
-      name: "RESTful APIs",
-      icon: <FaServer />,
-      color: "#818cf8",
-      category: "Backend",
-    },
-    {
       name: "JWT Authentication",
       icon: <FaCode />,
       color: "#e879f9",
@@ -172,25 +166,7 @@ export default function AboutUs() {
       color: "#ffca28",
       category: "Database",
     },
-    {
-      name: "Firestore",
-      icon: <SiFirebase />,
-      color: "#ffca28",
-      category: "Database",
-    },
-    {
-      name: "Realtime DB",
-      icon: <SiFirebase />,
-      color: "#ffca28",
-      category: "Database",
-    },
-    {
-      name: "Cloud Messaging",
-      icon: <SiFirebase />,
-      color: "#ffca28",
-      category: "Database",
-    },
-
+    
     {
       name: "Git",
       icon: <FaGitAlt />,
@@ -204,12 +180,6 @@ export default function AboutUs() {
       category: "Tools",
     },
     {
-      name: "Google Maps API",
-      icon: <SiGooglemaps />,
-      color: "#34d399",
-      category: "Tools",
-    },
-    {
       name: "Postman",
       icon: <SiPostman />,
       color: "#ff6c37",
@@ -219,12 +189,6 @@ export default function AboutUs() {
       name: "Vite",
       icon: <SiVite />,
       color: "#646cff",
-      category: "Tools",
-    },
-    {
-      name: "Agile / Scrum",
-      icon: <FaLayerGroup />,
-      color: "#ffb347",
       category: "Tools",
     },
   ];
@@ -289,9 +253,9 @@ export default function AboutUs() {
         px-4
         sm:px-6
         lg:px-8
-        py-12
-        sm:py-16
-        lg:py-20
+        py-1
+        sm:py-8
+        md:py-10
       "
       style={{
         background: "var(--bg)",
@@ -299,8 +263,10 @@ export default function AboutUs() {
       }}
     >
       {/* =====================================================
-          BACKGROUND
+          BACKGROUND & CODING PARTICLES
       ===================================================== */}
+
+      <DevCodingBackground />
 
       <div
         className="
@@ -362,67 +328,6 @@ export default function AboutUs() {
             HEADER
         ===================================================== */}
 
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.6,
-          }}
-          className="text-center mb-10 sm:mb-12 lg:mb-14"
-        >
-          <div
-            className="
-              inline-flex
-              items-center
-              gap-2
-              px-4
-              py-2
-              rounded-full
-              border
-            "
-            style={{
-              background: isDarkMode
-                ? "rgba(255,255,255,0.035)"
-                : "rgba(0,0,0,0.025)",
-              borderColor: isDarkMode
-                ? "rgba(255,255,255,0.10)"
-                : "rgba(0,0,0,0.08)",
-            }}
-          >
-            <span
-              className="
-                w-2
-                h-2
-                rounded-full
-                animate-pulse
-              "
-              style={{
-                background: "var(--primary)",
-              }}
-            />
-
-            <span
-              className="
-                text-[10px]
-                sm:text-xs
-                tracking-[0.18em]
-                font-semibold
-                uppercase
-              "
-            >
-              About Me
-            </span>
-          </div>
-        </motion.div>
 
         {/* =====================================================
             HERO ABOUT AREA
@@ -432,15 +337,16 @@ export default function AboutUs() {
           className="
             grid
             grid-cols-1
-            xl:grid-cols-[minmax(330px,0.78fr)_minmax(0,1.22fr)]
+            lg:grid-cols-[minmax(0,1.25fr)_minmax(300px,0.75fr)]
+            xl:grid-cols-[minmax(0,1.3fr)_minmax(320px,0.7fr)]
             gap-8
             lg:gap-10
             xl:gap-14
-            items-start
+            items-center
           "
         >
           {/* =================================================
-              IMAGE
+              CONTENT (LEFT SIDE)
           ================================================= */}
 
           <motion.div
@@ -459,236 +365,9 @@ export default function AboutUs() {
               duration: 0.7,
             }}
             className="
-              relative
-              w-full
-              flex
-              justify-center
-            "
-          >
-            {/* Glow */}
-
-            <div
-              className="
-                absolute
-                w-56
-                h-56
-                sm:w-72
-                sm:h-72
-                lg:w-80
-                lg:h-80
-                rounded-full
-                blur-[90px]
-                opacity-20
-              "
-              style={{
-                background: "var(--primary)",
-              }}
-            />
-
-            {/* Decorative shape */}
-
-            <div
-              className="
-                absolute
-                top-2
-                right-[8%]
-                sm:right-[12%]
-                w-16
-                h-16
-                sm:w-20
-                sm:h-20
-                rounded-2xl
-                border
-              "
-              style={{
-                borderColor: "var(--primary)",
-                background: "var(--primary)",
-                opacity: 0.08,
-              }}
-            />
-
-            <div
-              className="
-                absolute
-                bottom-4
-                left-[7%]
-                sm:left-[10%]
-                w-20
-                h-20
-                sm:w-24
-                sm:h-24
-                rounded-2xl
-                border
-              "
-              style={{
-                borderColor: "var(--primary)",
-                background: "var(--primary)",
-                opacity: 0.07,
-              }}
-            />
-
-            {/* Image card */}
-
-            <div
-              className="
-                relative
-                z-10
-                w-full
-                max-w-[430px]
-                sm:max-w-[470px]
-              "
-            >
-              <motion.div
-                whileHover={{
-                  y: -6,
-                }}
-                transition={{
-                  duration: 0.3,
-                }}
-                className="
-                  relative
-                  rounded-[1.75rem]
-                  sm:rounded-[2rem]
-                  p-2.5
-                  sm:p-3
-                  border
-                  overflow-hidden
-                  backdrop-blur-xl
-                "
-                style={{
-                  background: isDarkMode
-                    ? "rgba(255,255,255,0.035)"
-                    : "rgba(0,0,0,0.025)",
-                  borderColor: isDarkMode
-                    ? "rgba(255,255,255,0.10)"
-                    : "rgba(0,0,0,0.08)",
-                  boxShadow: isDarkMode
-                    ? "0 25px 70px rgba(0,0,0,0.25)"
-                    : "0 25px 70px rgba(0,0,0,0.08)",
-                }}
-              >
-                {/* Gradient */}
-
-                <div
-                  className="
-                    pointer-events-none
-                    absolute
-                    inset-0
-                    opacity-[0.04]
-                  "
-                  style={{
-                    background:
-                      "linear-gradient(135deg,var(--primary),transparent 45%,var(--primary))",
-                  }}
-                />
-
-                {/* Responsive image area */}
-
-                <div
-                  className="
-                    relative
-                    w-full
-                    h-[390px]
-                    xs:h-[430px]
-                    sm:h-[480px]
-                    md:h-[520px]
-                    lg:h-[540px]
-                    xl:h-[560px]
-                    flex
-                    items-center
-                    justify-center
-                    overflow-hidden
-                    rounded-[1.35rem]
-                    sm:rounded-[1.5rem]
-                  "
-                >
-                  <Image
-                    src="/aboutus.png"
-                    alt="About Musku Nishitha"
-                    fill
-                    priority
-                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 470px"
-                    className="
-      object-contain
-      scale-[1.03]
-      sm:scale-[1.06]
-    "
-                  />
-                </div>
-
-                {/* Status */}
-
-                <div
-                  className="
-                    absolute
-                    left-5
-                    bottom-5
-                    sm:left-7
-                    sm:bottom-7
-                    max-w-[calc(100%-2.5rem)]
-                    px-3
-                    sm:px-4
-                    py-2.5
-                    sm:py-3
-                    rounded-xl
-                    sm:rounded-2xl
-                    backdrop-blur-xl
-                    border
-                  "
-                  style={{
-                    background: isDarkMode
-                      ? "rgba(12,12,12,0.88)"
-                      : "rgba(255,255,255,0.92)",
-                    borderColor: isDarkMode
-                      ? "rgba(255,255,255,0.10)"
-                      : "rgba(0,0,0,0.08)",
-                    boxShadow: "0 12px 30px rgba(0,0,0,0.16)",
-                  }}
-                >
-                  <div className="flex items-center gap-2.5 sm:gap-3">
-                    <span className="relative flex h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60" />
-
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-green-500" />
-                    </span>
-
-                    <div className="min-w-0">
-                      <p className="text-[8px] sm:text-[9px] uppercase tracking-widest opacity-45">
-                        Status
-                      </p>
-
-                      <p className="text-[10px] sm:text-xs font-semibold truncate">
-                        Available for opportunities
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* =================================================
-              CONTENT
-          ================================================= */}
-
-          <motion.div
-            initial={{
-              opacity: 0,
-              x: 30,
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0,
-            }}
-            viewport={{
-              once: true,
-            }}
-            transition={{
-              duration: 0.7,
-            }}
-            className="
               w-full
               min-w-0
+              order-1
             "
           >
             <p
@@ -712,9 +391,9 @@ export default function AboutUs() {
                 text-2xl
                 sm:text-3xl
                 md:text-4xl
-                xl:text-[2.75rem]
+                xl:text-[2.6rem]
                 font-bold
-                leading-[1.15]
+                leading-[1.18]
                 tracking-tight
               "
             >
@@ -723,14 +402,13 @@ export default function AboutUs() {
 
             <p
               className="
-                mt-5
-                sm:mt-6
+                mt-4
+                sm:mt-5
                 text-sm
                 sm:text-base
-                leading-7
-                sm:leading-8
+                leading-relaxed
                 opacity-65
-                max-w-3xl
+                max-w-2xl
               "
             >
               {profile.description}
@@ -743,11 +421,12 @@ export default function AboutUs() {
             <div
               className="
                 grid
-                grid-cols-2
+                grid-cols-1
+                sm:grid-cols-2
                 gap-2.5
                 sm:gap-3
-                mt-7
-                sm:mt-8
+                mt-6
+                sm:mt-7
               "
             >
               {[
@@ -795,15 +474,15 @@ export default function AboutUs() {
                 <motion.div
                   key={index}
                   whileHover={{
-                    y: -3,
+                    y: -2,
                   }}
                   className="
                     flex
                     items-center
                     gap-2.5
                     sm:gap-3
-                    p-3
-                    sm:p-3.5
+                    p-2.5
+                    sm:p-3
                     rounded-xl
                     sm:rounded-2xl
                     border
@@ -824,8 +503,8 @@ export default function AboutUs() {
                     className="
                       w-8
                       h-8
-                      sm:w-9
-                      sm:h-9
+                      sm:w-8.5
+                      sm:h-8.5
                       rounded-lg
                       sm:rounded-xl
                       flex
@@ -854,276 +533,332 @@ export default function AboutUs() {
                 </motion.div>
               ))}
             </div>
+          </motion.div>
 
-            {/* =================================================
-                BUTTONS
-            ================================================= */}
+          {/* =================================================
+              VIDEO (RIGHT SIDE)
+          ================================================= */}
+
+          <motion.div
+            initial={{
+              opacity: 0,
+              x: 30,
+            }}
+            whileInView={{
+              opacity: 1,
+              x: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.7,
+            }}
+            className="
+              relative
+              w-full
+              flex
+              justify-center
+              lg:justify-end
+              order-2
+            "
+          >
+            {/* Ambient Glow */}
 
             <div
               className="
+                absolute
+                w-48
+                h-48
+                sm:w-60
+                sm:h-60
+                rounded-full
+                blur-[80px]
+                opacity-25
+                pointer-events-none
+              "
+              style={{
+                background: "var(--primary)",
+              }}
+            />
+
+            {/* Decorative Corner Accents */}
+
+            <div
+              className="
+                absolute
+                -top-2
+                -right-2
+                w-14
+                h-14
+                rounded-2xl
+                border
+                pointer-events-none
+                hidden
+                sm:block
+              "
+              style={{
+                borderColor: "var(--primary)",
+                background: "var(--primary)",
+                opacity: 0.08,
+              }}
+            />
+
+            <div
+              className="
+                absolute
+                -bottom-2
+                -left-2
+                w-16
+                h-16
+                rounded-2xl
+                border
+                pointer-events-none
+                hidden
+                sm:block
+              "
+              style={{
+                borderColor: "var(--primary)",
+                background: "var(--primary)",
+                opacity: 0.07,
+              }}
+            />
+
+            {/* Compact Video Card & Status Below */}
+
+            <div
+              className="
+                relative
+                z-10
+                w-full
+                max-w-[320px]
+                xs:max-w-[350px]
+                sm:max-w-[370px]
+                lg:max-w-[380px]
                 flex
                 flex-col
-                sm:flex-row
-                gap-2.5
-                sm:gap-3
-                mt-7
-                sm:mt-8
-              "
-            >
-              <a
-                href="/MUSKU NISHITHA.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  px-5
-                  py-3
-                  rounded-xl
-                  text-xs
-                  sm:text-sm
-                  font-semibold
-                  text-white
-                  transition-all
-                  hover:-translate-y-1
-                  w-full
-                  sm:w-auto
-                "
-                style={{
-                  background: "var(--primary)",
-                  boxShadow:
-                    "0 12px 30px color-mix(in srgb, var(--primary) 25%, transparent)",
-                }}
-              >
-                <FaDownload />
-                Download Resume
-              </a>
-
-              <Link
-                href="/contact"
-                className="
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  px-5
-                  py-3
-                  rounded-xl
-                  text-xs
-                  sm:text-sm
-                  font-semibold
-                  border
-                  transition-all
-                  hover:-translate-y-1
-                  w-full
-                  sm:w-auto
-                "
-                style={{
-                  borderColor: isDarkMode
-                    ? "rgba(255,255,255,0.12)"
-                    : "rgba(0,0,0,0.10)",
-                }}
-              >
-                {"Let's Connect"}
-                <FaArrowRight className="text-xs" />
-              </Link>
-            </div>
-
-            {/* =================================================
-                SOCIALS
-            ================================================= */}
-
-            <div
-              className="
-                flex
-                items-center
                 gap-3
-                mt-2
-                sm:mt-3
               "
             >
-              <span className="text-[10px] sm:text-xs opacity-40">
-                Find me on
-              </span>
-
-              <a
-                href={profile.socialLinks?.github}
-                target="_blank"
-                rel="noopener noreferrer"
+              <motion.div
+                whileHover={{
+                  y: -4,
+                }}
+                transition={{
+                  duration: 0.3,
+                }}
                 className="
-                  w-8
-                  h-8
-                  sm:w-9
-                  sm:h-9
-                  rounded-full
+                  relative
+                  rounded-[1.5rem]
+                  sm:rounded-[1.75rem]
+                  p-2
+                  sm:p-2.5
+                  border
+                  overflow-hidden
+                  backdrop-blur-xl
+                "
+                style={{
+                  background: isDarkMode
+                    ? "rgba(255,255,255,0.035)"
+                    : "rgba(0,0,0,0.025)",
+                  borderColor: isDarkMode
+                    ? "rgba(255,255,255,0.10)"
+                    : "rgba(0,0,0,0.08)",
+                  boxShadow: isDarkMode
+                    ? "0 20px 50px rgba(0,0,0,0.28)"
+                    : "0 20px 50px rgba(0,0,0,0.09)",
+                }}
+              >
+                {/* Gradient Shimmer */}
+
+                <div
+                  className="
+                    pointer-events-none
+                    absolute
+                    inset-0
+                    opacity-[0.05]
+                  "
+                  style={{
+                    background:
+                      "linear-gradient(135deg,var(--primary),transparent 50%,var(--primary))",
+                  }}
+                />
+
+                {/* Compact Video Wrapper */}
+
+                <div
+                  className="
+                    relative
+                    w-full
+                    h-[320px]
+                    xs:h-[350px]
+                    sm:h-[380px]
+                    lg:h-[400px]
+                    flex
+                    items-center
+                    justify-center
+                    overflow-hidden
+                    rounded-[1.25rem]
+                    sm:rounded-[1.4rem]
+                    bg-black/20
+                  "
+                >
+                  <video
+                    ref={videoRef}
+                    src="/video/ganeshaivideo.mp4"
+                    autoPlay
+                    loop
+                    muted={isMuted}
+                    playsInline
+                    preload="metadata"
+                    className="
+                      w-full
+                      h-full
+                      object-cover
+                      rounded-[1.25rem]
+                      sm:rounded-[1.4rem]
+                    "
+                  >
+                    <source src="/video/ganeshaivideo.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+
+                  {/* Sound Control Button */}
+                  <motion.button
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.94 }}
+                    onClick={toggleAudio}
+                    type="button"
+                    aria-label={isMuted ? "Unmute video audio" : "Mute video audio"}
+                    className="
+                      absolute
+                      top-3.5
+                      right-3.5
+                      z-20
+                      flex
+                      items-center
+                      gap-1.5
+                      px-3
+                      py-1.5
+                      rounded-full
+                      backdrop-blur-xl
+                      border
+                      text-xs
+                      font-medium
+                      transition-all
+                      duration-300
+                      cursor-pointer
+                      select-none
+                    "
+                    style={{
+                      background: isDarkMode
+                        ? "rgba(15, 15, 15, 0.85)"
+                        : "rgba(255, 255, 255, 0.90)",
+                      borderColor: isMuted
+                        ? isDarkMode
+                          ? "rgba(255, 255, 255, 0.14)"
+                          : "rgba(0, 0, 0, 0.10)"
+                        : "var(--primary)",
+                      boxShadow: "0 6px 18px rgba(0,0,0,0.20)",
+                      color: isMuted ? "inherit" : "var(--primary)",
+                    }}
+                  >
+                    {isMuted ? (
+                      <>
+                        <FaVolumeMute className="text-xs opacity-75" />
+                        <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide">
+                          Sound Off
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <FaVolumeUp className="text-xs animate-pulse" />
+                        <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide">
+                          Sound On
+                        </span>
+                      </>
+                    )}
+                  </motion.button>
+                </div>
+              </motion.div>
+
+              {/* Status Badge (Outside & Below Video) */}
+
+              <motion.div
+                whileHover={{
+                  y: -2,
+                }}
+                transition={{
+                  duration: 0.2,
+                }}
+                className="
+                  w-full
+                  px-3.5
+                  py-2.5
+                  sm:px-4
+                  sm:py-3
+                  rounded-xl
+                  sm:rounded-2xl
+                  backdrop-blur-xl
                   border
                   flex
                   items-center
-                  justify-center
+                  justify-between
+                  gap-3
                   transition-all
-                  hover:-translate-y-1
+                  duration-300
                 "
                 style={{
+                  background: isDarkMode
+                    ? "rgba(255,255,255,0.035)"
+                    : "rgba(0,0,0,0.025)",
                   borderColor: isDarkMode
                     ? "rgba(255,255,255,0.10)"
-                    : "rgba(0,0,0,0.10)",
+                    : "rgba(0,0,0,0.08)",
+                  boxShadow: isDarkMode
+                    ? "0 10px 25px rgba(0,0,0,0.20)"
+                    : "0 10px 25px rgba(0,0,0,0.05)",
                 }}
               >
-                <FaGithub className="text-xs sm:text-sm" />
-              </a>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="relative flex h-2.5 w-2.5 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+                  </span>
 
-              <a
-                href={profile.socialLinks?.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  w-8
-                  h-8
-                  sm:w-9
-                  sm:h-9
-                  rounded-full
-                  border
-                  flex
-                  items-center
-                  justify-center
-                  transition-all
-                  hover:-translate-y-1
-                "
-                style={{
-                  borderColor: isDarkMode
-                    ? "rgba(255,255,255,0.10)"
-                    : "rgba(0,0,0,0.10)",
-                }}
-              >
-                <FaLinkedinIn className="text-xs sm:text-sm" />
-              </a>
+                  <div className="min-w-0">
+                    <p className="text-[8px] sm:text-[9px] uppercase tracking-widest opacity-45 leading-none">
+                      Status
+                    </p>
+
+                    <p className="text-[11px] sm:text-xs font-semibold truncate mt-0.5 leading-tight">
+                      Available for opportunities
+                    </p>
+                  </div>
+                </div>
+
+                <span
+                  className="text-[9px] sm:text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0"
+                  style={{
+                    background: "color-mix(in srgb, var(--primary) 12%, transparent)",
+                    color: "var(--primary)",
+                    borderColor: "color-mix(in srgb, var(--primary) 25%, transparent)",
+                  }}
+                >
+                  Open
+                </span>
+              </motion.div>
             </div>
           </motion.div>
         </div>
 
-        {/* =====================================================
-            STATS
-        ===================================================== */}
 
-        <div
-          className="
-            grid
-            grid-cols-2
-            lg:grid-cols-4
-            gap-2.5
-            sm:gap-4
-            lg:gap-5
-            mt-10
-            sm:mt-14
-            lg:mt-16
-          "
-        >
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{
-                opacity: 0,
-                y: 20,
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
-              viewport={{
-                once: true,
-              }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.08,
-              }}
-              whileHover={{
-                y: -5,
-              }}
-              className="
-                relative
-                overflow-hidden
-                p-1
-                sm:p-2
-                rounded-xl
-                sm:rounded-2xl
-                border
-                text-center
-              "
-              style={{
-                background: isDarkMode
-                  ? "rgba(255,255,255,0.025)"
-                  : "rgba(0,0,0,0.02)",
-                borderColor: isDarkMode
-                  ? "rgba(255,255,255,0.08)"
-                  : "rgba(0,0,0,0.08)",
-              }}
-            >
-              <div
-                className="
-                  absolute
-                  top-0
-                  left-0
-                  right-0
-                  h-[2px]
-                  opacity-50
-                "
-                style={{
-                  background: "var(--primary)",
-                }}
-              />
-
-              <div
-                className="
-                  mx-auto
-                  w-9
-                  h-9
-                  sm:w-11
-                  sm:h-11
-                  rounded-lg
-                  sm:rounded-xl
-                  flex
-                  items-center
-                  justify-center
-                  mb-2.5
-                  sm:mb-4
-                "
-                style={{
-                  background:
-                    "color-mix(in srgb, var(--primary) 10%, transparent)",
-                  color: "var(--primary)",
-                }}
-              >
-                {getStatIcon(stat.icon)}
-              </div>
-
-              <p
-                className="
-                  text-2xl
-                  sm:text-3xl
-                  lg:text-4xl
-                  font-bold
-                "
-                style={{
-                  color: "var(--primary)",
-                }}
-              >
-                {stat.value}
-              </p>
-
-              <p className="text-[10px] sm:text-xs opacity-50 mt-1.5 sm:mt-2">
-                {stat.label}
-              </p>
-            </motion.div>
-          ))}
-        </div>
 
         {/* =====================================================
-            SKILLS
+            SKILLS (TECHNICAL EXPERTISE)
         ===================================================== */}
 
-        <div className="mt-12 sm:mt-16">
+        <div id="skills" className="mt-12 sm:mt-16 scroll-mt-24">
           <SectionHeading
             eyebrow="MY TOOLKIT"
             title="Technical Expertise"
@@ -1208,6 +943,19 @@ export default function AboutUs() {
               lg:gap-4
             "
           >
+            <style>{`
+              @keyframes borderMoveAround {
+                0% {
+                  transform: rotate(0deg);
+                }
+                100% {
+                  transform: rotate(360deg);
+                }
+              }
+              .animate-border-move {
+                animation: borderMoveAround 3.5s linear infinite;
+              }
+            `}</style>
             {filteredSkills.map((skill, index) => (
               <motion.div
                 layout
@@ -1230,79 +978,112 @@ export default function AboutUs() {
                 className="
                   group
                   relative
-                  p-3
-                  sm:p-4
-                  lg:p-5
+                  p-[1.5px]
                   rounded-xl
                   sm:rounded-2xl
-                  border
-                  flex
-                  flex-col
-                  items-center
-                  justify-center
-                  text-center
-            min-h-[105px]
+                  min-h-[105px]
                   sm:min-h-[125px]
                   lg:min-h-[135px]
                   overflow-hidden
+                  transition-all
+                  duration-300
                 "
                 style={{
-                  background: isDarkMode
-                    ? "rgba(255,255,255,0.025)"
-                    : "rgba(0,0,0,0.02)",
-                  borderColor: isDarkMode
-                    ? "rgba(255,255,255,0.08)"
-                    : "rgba(0,0,0,0.08)",
+                  boxShadow: isDarkMode
+                    ? "0 4px 20px rgba(0, 0, 0, 0.3)"
+                    : "0 4px 15px rgba(0, 0, 0, 0.04)",
                 }}
               >
+                {/* Continuous Animated Moving Border Beam Around the Card */}
                 <div
                   className="
                     absolute
-                    inset-0
-                    opacity-0
-                    group-hover:opacity-[0.05]
+                    -inset-[160%]
+                    animate-border-move
+                    opacity-60
+                    group-hover:opacity-100
                     transition-opacity
+                    duration-500
                   "
                   style={{
-                    background: skill.color,
+                    background: `conic-gradient(from 0deg, transparent 0%, transparent 45%, ${skill.color || "var(--primary)"} 72%, #00f0ff 85%, transparent 100%)`,
+                    animationDuration: `${3 + (index % 4) * 0.4}s`,
                   }}
                 />
 
+                {/* Card Inner Body */}
                 <div
                   className="
                     relative
-                    text-xl
-                    sm:text-3xl
-                    lg:text-4xl
-                    mb-2
-                    sm:mb-3
-                    transition-transform
-                    duration-300
-                    group-hover:scale-110
+                    w-full
+                    h-full
+                    p-3
+                    sm:p-4
+                    lg:p-5
+                    rounded-[10px]
+                    sm:rounded-[14px]
+                    flex
+                    flex-col
+                    items-center
+                    justify-center
+                    text-center
+                    overflow-hidden
+                    backdrop-blur-xl
                   "
                   style={{
-                    color: skill.color,
+                    background: isDarkMode ? "#090d14" : "#ffffff",
                   }}
                 >
-                  {skill.icon}
+                  <div
+                    className="
+                      absolute
+                      inset-0
+                      opacity-0
+                      group-hover:opacity-[0.08]
+                      transition-opacity
+                      duration-300
+                    "
+                    style={{
+                      background: skill.color,
+                    }}
+                  />
+
+                  <div
+                    className="
+                      relative
+                      text-xl
+                      sm:text-3xl
+                      lg:text-4xl
+                      mb-2
+                      sm:mb-3
+                      transition-transform
+                      duration-300
+                      group-hover:scale-110
+                    "
+                    style={{
+                      color: skill.color,
+                    }}
+                  >
+                    {skill.icon}
+                  </div>
+
+                  <p
+                    className="
+                      relative
+                      text-[10px]
+                      sm:text-xs
+                      lg:text-sm
+                      font-semibold
+                      leading-tight
+                    "
+                  >
+                    {skill.name}
+                  </p>
+
+                  <p className="relative text-[8px] sm:text-[10px] opacity-40 mt-1">
+                    {skill.category}
+                  </p>
                 </div>
-
-                <p
-                  className="
-                    relative
-                    text-[10px]
-                    sm:text-xs
-                    lg:text-sm
-                    font-semibold
-                    leading-tight
-                  "
-                >
-                  {skill.name}
-                </p>
-
-                <p className="relative text-[8px] sm:text-[10px] opacity-40 mt-1">
-                  {skill.category}
-                </p>
               </motion.div>
             ))}
           </motion.div>

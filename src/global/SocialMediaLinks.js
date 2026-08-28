@@ -3,7 +3,7 @@ export const socialMediaLinks = {
   github: {
     name: "GitHub",
     icon: "FaGithub",
-    link: "https://github.com/MuskuNishitha"
+    link: "https://github.com/Ganeshdex93"
   },
   linkedin: {
     name: "LinkedIn",
@@ -13,7 +13,7 @@ export const socialMediaLinks = {
   email: {
     name: "Email",
     icon: "MdEmail",
-    link: "mailto:muskunishitha2003@gmail.com"
+    link: "mailto:ganeshdex9356@gmail.com"
   },
   phone: {
     name: "Phone",

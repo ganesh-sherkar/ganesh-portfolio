@@ -4,36 +4,35 @@ const axios = require("axios");
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3111";
 
 const profilePayload = {
-  firstName: "Musku",
-  lastName: "Nishitha",
+  firstName: "Ganesh",
+  lastName: "Sherkar",
   role: [
     "Frontend Developer",
     "React.js Developer",
     "MERN Stack Developer",
-    "Mobile App Developer",
   ],
   tagline: "React & React Native Developer | Building Modern Apps",
   description:
     "I am a passionate React and React Native developer with 2 years of experience in building modern web and mobile applications. I have worked on admin panels and complete app development using technologies like React, Node.js, and MongoDB. I enjoy creating clean UI designs and improving user experience. I am always eager to learn new technologies and grow as a developer.",
-  profileImage: "/assets/Professional.jpg",
+  profileImage: "/assets/Professional1.jpg",
   birthdate: "2003-08-11",
   resumeUrl: "/MUSKU NISHITHA.pdf",
   available: true,
-  address: "Sr Nagar, Hyderabad",
+  address: "Ameerpet, Hyderabad, Telangana, India",
   Experience: "2",
   nationality: "Indian",
   completedProjects: "6",
   happycustomers: "3",
   languages: ["English", "Telugu", "Hindi"],
-  email: "muskunishitha2003@gmail.com",
-  phone: "7416264657",
+  email: "ganeshdex9356@gmail.com",
+  phone: "9356102292",
   linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b/",
   github: "https://github.com/MuskuNishitha",
   freelance: true,
   socialLinks: {
     github: "https://github.com/MuskuNishitha",
     linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b/",
-    instagram: "muskunishitha2003@gmail.com",
+    instagram: "[EMAIL_ADDRESS]",
   },
 };
 
@@ -70,7 +69,7 @@ const worksPayload = [
       "Created a responsive customer website, admin tools, and a React Native app with scalable backend services, smooth checkout flows, and inventory management support.",
     techStack: [
       "React.js",
-      "React Native",
+      // "React Native",
       "Node.js",
       "Express.js",
       "MongoDB",
@@ -126,7 +125,7 @@ const worksPayload = [
 
 const experiencesPayload = [
   {
-    title: "MERN Stack & React Native Developer",
+    title: "MERN Stack  Developer",
     startDate: "2024-06-01",
     endDate: null,
     location: "Dexterous Technology, Hyderabad",

@@ -1,34 +1,42 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
-const API_URL = "";
-console.log(API_URL, "API_URL");
+const staticContent = {
+  title: "Get In Touch",
+  subtitle: "Contact Me",
+  description:
+    "Have a project in mind, a question, or an opportunity? Feel free to reach out and let's create something meaningful together.",
+  contactInfo: [
+    { icon: "📞", label: "Phone", value: "+91 9356102292" },
+    { icon: "✉️", label: "Email", value: "ganeshdex9356@gmail.com" },
+    {
+      icon: "📍",
+      label: "Address",
+      value: "Ameerpet, Hyderabad, Telangana, India",
+    },
+  ],
+  services: [
+    "Full-Stack Web Development",
+    "React Native App Development",
+    "MERN Stack Solutions",
+    "Frontend & UI Engineering",
+  ],
+};
 
-// Async thunk for submitting contact form
+// Async thunk for submitting contact form (graceful static simulation)
 export const submitContactForm = createAsyncThunk(
   "contact/submit",
-  async (formData, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(`${API_URL}/api/v1/contacts/new`, formData);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  },
+  async (formData) => {
+    // Return simulated success instantly without hanging
+    return { success: true, message: "Message sent successfully!", data: formData };
+  }
 );
 
-// Async thunk for fetching contact page content
+// Async thunk for fetching contact page content (pure static)
 export const fetchContactContent = createAsyncThunk(
   "contact/fetchContent",
-  async (_, { rejectWithValue }) => {
-    try {
-      // You can create an API endpoint for page content
-      const response = await axios.get(`${API_URL}/api/v1/contacts`);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  },
+  async () => {
+    return staticContent;
+  }
 );
 
 const contactSlice = createSlice({
@@ -37,27 +45,7 @@ const contactSlice = createSlice({
     formStatus: "idle", // idle, loading, succeeded, failed
     formData: null,
     error: null,
-    content: {
-      title: "Let's Work Together!",
-      subtitle: "Contact Me",
-      description:
-        "I design and code beautifully simple things and I love what I do. Just simple like that!",
-      contactInfo: [
-        { icon: "📞", label: "Phone", value: "+01 123 654 8096" },
-        { icon: "✉️", label: "Email", value: "muskunishitha2003@gmail.com" },
-        {
-          icon: "📍",
-          label: "Address",
-          value: "Sr nagar, Hyderabad, Telangana, India",
-        },
-      ],
-      services: [
-        "Responsive Design",
-        "CMS Development",
-        "API Integration",
-        "Website Redesign",
-      ],
-    },
+    content: staticContent,
     contentLoading: false,
     contentError: null,
   },
@@ -89,16 +77,15 @@ const contactSlice = createSlice({
 
       // Fetch contact content cases
       .addCase(fetchContactContent.pending, (state) => {
-        state.contentLoading = true;
+        state.contentLoading = false;
         state.contentError = null;
       })
       .addCase(fetchContactContent.fulfilled, (state, action) => {
         state.contentLoading = false;
         state.content = action.payload;
       })
-      .addCase(fetchContactContent.rejected, (state, action) => {
+      .addCase(fetchContactContent.rejected, (state) => {
         state.contentLoading = false;
-        state.contentError = action.payload?.error || "Failed to load content";
       });
   },
 });

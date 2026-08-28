@@ -6,7 +6,7 @@ import React from "react";
 export const metadata = generateMetadata({
   title: "Resume / CV",
   description:
-    "View and download the resume/CV of Nishitha Reddy Musku, a React Native & MERN Stack Developer with 2+ years of experience. Available for freelance and full-time opportunities.",
+    "View and download the resume/CV of Nishitha Reddy Musku, a React Native & MERN Stack Developer with 1+ years of experience. Available for freelance and full-time opportunities.",
   path: "/resume",
   keywords: [
     "Nishitha Reddy Musku Resume",
@@ -38,7 +38,7 @@ const page = () => {
         <h1>Resume / CV - Nishitha Reddy Musku | React Native & MERN Stack Developer</h1>
         <p>
           View and download the professional resume of Nishitha Reddy Musku. Experienced React Native 
-          and MERN Stack Developer with 2+ years of experience in building scalable applications.
+          and MERN Stack Developer with 1+ years of experience in building scalable applications.
         </p>
       </section>
       <Resume />

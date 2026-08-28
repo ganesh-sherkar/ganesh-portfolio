@@ -5,8 +5,8 @@ import Footer from "@/global/Footer";
 import ScrollTop from "@/global/ScrollTop";
 import ThemeProvider from "@/components/ThemeProvider";
 import { Providers } from "@/components/ReduxProvider";
-import CustomCursor from "@/components/CustomCursor";
 import RouteTransition from "@/components/RouteTransition";
+import Cursor from "@/components/Cursor";
 import Script from "next/script";
 import { getPersonSchema, getWebsiteSchema, getLocalBusinessSchema } from "@/lib/seo-utils";
 
@@ -39,7 +39,8 @@ const inter = Inter({
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5,
+  maximumScale: 1,
+  userScalable: false,
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     { media: "(prefers-color-scheme: dark)", color: "#111827" },
@@ -50,25 +51,22 @@ export const metadata = {
   metadataBase: new URL(BASE_URL),
 
   title: {
-    default: "Nishitha Reddy Musku | React Native & MERN Stack Developer Portfolio",
-    template: "%s | Nishitha Reddy Musku",
+    default: "Ganesh Sherkar | MERN Stack Developer Portfolio",
+    template: "%s | Your Name",
   },
 
   description:
-    "Portfolio of Nishitha Reddy Musku, a skilled React Native & MERN Stack Developer with 2+ years of experience. Specializing in building scalable mobile apps, web applications, and modern UI/UX design. Available for freelance and full-time opportunities.",
+    "Portfolio Ganesh Sherkar, a skilled React Native & MERN Stack Developer with 1+ years of experience. Specializing in building scalable mobile apps, web applications, and modern UI/UX design. Available for freelance and full-time opportunities.",
 
   keywords: [
-    "Nishitha Reddy Musku",
-    "Musku Nishitha Reddy",
-    "React Native Developer India",
+    "Ganesh Sherkar",
+    "Ganesh Sherkar",
     "MERN Stack Developer",
     "Frontend Developer Portfolio",
     "React Developer Hyderabad",
-    "Mobile App Developer",
     "Web Developer Portfolio",
     "Full Stack Developer",
     "JavaScript Developer",
-    "Freelance React Native Developer",
     "Hyderabad Software Developer",
     "React Native Developer Hyderabad",
     "MERN Stack Freelancer",
@@ -76,27 +74,27 @@ export const metadata = {
   ],
 
   authors: [
-    { name: "Nishitha Reddy Musku", url: BASE_URL },
-    { name: "Musku Nishitha Reddy", url: BASE_URL },
+    { name: "Ganesh Sherkar", url: BASE_URL },
+    { name: "Ganesh Sherkar", url: BASE_URL },
   ],
-  creator: "Nishitha Reddy Musku",
-  publisher: "Nishitha Reddy Musku",
+  creator: "Ganesh Sherkar",
+  publisher: "Ganesh Sherkar",
   generator: "Next.js",
-  applicationName: "Nishitha Reddy Musku Portfolio",
+  applicationName: "Your Name Portfolio",
   referrer: "origin-when-cross-origin",
 
   openGraph: {
-    title: "Nishitha Reddy Musku | React Native & MERN Stack Developer",
+    title: "Ganesh Sherkar | React Native & MERN Stack Developer",
     description:
-      "Explore the portfolio of Nishitha Reddy Musku, showcasing projects, skills, and experience in React Native, MERN Stack, and frontend development. Building scalable mobile and web applications with modern technologies.",
+      "Explore the portfolio of Ganesh Sherkar, showcasing projects, skills, and experience in React Native, MERN Stack, and frontend development. Building scalable mobile and web applications with modern technologies.",
     url: BASE_URL,
-    siteName: "Nishitha Reddy Musku Portfolio",
+    siteName: "Ganesh Sherkar Portfolio",
     images: [
       {
         url: `${BASE_URL}/seo_image.png`,
         width: 1200,
         height: 630,
-        alt: "Nishitha Reddy Musku - React Native & MERN Stack Developer Portfolio - Hyderabad, India",
+        alt: "Ganesh Sherkar - React Native & MERN Stack Developer Portfolio - Hyderabad, India",
         type: "image/png",
         secureUrl: `${BASE_URL}/seo_image.png`,
       },
@@ -104,7 +102,7 @@ export const metadata = {
         url: `${BASE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Nishitha Reddy Musku Portfolio",
+        alt: "Ganesh Sherkar Portfolio",
         type: "image/jpeg",
         secureUrl: `${BASE_URL}/og-image.jpg`,
       },
@@ -117,11 +115,11 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Nishitha Reddy Musku | React Native & MERN Stack Developer",
+    title: "Ganesh Sherkar | React Native & MERN Stack Developer",
     description:
-      "Portfolio of Nishitha Reddy Musku - React Native & MERN Stack Developer with 2+ years of experience building scalable apps with modern UI/UX.",
-    creator: "@nishithareddy",
-    site: "@nishithareddy",
+      "Portfolio of Your Name - React Native & MERN Stack Developer with 1+ years of experience building scalable apps with modern UI/UX.",
+    creator: "@yourname",
+    site: "@yourname",
     images: [`${BASE_URL}/seo_image.png`],
   },
 
@@ -150,33 +148,28 @@ export const metadata = {
     },
   },
 
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/image16.jpg", sizes: "16x16", type: "image/jpeg" },
-      { url: "/image32.jpg", sizes: "32x32", type: "image/jpeg" },
-      { url: "/seo_image.png", sizes: "192x192", type: "image/png" },
-      { url: "/seo_image.png", sizes: "512x512", type: "image/png" },
-    ],
-    apple: [
-      { url: "/apple-touch-icon.jpg", sizes: "180x180", type: "image/jpeg" },
-    ],
-    shortcut: ["/favicon.ico"],
-    other: [
-      {
-        rel: "apple-touch-icon-precomposed",
-        url: "/apple-touch-icon.jpg",
-      },
-    ],
-  },
 
-  manifest: `${BASE_URL}/manifest.json`,
+
+  icons: {
+  icon: [
+    {
+      url: "/assets/Professional1.jpg",
+      sizes: "any",
+      type: "image/jpeg",
+    },
+  ],
+  apple: [
+    {
+      url: "/assets/Professional1.jpg",
+      sizes: "180x180",
+      type: "image/jpeg",
+    },
+  ],
+  shortcut: "/assets/Professional1.jpg",
+},
 
   category: "technology",
   classification: "Portfolio Website",
-  pageInfo: {
-    image: `${BASE_URL}/seo_image.png`,
-  },
 
   verification: {
     google: "d0rdKhmxIWpDC4lXnL_h7Bynf697jpQDh5YzSgC2ZWo",
@@ -194,7 +187,7 @@ export const metadata = {
 
   appleWebApp: {
     capable: true,
-    title: "Nishitha Portfolio",
+    title: "Ganesh Sherkar Portfolio",
     statusBarStyle: "black-translucent",
   },
 
@@ -260,7 +253,7 @@ export default function RootLayout({ children }) {
 
         {/* Resource Hints */}
         <link rel="preload" as="image" href="/seo_image.png" />
-        <link rel="preload" as="image" href="/Professional.jpg" />
+       <link rel="preload" as="image" href="/assets/Professional1.jpg" />
       </head>
       <body className="font-sora overflow-x-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
         {/* Default theme-color meta tag */}
@@ -454,11 +447,11 @@ export default function RootLayout({ children }) {
 
         <Providers>
           <ThemeProvider>
+            <Cursor />
             <RouteTransition />
             <Header />
             <main>{children}</main>
             <Footer />
-            <CustomCursor />
           </ThemeProvider>
         </Providers>
       </body>

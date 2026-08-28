@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { useTheme } from "@/components/ThemeProvider";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring, useTransform } from "framer-motion";
 import DotBurst from "@/components/DotBurst";
+import ColorPicker from "@/components/ColorPicker";
 import {
   FiMail,
   FiSun,
@@ -39,7 +40,7 @@ const API_URL = "";
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState("/");
+  const [activeItem, setActiveItem] = useState("home");
   const [navBurst, setNavBurst] = useState({ path: "", id: 0 });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -53,15 +54,80 @@ export default function Header() {
   const { isDarkMode, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 28,
+    restDelta: 0.001,
+  });
+  const starLeft = useTransform(scaleX, (v) => `${Math.max(0, Math.min(100, v * 100))}%`);
+  const starTop = useTransform(scaleX, (v) => `${Math.max(0, Math.min(100, v * 100))}%`);
+
   useEffect(() => {
     setMounted(true);
+
+    const sections = ["home", "about", "skills", "projects", "experience", "resume", "contact"];
+    let isTicking = false;
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      if (!isTicking) {
+        requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 20);
+
+          // Bottom of page check
+          if (
+            window.innerHeight + window.scrollY >=
+            document.documentElement.scrollHeight - 80
+          ) {
+            setActiveItem("contact");
+            isTicking = false;
+            return;
+          }
+
+          // Top of page check
+          if (window.scrollY < 120) {
+            setActiveItem("home");
+            isTicking = false;
+            return;
+          }
+
+          const scrollPosition = window.scrollY + 180;
+          let currentSection = "home";
+
+          for (const sectionId of sections) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+              const top = element.offsetTop;
+              if (scrollPosition >= top) {
+                currentSection = sectionId;
+              }
+            }
+          }
+
+          setActiveItem(currentSection);
+          isTicking = false;
+        });
+        isTicking = true;
+      }
     };
 
-    setActiveItem(window.location.pathname);
+    // Handle hash on initial mount
+    if (window.location.hash) {
+      const hashId = window.location.hash.replace("#", "");
+      const el = document.getElementById(hashId);
+      if (el) {
+        setTimeout(() => {
+          const yOffset = -70;
+          const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: "smooth" });
+          setActiveItem(hashId);
+        }, 200);
+      }
+    } else {
+      handleScroll();
+    }
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -88,13 +154,13 @@ export default function Header() {
   }, [isModalOpen]);
 
   const navItems = [
-    { name: "Home", path: "/", icon: FiHome },
-    { name: "About", path: "/about", icon: FiUser },
-    // { name: "Skills", path: "/skills", icon: FiCode },
-    { name: "Projects", path: "/projects", icon: FiFolder },
-    { name: "Experience", path: "/experience", icon: FiBriefcase },
-    { name: "Contact", path: "/contact", icon: FiMail },
-    { name: "Resume", path: "/resume", icon: FiFileText },
+    { name: "Home", path: "/#home", sectionId: "home", icon: FiHome },
+    { name: "About", path: "/#about", sectionId: "about", icon: FiUser },
+    { name: "Skills", path: "/#skills", sectionId: "skills", icon: FiCode },
+    { name: "Projects", path: "/#projects", sectionId: "projects", icon: FiFolder },
+    { name: "Experience", path: "/#experience", sectionId: "experience", icon: FiBriefcase },
+    { name: "Resume", path: "/#resume", sectionId: "resume", icon: FiFileText },
+    { name: "Contact", path: "/#contact", sectionId: "contact", icon: FiMail },
   ];
   const socialLinks = [
     {
@@ -110,9 +176,20 @@ export default function Header() {
     { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
   ];
 
-  const handleNavClick = (path) => {
-    setActiveItem(path);
+  const handleNavClick = (sectionId, e) => {
+    setActiveItem(sectionId);
     setMobileMenuOpen(false);
+
+    if (typeof window !== "undefined") {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        if (e) e.preventDefault();
+        window.history.pushState(null, "", `/#${sectionId}`);
+        const yOffset = -70;
+        const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }
   };
 
   const triggerNavDots = (path) => {
@@ -166,37 +243,38 @@ export default function Header() {
     setSubmitStatus({ type: "", message: "" });
 
     try {
-      const response = await fetch(`${API_URL}/api/v1/contacts/new_gmail`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          message: formData.message.trim(),
-          phone: formData.phone?.trim() || "",
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setSubmitStatus({
-          type: "success",
-          message:
-            "✓ Message sent successfully! I'll get back to you within 24 hours.",
+      if (API_URL) {
+        const response = await fetch(`${API_URL}/api/v1/contacts/new_gmail`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            message: formData.message.trim(),
+            phone: formData.phone?.trim() || "",
+          }),
         });
-        setFormData({ name: "", email: "", phone: "", message: "" });
 
-        // Auto close modal after 2 seconds on success
-        setTimeout(() => {
-          setIsModalOpen(false);
-          setSubmitStatus({ type: "", message: "" });
-        }, 2000);
-      } else {
-        throw new Error(data.message || data.error || "Failed to send message");
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || data.error || "Failed to send message");
+        }
       }
+
+      setSubmitStatus({
+        type: "success",
+        message:
+          "✓ Message sent successfully! I'll get back to you within 24 hours.",
+      });
+      setFormData({ name: "", email: "", phone: "", message: "" });
+
+      // Auto close modal after 2 seconds on success
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setSubmitStatus({ type: "", message: "" });
+      }, 2000);
     } catch (error) {
       console.error("Error submitting form:", error);
       setSubmitStatus({
@@ -289,12 +367,129 @@ export default function Header() {
   };
 
   const getLogoPath = () => {
-    if (!mounted) return "/assets/white_bg.png";
-    return isDarkMode ? "/assets/white_bg.png" : "/assets/black_bg.png";
+    return "/assets/glogo.jpg";
   };
 
   return (
     <>
+      {/* =====================================================
+          GLOBAL TOP SCROLL PROGRESS BAR WITH FLASHING STAR
+      ===================================================== */}
+      <style>{`
+        @keyframes headerStarSpin {
+          0% { transform: rotate(0deg) scale(0.9); }
+          50% { transform: rotate(180deg) scale(1.2); }
+          100% { transform: rotate(360deg) scale(0.9); }
+        }
+        @keyframes starFlashBeam {
+          0%, 100% { opacity: 0.45; transform: scaleX(0.7) scaleY(0.7); }
+          50% { opacity: 1; transform: scaleX(1.4) scaleY(1.3); }
+        }
+        @keyframes starCoreFlash {
+          0%, 100% { opacity: 0.6; transform: scale(0.85); filter: drop-shadow(0 0 6px #ffffff); }
+          50% { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 16px #ffffff) drop-shadow(0 0 24px #00f0ff); }
+        }
+        .animate-header-star {
+          animation: headerStarSpin 3.5s linear infinite;
+        }
+        .animate-star-beam {
+          animation: starFlashBeam 0.9s ease-in-out infinite;
+        }
+        .animate-core-flash {
+          animation: starCoreFlash 0.9s ease-in-out infinite;
+        }
+      `}</style>
+
+      {/* TOP SCROLL PROGRESS BAR */}
+      {mounted && (
+        <>
+          <div className="fixed top-0 left-0 right-0 h-[5px] z-[999999] pointer-events-none overflow-visible">
+            {/* Progress Line Track */}
+            <motion.div
+              className="absolute top-0 left-0 h-[3.5px] right-0 origin-left"
+              style={{
+                scaleX,
+                background: "linear-gradient(90deg, #00f0ff 0%, var(--primary) 60%, #ec4899 100%)",
+                boxShadow: "0 0 14px color-mix(in srgb, var(--primary) 85%, transparent), 0 0 8px #00f0ff",
+              }}
+            />
+
+            {/* Clean Radiant FLASHING Star on the top tip */}
+            <motion.div
+              className="absolute top-[3px] -translate-y-1/2 -translate-x-1/2 z-20 flex items-center justify-center pointer-events-none"
+              style={{
+                left: starLeft,
+              }}
+            >
+              {/* Radiant Anamorphic Horizontal & Vertical Flash Beams */}
+              <div className="animate-star-beam absolute w-20 h-[2px] rounded-full bg-gradient-to-r from-transparent via-white to-transparent blur-[0.5px] shadow-[0_0_14px_#ffffff]" />
+              <div className="animate-star-beam absolute h-14 w-[2px] rounded-full bg-gradient-to-b from-transparent via-[#00f0ff] to-transparent blur-[0.5px] shadow-[0_0_14px_#00f0ff]" />
+
+              {/* Diagonal Laser Flash Cross */}
+              <div className="animate-header-star absolute w-12 h-12 flex items-center justify-center pointer-events-none">
+                <div className="absolute w-10 h-[1.5px] rotate-45 bg-gradient-to-r from-transparent via-white to-transparent blur-[0.5px]" />
+                <div className="absolute w-10 h-[1.5px] -rotate-45 bg-gradient-to-r from-transparent via-[#00f0ff] to-transparent blur-[0.5px]" />
+              </div>
+
+              {/* Glowing Center Star Shape */}
+              <svg
+                viewBox="0 0 24 24"
+                className="animate-core-flash relative h-6 w-6 text-white z-10"
+                fill="currentColor"
+              >
+                <path d="M12 0L14.2 9.2L23.4 12L14.2 14.8L12 24L9.8 14.8L0.6 12L9.8 9.2L12 0Z" />
+              </svg>
+
+              {/* Intense Pure White Center Flare Strobe */}
+              <div className="animate-core-flash absolute h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_18px_#ffffff,0_0_28px_#00f0ff] z-20" />
+            </motion.div>
+          </div>
+
+          {/* RIGHT-SIDE VERTICAL SCROLL PROGRESS LINE */}
+          <div className="fixed right-0 top-0 bottom-0 w-[5px] z-[999999] pointer-events-none overflow-visible hidden md:block">
+            {/* Progress Line Track */}
+            <motion.div
+              className="absolute top-0 right-0 w-[3.5px] bottom-0 origin-top"
+              style={{
+                scaleY: scaleX,
+                background: "linear-gradient(180deg, #00f0ff 0%, var(--primary) 60%, #ec4899 100%)",
+                boxShadow: "0 0 14px color-mix(in srgb, var(--primary) 85%, transparent), 0 0 8px #00f0ff",
+              }}
+            />
+
+            {/* Clean Radiant FLASHING Star riding down on the right tip */}
+            <motion.div
+              className="absolute right-[3px] translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center pointer-events-none"
+              style={{
+                top: starTop,
+              }}
+            >
+              {/* Radiant Anamorphic Horizontal & Vertical Flash Beams */}
+              <div className="animate-star-beam absolute w-14 h-[2px] rounded-full bg-gradient-to-r from-transparent via-white to-transparent blur-[0.5px] shadow-[0_0_14px_#ffffff]" />
+              <div className="animate-star-beam absolute h-20 w-[2px] rounded-full bg-gradient-to-b from-transparent via-[#00f0ff] to-transparent blur-[0.5px] shadow-[0_0_14px_#00f0ff]" />
+
+              {/* Diagonal Laser Flash Cross */}
+              <div className="animate-header-star absolute w-12 h-12 flex items-center justify-center pointer-events-none">
+                <div className="absolute w-10 h-[1.5px] rotate-45 bg-gradient-to-r from-transparent via-white to-transparent blur-[0.5px]" />
+                <div className="absolute w-10 h-[1.5px] -rotate-45 bg-gradient-to-r from-transparent via-[#00f0ff] to-transparent blur-[0.5px]" />
+              </div>
+
+              {/* Glowing Center Star Shape */}
+              <svg
+                viewBox="0 0 24 24"
+                className="animate-core-flash relative h-6 w-6 text-white z-10"
+                fill="currentColor"
+              >
+                <path d="M12 0L14.2 9.2L23.4 12L14.2 14.8L12 24L9.8 14.8L0.6 12L9.8 9.2L12 0Z" />
+              </svg>
+
+              {/* Intense Pure White Center Flare Strobe */}
+              <div className="animate-core-flash absolute h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_18px_#ffffff,0_0_28px_#00f0ff] z-20" />
+            </motion.div>
+          </div>
+        </>
+      )}
+
       <motion.header
         variants={headerVariants}
         initial="initial"
@@ -302,105 +497,183 @@ export default function Header() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
             ? isDarkMode
-              ? "bg-gray-900/95 backdrop-blur-xl shadow-2xl border-b border-gray-800/50"
-              : "bg-white/95 backdrop-blur-xl shadow-lg border-b border-gray-200/50"
+              ? "bg-gray-900/95 backdrop-blur-xl shadow-2xl"
+              : "bg-white/95 backdrop-blur-xl shadow-lg"
             : "bg-transparent"
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
             <Link
-              href="/"
-              className="group relative flex-shrink-0"
-              onClick={() => handleNavClick("/")}
+              href="/#home"
+              className="group relative flex-shrink-0 flex items-center gap-3"
+              onClick={(e) => handleNavClick("home", e)}
             >
               <motion.div
-                className="relative w-[90px] sm:w-[110px] lg:w-[130px] h-[40px] sm:h-[55px] lg:h-[65px] transition-all duration-300 group-hover:scale-105"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                className="relative flex items-center justify-center"
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 15 }}
               >
-                <Image
-                  src={getLogoPath()}
-                  alt="Nishitha Reddy Musku - Logo"
-                  fill
-                  className="object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.18)]"
-                  priority
-                  sizes="(max-width: 640px) 200px, (max-width: 1024px) 250px, 250px"
+                {/* Ambient Static Neon Glow Behind Logo */}
+                <div
+                  className="absolute -inset-1 rounded-full blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: "radial-gradient(circle, var(--primary) 0%, #00f0ff 60%, transparent 80%)",
+                  }}
                 />
+
+                {/* 360° Rotating Rainbow Neon Border Beam */}
+                <div
+                  className="relative p-[2px] rounded-full overflow-hidden shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all duration-300 group-hover:shadow-[0_0_25px_var(--primary)]"
+                  style={{
+                    background: "var(--border)",
+                  }}
+                >
+                  <div
+                    className="absolute inset-[-100%] animate-[spin_4s_linear_infinite]"
+                    style={{
+                      background: "conic-gradient(from 0deg, transparent 0deg, var(--primary) 90deg, #00f0ff 180deg, #ec4899 270deg, transparent 360deg)",
+                    }}
+                  />
+
+                  {/* Inner Image Container with Glass Sheen */}
+                  <div className="relative w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full overflow-hidden bg-gray-900">
+                    <Image
+                      src={getLogoPath()}
+                      alt="Ganesh Sherkar - Logo"
+                      fill
+                      className="object-cover rounded-full transition-transform duration-500 group-hover:scale-110"
+                      priority
+                      sizes="64px"
+                    />
+
+                    {/* Diagonal Light Sheen Passing Over Logo on Hover */}
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none rounded-full" />
+                  </div>
+                </div>
               </motion.div>
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.path}
-                  onClick={() => {
-                    triggerNavDots(item.path);
-                    handleNavClick(item.path);
-                  }}
-                  className={`relative px-3 xl:px-4 py-2 text-sm xl:text-base font-medium transition-all duration-300 group ${
-                    activeItem === item.path
-                      ? "text-primary"
-                      : isDarkMode
-                        ? "text-gray-300 hover:text-primary"
-                        : "text-gray-700 hover:text-primary"
-                  }`}
-                >
-                  <span className="relative z-10">{item.name}</span>
+              {navItems.map((item) => {
+                const isActive = activeItem === item.sectionId;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.path}
+                    onClick={(e) => {
+                      triggerNavDots(item.sectionId);
+                      handleNavClick(item.sectionId, e);
+                    }}
+                    className={`relative px-3.5 xl:px-4 py-2 text-sm xl:text-base font-semibold rounded-xl transition-all duration-300 group flex items-center justify-center ${
+                      isActive
+                        ? "text-[var(--primary)] font-bold"
+                        : isDarkMode
+                          ? "text-gray-300 hover:text-[var(--primary)]"
+                          : "text-gray-700 hover:text-[var(--primary)]"
+                    }`}
+                  >
+                    <span className="relative z-10">{item.name}</span>
 
-                  {activeItem === item.path && (
-                    <motion.span
-                      layoutId="activeNav"
-                      className={`absolute inset-0 rounded-lg ${
-                        isDarkMode ? "bg-primary/20" : "bg-primary/10"
-                      }`}
-                      transition={{
-                        type: "spring",
-                        bounce: 0.2,
-                        duration: 0.6,
-                      }}
-                    />
-                  )}
+                    {/* Subtle Glowing Active Background Capsule */}
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeNavCapsule"
+                        className="absolute inset-0 rounded-xl border backdrop-blur-md pointer-events-none"
+                        style={{
+                          background: "color-mix(in srgb, var(--primary) 10%, transparent)",
+                          borderColor: "color-mix(in srgb, var(--primary) 28%, transparent)",
+                          boxShadow: "0 0 16px color-mix(in srgb, var(--primary) 18%, transparent)",
+                        }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 30,
+                        }}
+                      />
+                    )}
 
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-1/2" />
-                </Link>
-              ))}
+                    {/* Precision Active Bottom Line Indicator */}
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeNavUnderline"
+                        className="absolute bottom-0 left-3 right-3 h-[2.5px] rounded-full pointer-events-none z-20"
+                        style={{
+                          background: "linear-gradient(90deg, transparent 0%, var(--primary) 18%, var(--primary) 82%, transparent 100%)",
+                          boxShadow: "0 0 10px var(--primary), 0 1px 4px color-mix(in srgb, var(--primary) 60%, transparent)",
+                        }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+
+                    {/* Matching Inactive Hover Underline */}
+                    {!isActive && (
+                      <span
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2.5px] rounded-full transition-all duration-300 ease-out group-hover:w-[calc(100%-1.5rem)] pointer-events-none opacity-0 group-hover:opacity-100"
+                        style={{
+                          background: "linear-gradient(90deg, transparent 0%, var(--primary) 20%, var(--primary) 80%, transparent 100%)",
+                          boxShadow: "0 0 8px var(--primary)",
+                        }}
+                      />
+                    )}
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* Tablet Navigation */}
-            <nav className="hidden md:flex lg:hidden items-center gap-1 overflow-x-auto no-scrollbar max-w-[56vw]">
-              {navItems.slice(0, 5).map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.path}
-                  onClick={() => {
-                    triggerNavDots(item.path);
-                    handleNavClick(item.path);
-                  }}
-                  className={`relative px-2.5 py-2 text-xs font-medium transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
-                    activeItem === item.path
-                      ? "text-primary"
-                      : isDarkMode
-                        ? "text-gray-300 hover:text-primary"
-                        : "text-gray-700 hover:text-primary"
-                  }`}
-                >
-                  {item.name}
-                  {activeItem === item.path && (
-                    <motion.span
-                      layoutId="activeNavTablet"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
-                      transition={{
-                        type: "spring",
-                        bounce: 0.2,
-                        duration: 0.6,
-                      }}
-                    />
-                  )}
-                </Link>
-              ))}
+            <nav className="hidden md:flex lg:hidden items-center gap-1.5 overflow-x-auto no-scrollbar max-w-[56vw]">
+              {navItems.slice(0, 5).map((item) => {
+                const isActive = activeItem === item.sectionId;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.path}
+                    onClick={(e) => {
+                      triggerNavDots(item.sectionId);
+                      handleNavClick(item.sectionId, e);
+                    }}
+                    className={`relative px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 whitespace-nowrap flex-shrink-0 group ${
+                      isActive
+                        ? "text-[var(--primary)] font-bold"
+                        : isDarkMode
+                          ? "text-gray-300 hover:text-[var(--primary)]"
+                          : "text-gray-700 hover:text-[var(--primary)]"
+                    }`}
+                  >
+                    <span className="relative z-10">{item.name}</span>
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeNavTablet"
+                        className="absolute bottom-0 left-2 right-2 h-[2.5px] rounded-full pointer-events-none shadow-[0_0_10px_var(--primary)]"
+                        style={{
+                          background: "linear-gradient(90deg, transparent 0%, var(--primary) 18%, var(--primary) 82%, transparent 100%)",
+                        }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+                    {!isActive && (
+                      <span
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] rounded-full transition-all duration-300 ease-out group-hover:w-[calc(100%-1rem)] pointer-events-none opacity-0 group-hover:opacity-100"
+                        style={{
+                          background: "var(--primary)",
+                          boxShadow: "0 0 6px var(--primary)",
+                        }}
+                      />
+                    )}
+                  </Link>
+                );
+              })}
               {navItems.length > 5 && (
                 <button
                   onClick={() => setMobileMenuOpen(true)}
@@ -417,6 +690,9 @@ export default function Header() {
 
             {/* Right Section */}
             <div className="hidden md:flex items-center gap-2 lg:gap-3 xl:gap-4">
+              {/* Color Picker */}
+              <ColorPicker />
+
               {/* Theme Toggle */}
               <motion.button
                 onClick={toggleTheme}
@@ -463,25 +739,29 @@ export default function Header() {
               </motion.button>
             </div>
 
-            {/* Mobile Menu Button */}
-            <motion.button
-              className={`md:hidden flex items-center justify-center w-10 h-10 rounded-lg transition-colors ${
-                isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-100"
-              }`}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              whileTap={{ scale: 0.95 }}
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? (
-                <FiX
-                  className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? "text-gray-200" : "text-gray-800"}`}
-                />
-              ) : (
-                <FiMenu
-                  className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? "text-gray-200" : "text-gray-800"}`}
-                />
-              )}
-            </motion.button>
+            {/* Mobile Actions (ColorPicker + Menu Button) */}
+            <div className="md:hidden flex items-center gap-2">
+              <ColorPicker />
+
+              <motion.button
+                className={`flex items-center justify-center w-10 h-10 rounded-lg transition-colors ${
+                  isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-100"
+                }`}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? (
+                  <FiX
+                    className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? "text-gray-200" : "text-gray-800"}`}
+                  />
+                ) : (
+                  <FiMenu
+                    className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? "text-gray-200" : "text-gray-800"}`}
+                  />
+                )}
+              </motion.button>
+            </div>
           </div>
         </div>
       </motion.header>
@@ -517,14 +797,32 @@ export default function Header() {
                     isDarkMode ? "border-gray-800" : "border-gray-200"
                   }`}
                 >
-                  <div className="relative w-24 h-12 sm:w-28 sm:h-14">
-                    <Image
-                      src={getLogoPath()}
-                      alt="Nishitha Reddy Musku - Logo"
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 640px) 96px, 112px"
+                  <div className="relative flex items-center justify-center">
+                    {/* Ambient Glow */}
+                    <div
+                      className="absolute -inset-1 rounded-full blur-md opacity-60"
+                      style={{
+                        background: "radial-gradient(circle, var(--primary) 0%, #00f0ff 60%, transparent 80%)",
+                      }}
                     />
+                    {/* Rotating Border Beam */}
+                    <div className="relative p-[2px] rounded-full overflow-hidden">
+                      <div
+                        className="absolute inset-[-100%] animate-[spin_4s_linear_infinite]"
+                        style={{
+                          background: "conic-gradient(from 0deg, transparent 0deg, var(--primary) 90deg, #00f0ff 180deg, #ec4899 270deg, transparent 360deg)",
+                        }}
+                      />
+                      <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-gray-900">
+                        <Image
+                          src={getLogoPath()}
+                          alt="Ganesh Sherkar - Logo"
+                          fill
+                          className="object-cover rounded-full"
+                          sizes="56px"
+                        />
+                      </div>
+                    </div>
                   </div>
                   <motion.button
                     onClick={() => setMobileMenuOpen(false)}
@@ -543,7 +841,7 @@ export default function Header() {
                 <nav className="flex-1 overflow-y-auto py-6 px-5 sm:px-6">
                   {navItems.map((item, i) => {
                     const Icon = item.icon;
-                    const isActive = activeItem === item.path;
+                    const isActive = activeItem === item.sectionId;
                     return (
                       <motion.div
                         key={item.name}
@@ -554,33 +852,34 @@ export default function Header() {
                       >
                         <Link
                           href={item.path}
-                          onClick={() => {
-                            triggerNavDots(item.path);
-                            // give a tiny time for dots animation before menu closes
-                            setActiveItem(item.path);
-                            window.setTimeout(
-                              () => setMobileMenuOpen(false),
-                              220,
-                            );
+                          onClick={(e) => {
+                            triggerNavDots(item.sectionId);
+                            handleNavClick(item.sectionId, e);
                           }}
                           className={`flex items-center gap-3 sm:gap-4 py-3.5 sm:py-4 px-3 sm:px-4 rounded-xl transition-all duration-300 mb-2 group ${
                             isActive
-                              ? isDarkMode
-                                ? "bg-primary/20 text-primary"
-                                : "bg-primary/10 text-primary"
+                              ? "text-[var(--primary)] border font-semibold shadow-md"
                               : isDarkMode
                                 ? "text-gray-300 hover:bg-gray-800"
                                 : "text-gray-700 hover:bg-gray-100"
                           }`}
+                          style={
+                            isActive
+                              ? {
+                                  background: "color-mix(in srgb, var(--primary) 12%, transparent)",
+                                  borderColor: "color-mix(in srgb, var(--primary) 35%, transparent)",
+                                }
+                              : {}
+                          }
                         >
                           <span className="relative grid place-items-center w-6 h-6 sm:w-7 sm:h-7">
                             <Icon
                               className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${
                                 isActive
-                                  ? "text-primary"
+                                  ? "text-[var(--primary)]"
                                   : isDarkMode
-                                    ? "text-gray-400 group-hover:text-primary"
-                                    : "text-gray-500 group-hover:text-primary"
+                                    ? "text-gray-400 group-hover:text-[var(--primary)]"
+                                    : "text-gray-500 group-hover:text-[var(--primary)]"
                               }`}
                             />
                             {navBurst.path === item.path &&
@@ -660,7 +959,7 @@ export default function Header() {
                 >
                   {/* Email */}
                   <a
-                    href="mailto:muskunishitha2003@gmail.com"
+                    href="mailto:ganeshdex9356@gmail.com"
                     className={`flex items-center gap-3 p-3 sm:p-4 rounded-xl transition-all group ${
                       isDarkMode
                         ? "bg-gray-800/50 hover:bg-primary/10"
@@ -689,7 +988,7 @@ export default function Header() {
                             : "text-gray-700 group-hover:text-primary"
                         }`}
                       >
-                        muskunishitha2003@gmail.com
+                        ganeshdex9356@gmail.com
                       </p>
                     </div>
                     <FiArrowRight
@@ -701,7 +1000,7 @@ export default function Header() {
                     />
                   </a>
 
-                  {/* Theme Toggle */}
+                  {/* Theme & Color Toggle */}
                   <div
                     className={`flex items-center justify-between p-3 sm:p-4 rounded-xl transition-colors ${
                       isDarkMode ? "bg-gray-800/50" : "bg-gray-50"
@@ -736,23 +1035,26 @@ export default function Header() {
                         </p>
                       </div>
                     </div>
-                    <button
-                      onClick={toggleTheme}
-                      className={`relative inline-flex items-center h-6 w-11 rounded-full transition-colors flex-shrink-0 ${
-                        isDarkMode ? "bg-primary/30" : "bg-primary/20"
-                      }`}
-                      aria-label="Toggle theme"
-                    >
-                      <motion.span
-                        animate={{ x: isDarkMode ? "20px" : "2px" }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 500,
-                          damping: 30,
-                        }}
-                        className="h-5 w-5 bg-white rounded-full shadow-md absolute"
-                      />
-                    </button>
+                    <div className="flex items-center gap-3">
+                      <ColorPicker />
+                      <button
+                        onClick={toggleTheme}
+                        className={`relative inline-flex items-center h-6 w-11 rounded-full transition-colors flex-shrink-0 ${
+                          isDarkMode ? "bg-primary/30" : "bg-primary/20"
+                        }`}
+                        aria-label="Toggle theme"
+                      >
+                        <motion.span
+                          animate={{ x: isDarkMode ? "20px" : "2px" }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 500,
+                            damping: 30,
+                          }}
+                          className="h-5 w-5 bg-white rounded-full shadow-md absolute"
+                        />
+                      </button>
+                    </div>
                   </div>
 
                   {/* Hire Me Button */}

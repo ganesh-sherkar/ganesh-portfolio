@@ -6,10 +6,10 @@ import React from "react";
 export const metadata = generateMetadata({
   title: "Experience",
   description:
-    "Explore the professional experience of Nishitha Reddy Musku, a React Native & MERN Stack Developer with 2+ years of experience. View work history, achievements, and contributions to various projects.",
+    "Explore the professional experience of Your Name, a React Native & MERN Stack Developer with 1+ years of experience. View work history, achievements, and contributions to various projects.",
   path: "/experience",
   keywords: [
-    "Nishitha Reddy Musku Experience",
+    "Your Name Experience",
     "React Native Developer Experience",
     "MERN Stack Developer Work History",
     "Web Developer Experience Hyderabad",
@@ -34,9 +34,9 @@ const page = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <section className="sr-only" aria-hidden="false">
-        <h1>Experience - Nishitha Reddy Musku | React Native & MERN Stack Developer</h1>
+        <h1>Experience - Your Name | React Native & MERN Stack Developer</h1>
         <p>
-          Professional experience of Nishitha Reddy Musku with 2+ years in React Native and MERN Stack 
+          Professional experience of Your Name with 1+ years in React Native and MERN Stack 
           development. View work history, key achievements, and technical contributions.
         </p>
       </section>

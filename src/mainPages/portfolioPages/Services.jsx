@@ -6,14 +6,9 @@ import HeaderBanner from '@/global/HeaderBanner'
 import { useTheme } from '@/components/ThemeProvider'
 import { fetchServicesContent } from '@/lib/publicApi'
 import { ServicesSkeleton } from '@/components/SkeletonLoaders'
+import DevCodingBackground from '@/components/DevCodingBackground'
 
 export default function Services() {
-  const [activeService, setActiveService] = useState(0)
-  const [servicesData, setServicesData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const { isDarkMode } = useTheme()
-
   const defaultServicesData = useMemo(() => ({
     title: 'My Quality Services',
     subtitle: 'What I Do',
@@ -46,6 +41,12 @@ export default function Services() {
       },
     ],
   }), [])
+
+  const [activeService, setActiveService] = useState(0)
+  const [servicesData, setServicesData] = useState(defaultServicesData)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const { isDarkMode } = useTheme()
 
   useEffect(() => {
     let cancelled = false
@@ -114,13 +115,12 @@ export default function Services() {
   return (
     <section
       id="services"
-      className={`py-[100px] transition-colors duration-300 ${isDarkMode ? 'bg-bg-2' : 'bg-gray-50'}`}
+      className={`relative py-[100px] transition-colors duration-300 ${isDarkMode ? 'bg-bg-2' : 'bg-gray-50'}`}
     >
-      <HeaderBanner
-        title="Services"
-        subtitle="Design, development, and polished execution for modern products."
-      />
+      {/* DEVELOPER CODING BACKGROUND ANIMATION */}
+      <DevCodingBackground />
 
+    
       <div className="container-custom">
 
         {/* ── Section header ── */}
@@ -160,11 +160,10 @@ export default function Services() {
 
         {/* ── Stats strip ── */}
         <motion.div
-          className={`grid grid-cols-3 divide-x rounded-2xl mb-16 overflow-hidden border ${
-            isDarkMode
+          className={`grid grid-cols-3 divide-x rounded-2xl mb-16 overflow-hidden border ${isDarkMode
               ? 'border-white/10 divide-white/10 bg-white/[0.03]'
               : 'border-slate-200 divide-slate-200 bg-white shadow-sm'
-          }`}
+            }`}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -204,13 +203,12 @@ export default function Services() {
               <motion.button
                 key={`${service.name}-${index}`}
                 onClick={() => setActiveService(index)}
-                className={`group w-full text-left rounded-2xl border px-6 py-5 transition-all duration-300 relative overflow-hidden ${
-                  activeService === index
+                className={`group w-full text-left rounded-2xl border px-6 py-5 transition-all duration-300 relative overflow-hidden ${activeService === index
                     ? 'border-primary'
                     : isDarkMode
-                    ? 'border-white/10 hover:border-white/20'
-                    : 'border-slate-200 hover:border-slate-300'
-                }`}
+                      ? 'border-white/10 hover:border-white/20'
+                      : 'border-slate-200 hover:border-slate-300'
+                  }`}
                 style={{
                   background:
                     activeService === index
@@ -218,8 +216,8 @@ export default function Services() {
                         ? 'linear-gradient(135deg, rgba(135,80,247,0.18), rgba(135,80,247,0.06))'
                         : 'linear-gradient(135deg, rgba(135,80,247,0.08), rgba(135,80,247,0.03))'
                       : isDarkMode
-                      ? 'rgba(255,255,255,0.03)'
-                      : 'rgba(255,255,255,0.95)',
+                        ? 'rgba(255,255,255,0.03)'
+                        : 'rgba(255,255,255,0.95)',
                 }}
                 whileHover={{ x: 4 }}
                 transition={{ duration: 0.2 }}
@@ -322,11 +320,10 @@ export default function Services() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeService}
-                className={`rounded-[28px] border p-10 relative overflow-hidden ${
-                  isDarkMode
+                className={`rounded-[28px] border p-10 relative overflow-hidden ${isDarkMode
                     ? 'border-white/10 bg-white/[0.04]'
                     : 'border-slate-200 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.08)]'
-                }`}
+                  }`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -364,8 +361,8 @@ export default function Services() {
                             i === activeService
                               ? 'var(--primary)'
                               : isDarkMode
-                              ? 'rgba(255,255,255,0.2)'
-                              : 'rgba(0,0,0,0.15)',
+                                ? 'rgba(255,255,255,0.2)'
+                                : 'rgba(0,0,0,0.15)',
                         }}
                       />
                     ))}

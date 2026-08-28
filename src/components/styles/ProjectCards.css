@@ -1,0 +1,223 @@
+/* =========================================
+   PROJECT CARD - TECH STACK SIGNATURE STYLE
+========================================= */
+
+.project-tech-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: clamp(14px, 1.4vw, 18px);
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+
+  /* Glassmorphism matching TechStack item */
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  transition:
+    transform 0.16s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.16s ease-out,
+    border-color 0.16s ease-out,
+    box-shadow 0.16s ease-out;
+}
+
+/* Light mode support */
+.project-tech-card-light {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================
+   FAST HOVER EFFECT (Matching Tech Stack)
+========================================= */
+
+.project-tech-card:hover {
+  transform: translateY(-7px) scale(1.02);
+  background: rgba(194, 164, 255, 0.16);
+  border-color: #c2a4ff;
+  box-shadow:
+    0 10px 30px rgba(194, 164, 255, 0.35),
+    0 0 20px rgba(194, 164, 255, 0.25);
+}
+
+.project-tech-card-light:hover {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: var(--primary, #8750f7);
+  box-shadow:
+    0 12px 32px rgba(135, 80, 247, 0.25),
+    0 0 20px rgba(135, 80, 247, 0.15);
+}
+
+/* =========================================
+   IMAGE & HOVER EFFECT
+========================================= */
+
+.project-tech-card .project-card-image {
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.2s ease-out;
+}
+
+.project-tech-card:hover .project-card-image {
+  transform: scale(1.06);
+  filter: drop-shadow(0 0 10px rgba(194, 164, 255, 0.7));
+}
+
+.project-tech-card-light:hover .project-card-image {
+  transform: scale(1.06);
+  filter: drop-shadow(0 0 10px rgba(135, 80, 247, 0.4));
+}
+
+/* =========================================
+   TITLE HOVER GLOW
+========================================= */
+
+.project-tech-card .project-card-title {
+  transition:
+    color 0.14s ease-out,
+    text-shadow 0.14s ease-out;
+}
+
+.project-tech-card:hover .project-card-title {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(194, 164, 255, 0.8);
+}
+
+.project-tech-card-light:hover .project-card-title {
+  color: var(--primary, #8750f7);
+  text-shadow: 0 0 10px rgba(135, 80, 247, 0.4);
+}
+
+/* =========================================
+   MICRO TECH STACK BADGES (Inside Card)
+========================================= */
+
+.project-tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 8px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  transition:
+    transform 0.14s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.14s ease-out,
+    border-color 0.14s ease-out,
+    box-shadow 0.14s ease-out,
+    color 0.14s ease-out,
+    text-shadow 0.14s ease-out;
+}
+
+.project-tech-badge-light {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #475569;
+}
+
+.project-tech-badge:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: rgba(194, 164, 255, 0.22);
+  border-color: #c2a4ff;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(194, 164, 255, 0.5);
+  text-shadow: 0 0 8px rgba(194, 164, 255, 0.8);
+}
+
+.project-tech-badge-light:hover {
+  background: rgba(135, 80, 247, 0.12);
+  border-color: var(--primary, #8750f7);
+  color: var(--primary, #8750f7);
+  box-shadow: 0 0 10px rgba(135, 80, 247, 0.3);
+  text-shadow: none;
+}
+
+/* =========================================
+   BUTTONS (Website, Github, PlayStore)
+========================================= */
+
+.project-btn-primary {
+  background: var(--primary, #8750f7);
+  color: #ffffff;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  transition:
+    transform 0.14s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.14s ease-out,
+    filter 0.14s ease-out;
+}
+
+.project-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 25px rgba(194, 164, 255, 0.5),
+    0 0 15px rgba(194, 164, 255, 0.4);
+  filter: brightness(1.1);
+}
+
+.project-btn-secondary {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  transition:
+    transform 0.14s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.14s ease-out,
+    border-color 0.14s ease-out,
+    box-shadow 0.14s ease-out,
+    color 0.14s ease-out;
+}
+
+.project-btn-secondary-light {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #334155;
+}
+
+.project-btn-secondary:hover {
+  transform: translateY(-2px);
+  background: rgba(194, 164, 255, 0.16);
+  border-color: #c2a4ff;
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(194, 164, 255, 0.35);
+}
+
+.project-btn-secondary-light:hover {
+  background: rgba(135, 80, 247, 0.08);
+  border-color: var(--primary, #8750f7);
+  color: var(--primary, #8750f7);
+  box-shadow: 0 0 14px rgba(135, 80, 247, 0.2);
+}
+
+/* =========================================
+   REDUCE MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .project-tech-card,
+  .project-tech-card .project-card-image,
+  .project-tech-card .project-card-title,
+  .project-tech-badge,
+  .project-btn-primary,
+  .project-btn-secondary {
+    transition: none !important;
+  }
+
+  .project-tech-card:hover {
+    transform: none !important;
+  }
+}

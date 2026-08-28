@@ -1,21 +1,14 @@
 "use client";
 
-import {
-  fetchContactContent,
-  resetFormStatus,
-  submitContactForm,
-} from "@/redux/contact/contactSlice";
-
+import { fetchContactContent, resetFormStatus, submitContactForm } from "@/redux/contact/contactSlice";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { motion, AnimatePresence } from "framer-motion";
-
 import { useTheme } from "@/components/ThemeProvider";
-
 import {
   FiArrowUpRight,
   FiCheck,
+  FiCopy,
   FiGithub,
   FiLinkedin,
   FiMail,
@@ -23,26 +16,50 @@ import {
   FiMessageCircle,
   FiPhone,
   FiSend,
+  FiStar,
   FiUser,
   FiX,
+  FiZap,
+  FiGlobe,
 } from "react-icons/fi";
-
 import { socialLinksArray, socialMediaLinks } from "@/global/SocialMediaLinks";
+import DevCodingBackground from "@/components/DevCodingBackground";
+
+const C = [
+  {
+    l: "Phone",
+    v: socialMediaLinks.phone.link.replace("tel:", ""),
+    h: socialMediaLinks.phone.link,
+    i: FiPhone,
+    copyable: true,
+  },
+  {
+    l: "Email",
+    v: socialMediaLinks.email.link.replace("mailto:", ""),
+    h: socialMediaLinks.email.link,
+    i: FiMail,
+    copyable: true,
+  },
+  {
+    l: "Location",
+    v: "Ameerpet, Hyderabad, Telangana",
+    h: null,
+    i: FiMapPin,
+    copyable: false,
+  },
+];
+
+const HIGHLIGHT_CHIPS = [
+  { icon: FiZap, label: "Fast 24h Response" },
+  { icon: FiStar, label: "Open for New Roles" },
+  { icon: FiGlobe, label: "Remote & On-Site" },
+];
 
 export default function Contact() {
   const { isDarkMode } = useTheme();
-
-  const dispatch = useDispatch();
-
-  const { formStatus, error, content } = useSelector(
-    (state) => state.contact
-  );
-
-  /* =========================================================
-     FORM STATE
-  ========================================================= */
-
-  const [formData, setFormData] = useState({
+  const d = useDispatch();
+  const { formStatus, error, content } = useSelector((s) => s.contact);
+  const [f, setF] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -50,1099 +67,761 @@ export default function Contact() {
     service: "",
     message: "",
   });
-
-  const [focusedField, setFocusedField] = useState(null);
-  const [validationErrors, setValidationErrors] = useState({});
-
-  /* =========================================================
-     FETCH CONTENT
-  ========================================================= */
+  const [fc, setFc] = useState(null);
+  const [ve, setVe] = useState({});
+  const [copiedKey, setCopiedKey] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchContactContent());
-  }, [dispatch]);
-
-  /* =========================================================
-     RESET AFTER SUCCESS
-  ========================================================= */
+    d(fetchContactContent());
+  }, [d]);
 
   useEffect(() => {
     if (formStatus === "succeeded") {
-      const timer = setTimeout(() => {
-        dispatch(resetFormStatus());
-
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-          service: "",
-          message: "",
-        });
-
-        setValidationErrors({});
+      const t = setTimeout(() => {
+        d(resetFormStatus());
+        setF({ firstName: "", lastName: "", email: "", phone: "", service: "", message: "" });
+        setVe({});
       }, 3000);
-
-      return () => clearTimeout(timer);
+      return () => clearTimeout(t);
     }
-  }, [formStatus, dispatch]);
+  }, [formStatus, d]);
 
-  /* =========================================================
-     VALIDATION
-  ========================================================= */
-
-  const validateName = (name, fieldName) => {
-    if (!name || name.trim() === "") {
-      return `${fieldName} is required`;
-    }
-
-    if (name.trim().length < 2) {
-      return `${fieldName} must be at least 2 characters`;
-    }
-
-    if (!/^[a-zA-Z\s\-']+$/.test(name)) {
-      return `${fieldName} can only contain letters, spaces, hyphens, and apostrophes`;
-    }
-
-    return "";
+  const handleCopy = (key, text) => {
+    if (!text) return;
+    navigator.clipboard.writeText(text);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  const validateEmail = (email) => {
-    if (!email || email.trim() === "") {
-      return "Email is required";
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      return "Please enter a valid email address";
-    }
-
-    return "";
+  const vn = (n, fn) =>
+    !n?.trim()
+      ? `${fn} is required`
+      : n.trim().length < 2
+      ? `${fn} must be at least 2 characters`
+      : !/^[a-zA-Z\s\-']+$/.test(n)
+      ? `${fn} can only contain letters, spaces, hyphens, and apostrophes`
+      : "";
+  const ve2 = (e) =>
+    !e?.trim()
+      ? "Email is required"
+      : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)
+      ? "Please enter a valid email address"
+      : "";
+  const vp = (p) => {
+    const c = p?.replace(/\D/g, "") || "";
+    return !p?.trim()
+      ? "Phone number is required"
+      : c.length < 10
+      ? "Phone number must be at least 10 digits"
+      : c.length > 15
+      ? "Phone number must be less than 15 digits"
+      : "";
   };
+  const vf = (n, v) =>
+    n === "firstName"
+      ? vn(v, "First name")
+      : n === "lastName"
+      ? vn(v, "Last name")
+      : n === "email"
+      ? ve2(v)
+      : n === "phone"
+      ? vp(v)
+      : "";
 
-  const validatePhone = (phone) => {
-    if (!phone || phone.trim() === "") {
-      return "Phone number is required";
-    }
-
-    const cleaned = phone.replace(/\D/g, "");
-
-    if (cleaned.length < 10) {
-      return "Phone number must be at least 10 digits";
-    }
-
-    if (cleaned.length > 15) {
-      return "Phone number must be less than 15 digits";
-    }
-
-    return "";
-  };
-
-  const validateField = (name, value) => {
-    switch (name) {
-      case "firstName":
-        return validateName(value, "First name");
-
-      case "lastName":
-        return validateName(value, "Last name");
-
-      case "email":
-        return validateEmail(value);
-
-      case "phone":
-        return validatePhone(value);
-
-      default:
-        return "";
-    }
-  };
-
-  /* =========================================================
-     CHANGE
-  ========================================================= */
-
-  const handleChange = (e) => {
+  const hc = (e) => {
     const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    const fieldError = validateField(name, value);
-
-    setValidationErrors((prev) => ({
-      ...prev,
-      [name]: fieldError,
-    }));
+    setF((p) => ({ ...p, [name]: value }));
+    setVe((p) => ({ ...p, [name]: vf(name, value) }));
   };
-
-  /* =========================================================
-     BLUR
-  ========================================================= */
-
-  const handleBlur = (e) => {
+  const hb = (e) => {
     const { name, value } = e.target;
-
-    const fieldError = validateField(name, value);
-
-    setValidationErrors((prev) => ({
-      ...prev,
-      [name]: fieldError,
-    }));
-
-    setFocusedField(null);
+    setVe((p) => ({ ...p, [name]: vf(name, value) }));
+    setFc(null);
   };
-
-  /* =========================================================
-     SUBMIT
-  ========================================================= */
-
-  const handleSubmit = (e) => {
+  const hs = (e) => {
     e.preventDefault();
-
-    const errors = {};
-    let hasErrors = false;
-
-    const firstNameError = validateName(
-      formData.firstName,
-      "First name"
-    );
-
-    if (firstNameError) {
-      errors.firstName = firstNameError;
-      hasErrors = true;
-    }
-
-    const lastNameError = validateName(
-      formData.lastName,
-      "Last name"
-    );
-
-    if (lastNameError) {
-      errors.lastName = lastNameError;
-      hasErrors = true;
-    }
-
-    const emailError = validateEmail(formData.email);
-
-    if (emailError) {
-      errors.email = emailError;
-      hasErrors = true;
-    }
-
-    const phoneError = validatePhone(formData.phone);
-
-    if (phoneError) {
-      errors.phone = phoneError;
-      hasErrors = true;
-    }
-
-    if (hasErrors) {
-      setValidationErrors(errors);
-
-      const firstErrorField = Object.keys(errors)[0];
-
-      const element = document.querySelector(
-        `[name="${firstErrorField}"]`
-      );
-
-      if (element) {
-        element.focus();
+    const err = {};
+    let has = false;
+    ["firstName", "lastName", "email", "phone"].forEach((k) => {
+      const e2 =
+        k === "firstName"
+          ? vn(f.firstName, "First name")
+          : k === "lastName"
+          ? vn(f.lastName, "Last name")
+          : k === "email"
+          ? ve2(f.email)
+          : vp(f.phone);
+      if (e2) {
+        err[k] = e2;
+        has = true;
       }
-
+    });
+    if (has) {
+      setVe(err);
+      const el = document.querySelector(`[name="${Object.keys(err)[0]}"]`);
+      el?.focus();
       return;
     }
-
-    setValidationErrors({});
-
-    const submitData = {
-      name: `${formData.firstName} ${formData.lastName}`.trim(),
-      email: formData.email,
-      phone: formData.phone,
-      service: formData.service,
-      message: formData.message,
-    };
-
-    dispatch(submitContactForm(submitData));
+    setVe({});
+    d(
+      submitContactForm({
+        name: `${f.firstName} ${f.lastName}`.trim(),
+        email: f.email,
+        phone: f.phone,
+        service: f.service,
+        message: f.message,
+      })
+    );
   };
 
-  /* =========================================================
-     CONTACT INFORMATION
-  ========================================================= */
-
-  const contactInfo = [
-    {
-      label: "Phone",
-      value: socialMediaLinks.phone.link.replace("tel:", ""),
-      link: socialMediaLinks.phone.link,
-      icon: FiPhone,
-    },
-    {
-      label: "Email",
-      value: socialMediaLinks.email.link.replace("mailto:", ""),
-      link: socialMediaLinks.email.link,
-      icon: FiMail,
-    },
-    {
-      label: "Location",
-      value: "Sr Nagar, Hyderabad, Telangana",
-      link: null,
-      icon: FiMapPin,
-    },
-  ];
-
-  /* =========================================================
-     INPUT CLASS
-  ========================================================= */
-
-  const inputBase = `
-    w-full
-    rounded-xl
-    border
-    px-4
-    py-3.5
-    outline-none
-    text-sm
-    transition-all
-    duration-300
-    placeholder:text-gray-500
-  `;
+  const ib = `w-full rounded-xl border px-4 py-3 outline-none text-sm transition-all duration-300 placeholder:text-gray-400 dark:placeholder:text-gray-500`;
 
   return (
     <main
-      className={`relative min-h-screen overflow-hidden transition-colors duration-500 ${
-        isDarkMode
-          ? "bg-[#05060d] text-white"
-          : "bg-[#f7f7fa] text-gray-900"
+      className={`relative min-h-screen overflow-hidden transition-colors duration-500 py-12 sm:py-16 md:py-20 ${
+        isDarkMode ? "bg-[#05060d] text-white" : "bg-[#f8f9fc] text-gray-900"
       }`}
     >
-      {/* =====================================================
-          BACKGROUND DECORATION
-      ===================================================== */}
+      <DevCodingBackground />
 
+      {/* AMBIENT GLOW ACCENTS */}
       <div
-        className="pointer-events-none absolute -top-48 left-1/2 h-[550px] w-[550px] -translate-x-1/2 rounded-full blur-3xl opacity-[0.07]"
-        style={{
-          background: "var(--primary)",
-        }}
+        className="pointer-events-none absolute -top-40 left-1/2 h-[480px] w-[480px] -translate-x-1/2 rounded-full blur-[120px] opacity-[0.08]"
+        style={{ background: "var(--primary)" }}
+      />
+      <div
+        className="pointer-events-none absolute top-[40%] -left-48 h-[360px] w-[360px] rounded-full blur-[100px] opacity-[0.06]"
+        style={{ background: "var(--primary)" }}
+      />
+      <div
+        className="pointer-events-none absolute bottom-10 -right-48 h-[380px] w-[380px] rounded-full blur-[100px] opacity-[0.06]"
+        style={{ background: "var(--primary)" }}
       />
 
-      <div
-        className="pointer-events-none absolute top-[35%] -left-60 h-[400px] w-[400px] rounded-full blur-3xl opacity-[0.05]"
-        style={{
-          background: "var(--primary)",
-        }}
-      />
-
-      <div
-        className="pointer-events-none absolute bottom-0 -right-60 h-[450px] w-[450px] rounded-full blur-3xl opacity-[0.05]"
-        style={{
-          background: "var(--primary)",
-        }}
-      />
-
-      {/* =====================================================
-          PAGE
-      ===================================================== */}
-
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28">
-        {/* ===================================================
-            HEADER
-        =================================================== */}
-
+      <section className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* ================= HEADER ================= */}
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 25,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.3,
-          }}
-          transition={{
-            duration: 0.55,
-          }}
-          className="max-w-3xl mx-auto text-center mb-14 sm:mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-2xl mx-auto text-center mb-10 sm:mb-12"
         >
-          {/* LABEL */}
-
-          <div className="inline-flex items-center gap-2 mb-5">
+          {/* DECORATIVE BADGE */}
+          <div
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.2em] mb-3 border shadow-sm"
+            style={{
+              color: "var(--primary)",
+              borderColor: "color-mix(in srgb, var(--primary) 25%, transparent)",
+              backgroundColor: isDarkMode
+                ? "color-mix(in srgb, var(--primary) 8%, rgba(255,255,255,0.02))"
+                : "color-mix(in srgb, var(--primary) 6%, white)",
+            }}
+          >
             <span
-              className="h-px w-8"
-              style={{
-                background: "var(--primary)",
-              }}
+              className="h-1.5 w-1.5 rounded-full animate-pulse"
+              style={{ background: "var(--primary)" }}
             />
+            <span>{content?.subtitle || "Contact Me"}</span>
+          </div>
 
+          {/* MEDIUM SIZE TITLE */}
+          <h1
+            className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight"
+            style={{ color: "var(--text-heading)" }}
+          >
+            Get In{" "}
             <span
-              className="text-xs sm:text-sm font-semibold uppercase tracking-[0.22em]"
+              className="text-transparent bg-clip-text"
               style={{
-                color: "var(--primary)",
+                backgroundImage:
+                  "linear-gradient(135deg, var(--primary), var(--primary-2, #a855f7))",
               }}
             >
-              {content?.subtitle || "Get In Touch"}
+              Touch
             </span>
+          </h1>
 
+          {/* DECORATIVE DIVIDER */}
+          <div className="flex items-center justify-center gap-2 mt-3">
             <span
-              className="h-px w-8"
+              className="h-0.5 w-10 rounded-full"
               style={{
-                background: "var(--primary)",
+                background:
+                  "linear-gradient(to right, transparent, var(--primary))",
+              }}
+            />
+            <span className="text-[10px]" style={{ color: "var(--primary)" }}>
+              ✦
+            </span>
+            <span
+              className="h-0.5 w-10 rounded-full"
+              style={{
+                background:
+                  "linear-gradient(to left, transparent, var(--primary))",
               }}
             />
           </div>
 
-          {/* TITLE */}
-
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight"
-            style={{
-              color: "var(--text-heading)",
-            }}
-          >
-            {content?.title || "Let's Work "}
-            <span
-              style={{
-                color: "var(--primary)",
-              }}
-            >
-              Together
-            </span>
-          </h1>
-
-          {/* DIVIDER */}
-
-          <div
-            className="w-20 h-1 mx-auto mt-5 rounded-full"
-            style={{
-              background:
-                "linear-gradient(to right, var(--primary), var(--primary-2))",
-            }}
-          />
-
-          {/* DESCRIPTION */}
-
+          {/* MEDIUM SIZE DESCRIPTION */}
           <p
-            className={`mt-5 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed ${
+            className={`mt-3.5 max-w-lg mx-auto text-sm sm:text-base leading-relaxed ${
               isDarkMode ? "text-gray-400" : "text-gray-600"
             }`}
           >
             {content?.description ||
-              "Have a project, idea, or opportunity in mind? Tell me what you're building and let's create something meaningful together."}
+              "Have a project, opportunity, or idea in mind? Let's connect and build something extraordinary together."}
           </p>
+
+          {/* DECORATIVE QUICK CHIPS */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-4">
+            {HIGHLIGHT_CHIPS.map((chip, idx) => {
+              const Icon = chip.icon;
+              return (
+                <div
+                  key={idx}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
+                    isDarkMode
+                      ? "bg-white/[0.02] border-white/10 text-gray-400"
+                      : "bg-white/80 border-gray-200/80 text-gray-600 shadow-sm"
+                  }`}
+                >
+                  <Icon size={12} style={{ color: "var(--primary)" }} />
+                  <span>{chip.label}</span>
+                </div>
+              );
+            })}
+          </div>
         </motion.div>
 
-        {/* ===================================================
-            MAIN CONTENT
-        =================================================== */}
-
-        <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-10 xl:gap-14 items-start">
-          {/* =================================================
-              LEFT INFORMATION PANEL
-          ================================================= */}
-
+        {/* ================= CONTENT GRID ================= */}
+        <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-6 lg:gap-8 items-start">
+          {/* LEFT COLUMN: CONTACT DETAILS */}
           <motion.div
-            initial={{
-              opacity: 0,
-              x: -35,
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.2,
-            }}
-            transition={{
-              duration: 0.55,
-            }}
+            initial={{ opacity: 0, x: -25 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5 }}
             className="relative"
           >
             <div
-              className={`relative overflow-hidden rounded-3xl border p-6 sm:p-8 lg:p-9 ${
+              className={`relative overflow-hidden rounded-2xl sm:rounded-3xl border p-6 sm:p-7 transition-all duration-300 ${
                 isDarkMode
-                  ? "bg-white/[0.035] border-white/10"
-                  : "bg-white border-gray-200 shadow-sm"
+                  ? "bg-[#0b0c16]/90 border-white/10 shadow-lg shadow-black/20"
+                  : "bg-white border-gray-200/90 shadow-md shadow-gray-200/50"
               }`}
             >
-              {/* TOP ACCENT */}
-
+              {/* TOP ACCENT LINE */}
               <div
-                className="absolute top-0 left-0 right-0 h-px"
+                className="absolute top-0 left-0 right-0 h-[2px]"
                 style={{
                   background:
                     "linear-gradient(to right, transparent, var(--primary), transparent)",
                 }}
               />
 
-              {/* DECORATIVE NUMBER */}
-
-              <div
-                className="pointer-events-none absolute -right-2 -top-8 text-[120px] font-black leading-none opacity-[0.025]"
-                style={{
-                  color: "var(--primary)",
-                }}
-              >
-                01
-              </div>
-
-              {/* HEADING */}
-
+              {/* CARD HEADER */}
               <div className="relative">
                 <div
-                  className="flex h-12 w-12 items-center justify-center rounded-xl mb-5"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl mb-4 border"
                   style={{
                     color: "var(--primary)",
+                    borderColor:
+                      "color-mix(in srgb, var(--primary) 20%, transparent)",
                     background:
                       "color-mix(in srgb, var(--primary) 10%, transparent)",
                   }}
                 >
-                  <FiMessageCircle size={22} />
+                  <FiMessageCircle size={20} />
                 </div>
-
                 <h2
-                  className="text-2xl sm:text-3xl font-bold"
-                  style={{
-                    color: "var(--text-heading)",
-                  }}
+                  className="text-xl sm:text-2xl font-bold tracking-tight"
+                  style={{ color: "var(--text-heading)" }}
                 >
-                  Let&apos;s connect
+                  Let&apos;s Connect
                 </h2>
-
                 <p
-                  className={`mt-3 text-sm sm:text-base leading-relaxed ${
-                    isDarkMode
-                      ? "text-gray-400"
-                      : "text-gray-600"
+                  className={`mt-1.5 text-xs sm:text-sm leading-relaxed ${
+                    isDarkMode ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
-                  I&apos;m open to discussing new projects,
-                  freelance opportunities, and interesting ideas.
+                  Reach out directly for freelance projects, hiring inquiries, or collaborations.
                 </p>
               </div>
 
-              {/* AVAILABILITY */}
-
+              {/* LIVE AVAILABILITY BADGE */}
               <div
-                className={`mt-7 rounded-2xl border p-4 ${
+                className={`mt-5 rounded-xl border p-3.5 transition-colors ${
                   isDarkMode
-                    ? "bg-white/[0.025] border-white/10"
-                    : "bg-gray-50 border-gray-200"
+                    ? "bg-white/[0.02] border-white/10"
+                    : "bg-gray-50/80 border-gray-200"
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="relative flex h-3 w-3">
+                  <span className="relative flex h-2.5 w-2.5">
                     <span
                       className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
-                      style={{
-                        background: "var(--primary)",
-                      }}
+                      style={{ background: "#22c55e" }}
                     />
-
                     <span
-                      className="relative inline-flex h-3 w-3 rounded-full"
-                      style={{
-                        background: "var(--primary)",
-                      }}
+                      className="relative inline-flex h-2.5 w-2.5 rounded-full"
+                      style={{ background: "#22c55e" }}
                     />
                   </span>
-
-                  <div>
+                  <div className="min-w-0">
                     <p
-                      className="text-sm font-semibold"
-                      style={{
-                        color: "var(--text-heading)",
-                      }}
+                      className="text-xs sm:text-sm font-semibold"
+                      style={{ color: "var(--text-heading)" }}
                     >
-                      Available for opportunities
+                      Available for Opportunities
                     </p>
-
                     <p
-                      className={`text-xs mt-0.5 ${
-                        isDarkMode
-                          ? "text-gray-500"
-                          : "text-gray-500"
+                      className={`text-[11px] mt-0.5 ${
+                        isDarkMode ? "text-gray-400" : "text-gray-500"
                       }`}
                     >
-                      Usually responds within 24 hours
+                      Prompt responses within 24 hours
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* CONTACT DETAILS */}
-
-              <div className="mt-7 space-y-3">
-                {contactInfo.map((item, index) => {
-                  const Icon = item.icon;
-
-                  const content = (
+              {/* CONTACT CHANNELS */}
+              <div className="mt-5 space-y-2.5">
+                {C.map((item, idx) => {
+                  const Icon = item.i;
+                  const isCopied = copiedKey === item.l;
+                  const contentInner = (
                     <div
-                      className={`group flex items-center gap-4 rounded-2xl border p-4 transition-all duration-300 ${
+                      className={`group flex items-center gap-3.5 rounded-xl border p-3 sm:p-3.5 transition-all duration-300 ${
                         isDarkMode
                           ? "bg-white/[0.02] border-white/10 hover:bg-white/[0.05] hover:border-white/20"
-                          : "bg-gray-50 border-gray-200 hover:bg-white hover:border-gray-300"
+                          : "bg-gray-50/70 border-gray-200 hover:bg-white hover:border-gray-300 shadow-sm"
                       }`}
                     >
                       <span
-                        className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl"
+                        className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border transition-transform duration-200 group-hover:scale-105"
                         style={{
                           color: "var(--primary)",
+                          borderColor:
+                            "color-mix(in srgb, var(--primary) 20%, transparent)",
                           background:
-                            "color-mix(in srgb, var(--primary) 10%, transparent)",
+                            "color-mix(in srgb, var(--primary) 8%, transparent)",
                         }}
                       >
-                        <Icon size={18} />
+                        <Icon size={16} />
                       </span>
-
                       <div className="min-w-0 flex-1">
                         <p
-                          className={`text-[11px] uppercase tracking-wider font-semibold ${
-                            isDarkMode
-                              ? "text-gray-500"
-                              : "text-gray-400"
+                          className={`text-[10px] uppercase tracking-wider font-semibold ${
+                            isDarkMode ? "text-gray-400" : "text-gray-500"
                           }`}
                         >
-                          {item.label}
+                          {item.l}
                         </p>
-
                         <p
-                          className="mt-1 text-sm font-medium break-words"
-                          style={{
-                            color: "var(--text-heading)",
-                          }}
+                          className="mt-0.5 text-xs sm:text-sm font-medium break-words truncate"
+                          style={{ color: "var(--text-heading)" }}
                         >
-                          {item.value}
+                          {item.v}
                         </p>
                       </div>
 
-                      {item.link && (
-                        <FiArrowUpRight
-                          size={16}
-                          className="flex-shrink-0 opacity-40 transition-all duration-200 group-hover:opacity-100 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                          style={{
-                            color: "var(--primary)",
+                      {/* COPY OR EXTERNAL LINK ICON */}
+                      {item.copyable ? (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleCopy(item.l, item.v);
                           }}
-                        />
+                          className={`flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-medium transition-all ${
+                            isCopied
+                              ? "bg-green-500/10 text-green-500 border border-green-500/30"
+                              : isDarkMode
+                              ? "text-gray-400 hover:text-white bg-white/5 hover:bg-white/10"
+                              : "text-gray-500 hover:text-gray-900 bg-gray-100 hover:bg-gray-200"
+                          }`}
+                          title="Copy to clipboard"
+                        >
+                          {isCopied ? (
+                            <>
+                              <FiCheck size={12} />
+                              <span>Copied</span>
+                            </>
+                          ) : (
+                            <>
+                              <FiCopy size={12} />
+                              <span>Copy</span>
+                            </>
+                          )}
+                        </button>
+                      ) : (
+                        item.h && (
+                          <FiArrowUpRight
+                            size={16}
+                            className="flex-shrink-0 opacity-40 transition-all duration-200 group-hover:opacity-100 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                            style={{ color: "var(--primary)" }}
+                          />
+                        )
                       )}
                     </div>
                   );
 
-                  return item.link ? (
-                    <a
-                      key={index}
-                      href={item.link}
-                    >
-                      {content}
+                  return item.h && !item.copyable ? (
+                    <a key={idx} href={item.h} className="block">
+                      {contentInner}
                     </a>
                   ) : (
-                    <div key={index}>{content}</div>
+                    <div key={idx}>{contentInner}</div>
                   );
                 })}
               </div>
 
-              {/* SOCIAL */}
-
+              {/* SOCIAL MEDIA CONNECTIONS */}
               <div
-                className={`mt-7 pt-6 border-t ${
-                  isDarkMode
-                    ? "border-white/10"
-                    : "border-gray-200"
+                className={`mt-6 pt-5 border-t ${
+                  isDarkMode ? "border-white/10" : "border-gray-200"
                 }`}
               >
                 <p
-                  className={`text-[11px] uppercase tracking-[0.18em] font-semibold mb-4 ${
-                    isDarkMode
-                      ? "text-gray-500"
-                      : "text-gray-400"
+                  className={`text-[11px] uppercase tracking-[0.16em] font-semibold mb-3 ${
+                    isDarkMode ? "text-gray-400" : "text-gray-500"
                   }`}
                 >
-                  Find me online
+                  Connect Online
                 </p>
-
-                <div className="flex flex-wrap gap-2.5">
-                  {socialLinksArray.map((social) => {
-                    let Icon = null;
-
-                    if (social.icon === "FaGithub") {
-                      Icon = FiGithub;
-                    }
-
-                    if (social.icon === "FaLinkedin") {
-                      Icon = FiLinkedin;
-                    }
-
-                    if (social.icon === "MdEmail") {
-                      Icon = FiMail;
-                    }
-
-                    if (social.icon === "FaPhone") {
-                      Icon = FiPhone;
-                    }
-
-                    if (!Icon) return null;
-
-                    return (
+                <div className="flex flex-wrap gap-2">
+                  {socialLinksArray.map((s) => {
+                    const Icon =
+                      s.icon === "FaGithub"
+                        ? FiGithub
+                        : s.icon === "FaLinkedin"
+                        ? FiLinkedin
+                        : s.icon === "MdEmail"
+                        ? FiMail
+                        : s.icon === "FaPhone"
+                        ? FiPhone
+                        : null;
+                    return Icon ? (
                       <motion.a
-                        key={social.name}
-                        href={social.link}
+                        key={s.name}
+                        href={s.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={{
-                          y: -3,
-                        }}
-                        whileTap={{
-                          scale: 0.96,
-                        }}
-                        className={`flex items-center gap-2 rounded-xl border px-3.5 py-2.5 text-xs font-medium transition-all duration-300 ${
+                        whileHover={{ y: -2 }}
+                        whileTap={{ scale: 0.96 }}
+                        className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition-all duration-200 ${
                           isDarkMode
-                            ? "border-white/10 bg-white/[0.02] hover:bg-white/[0.06]"
-                            : "border-gray-200 bg-gray-50 hover:bg-white"
+                            ? "border-white/10 bg-white/[0.02] hover:bg-white/[0.06] text-gray-300 hover:text-white"
+                            : "border-gray-200 bg-gray-50 hover:bg-white text-gray-700 hover:text-gray-900 shadow-sm"
                         }`}
-                        style={{
-                          color: "var(--text-body)",
-                        }}
                       >
-                        <Icon size={15} />
-
-                        {social.name}
+                        <Icon size={14} style={{ color: "var(--primary)" }} />
+                        <span>{s.name}</span>
                       </motion.a>
-                    );
+                    ) : null;
                   })}
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* =================================================
-              FORM
-          ================================================= */}
-
+          {/* RIGHT COLUMN: CONTACT FORM */}
           <motion.div
-            initial={{
-              opacity: 0,
-              x: 35,
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.2,
-            }}
-            transition={{
-              duration: 0.55,
-              delay: 0.1,
-            }}
+            initial={{ opacity: 0, x: 25 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.08 }}
           >
             <div
-              className={`relative overflow-hidden rounded-3xl border p-6 sm:p-8 lg:p-9 ${
+              className={`relative overflow-hidden rounded-2xl sm:rounded-3xl border p-6 sm:p-7 transition-all duration-300 ${
                 isDarkMode
-                  ? "bg-white/[0.045] border-white/10"
-                  : "bg-white border-gray-200 shadow-sm"
+                  ? "bg-[#0b0c16]/90 border-white/10 shadow-lg shadow-black/20"
+                  : "bg-white border-gray-200/90 shadow-md shadow-gray-200/50"
               }`}
             >
-              {/* TOP ACCENT */}
-
+              {/* TOP ACCENT LINE */}
               <div
-                className="absolute top-0 left-0 right-0 h-px"
+                className="absolute top-0 left-0 right-0 h-[2px]"
                 style={{
                   background:
                     "linear-gradient(to right, transparent, var(--primary), transparent)",
                 }}
               />
 
-              {/* HEADER */}
-
-              <div className="relative flex items-start justify-between gap-5 mb-7">
+              {/* FORM HEADER */}
+              <div className="relative flex items-start justify-between gap-4 mb-6">
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-1.5">
                     <span
-                      className="text-xs font-semibold uppercase tracking-[0.18em]"
-                      style={{
-                        color: "var(--primary)",
-                      }}
+                      className="text-xs font-semibold uppercase tracking-[0.16em]"
+                      style={{ color: "var(--primary)" }}
                     >
-                      Start a conversation
+                      Direct Message
                     </span>
                   </div>
-
                   <h2
-                    className="text-2xl sm:text-3xl font-bold"
-                    style={{
-                      color: "var(--text-heading)",
-                    }}
+                    className="text-xl sm:text-2xl font-bold tracking-tight"
+                    style={{ color: "var(--text-heading)" }}
                   >
-                    Send me a message
+                    Send Me a Message
                   </h2>
-
                   <p
-                    className={`mt-2 text-sm ${
-                      isDarkMode
-                        ? "text-gray-500"
-                        : "text-gray-500"
+                    className={`mt-1 text-xs sm:text-sm ${
+                      isDarkMode ? "text-gray-400" : "text-gray-600"
                     }`}
                   >
-                    Tell me a little about what you need.
+                    Fill out the form below to get started.
                   </p>
                 </div>
-
                 <div
-                  className="hidden sm:flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl"
+                  className="hidden sm:flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border"
                   style={{
                     color: "var(--primary)",
+                    borderColor:
+                      "color-mix(in srgb, var(--primary) 20%, transparent)",
                     background:
                       "color-mix(in srgb, var(--primary) 10%, transparent)",
                   }}
                 >
-                  <FiSend size={20} />
+                  <FiSend size={18} />
                 </div>
               </div>
 
-              {/* ERROR */}
-
+              {/* ERROR NOTIFICATION */}
               <AnimatePresence mode="wait">
                 {error && (
                   <motion.div
-                    initial={{
-                      opacity: 0,
-                      y: -10,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      y: 0,
-                    }}
-                    exit={{
-                      opacity: 0,
-                      y: -10,
-                    }}
-                    className="mb-5 flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-500"
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="mb-4 flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/10 p-3.5 text-xs sm:text-sm text-red-500"
                   >
-                    <FiX
-                      size={17}
-                      className="mt-0.5 flex-shrink-0"
-                    />
-
-                    <span className="break-words">
-                      {error}
-                    </span>
+                    <FiX size={16} className="mt-0.5 flex-shrink-0" />
+                    <span className="break-words">{error}</span>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* SUCCESS */}
-
+              {/* SUCCESS NOTIFICATION */}
               <AnimatePresence>
                 {formStatus === "succeeded" && (
                   <motion.div
-                    initial={{
-                      opacity: 0,
-                      scale: 0.96,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1,
-                    }}
-                    exit={{
-                      opacity: 0,
-                      scale: 0.96,
-                    }}
-                    className="mb-5 flex items-center gap-3 rounded-xl border border-green-500/20 bg-green-500/5 p-4"
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    className="mb-4 flex items-center gap-3 rounded-xl border border-green-500/20 bg-green-500/10 p-3.5"
                   >
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
-                      <FiCheck size={16} />
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-green-500 text-white">
+                      <FiCheck size={14} />
                     </span>
-
                     <div>
-                      <p className="text-sm font-semibold text-green-500">
-                        Message sent successfully
+                      <p className="text-xs sm:text-sm font-semibold text-green-500">
+                        Message sent successfully!
                       </p>
-
                       <p
-                        className={`text-xs mt-0.5 ${
-                          isDarkMode
-                            ? "text-gray-500"
-                            : "text-gray-500"
+                        className={`text-[11px] mt-0.5 ${
+                          isDarkMode ? "text-gray-400" : "text-gray-500"
                         }`}
                       >
-                        Thanks for reaching out. I&apos;ll get back
-                        to you soon.
+                        Thank you for reaching out. I will reply soon.
                       </p>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* FORM */}
-
-              <form
-                onSubmit={handleSubmit}
-                noValidate
-                className="space-y-5"
-              >
-                {/* NAME */}
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <FormField
-                    label="First Name"
-                    name="firstName"
-                    value={formData.firstName}
-                    placeholder="Your first name"
-                    required
-                    error={validationErrors.firstName}
-                    focused={focusedField === "firstName"}
-                    isDarkMode={isDarkMode}
-                    inputBase={inputBase}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    onFocus={() =>
-                      setFocusedField("firstName")
-                    }
-                    icon={<FiUser size={15} />}
-                  />
-
-                  <FormField
-                    label="Last Name"
-                    name="lastName"
-                    value={formData.lastName}
-                    placeholder="Your last name"
-                    required
-                    error={validationErrors.lastName}
-                    focused={focusedField === "lastName"}
-                    isDarkMode={isDarkMode}
-                    inputBase={inputBase}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    onFocus={() =>
-                      setFocusedField("lastName")
-                    }
-                  />
+              {/* FORM FIELDS */}
+              <form onSubmit={hs} noValidate className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-3.5">
+                  {["firstName", "lastName"].map((n, i) => (
+                    <FF
+                      key={n}
+                      l={i === 0 ? "First Name" : "Last Name"}
+                      n={n}
+                      v={f[n]}
+                      p={i === 0 ? "Enter first name" : "Enter last name"}
+                      r
+                      err={ve[n]}
+                      f2={fc === n}
+                      dm={isDarkMode}
+                      ib={ib}
+                      oc={hc}
+                      ob={hb}
+                      of={() => setFc(n)}
+                      ic={n === "firstName" ? <FiUser size={15} /> : null}
+                    />
+                  ))}
                 </div>
 
-                {/* EMAIL + PHONE */}
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <FormField
-                    label="Email Address"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    placeholder="you@example.com"
-                    required
-                    error={validationErrors.email}
-                    focused={focusedField === "email"}
-                    isDarkMode={isDarkMode}
-                    inputBase={inputBase}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    onFocus={() =>
-                      setFocusedField("email")
-                    }
-                    icon={<FiMail size={15} />}
+                <div className="grid sm:grid-cols-2 gap-3.5">
+                  <FF
+                    l="Email Address"
+                    n="email"
+                    t="email"
+                    v={f.email}
+                    p="you@example.com"
+                    r
+                    err={ve.email}
+                    f2={fc === "email"}
+                    dm={isDarkMode}
+                    ib={ib}
+                    oc={hc}
+                    ob={hb}
+                    of={() => setFc("email")}
+                    ic={<FiMail size={15} />}
                   />
-
-                  <FormField
-                    label="Phone Number"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    placeholder="Enter mobile number"
-                    required
-                    error={validationErrors.phone}
-                    focused={focusedField === "phone"}
-                    isDarkMode={isDarkMode}
-                    inputBase={inputBase}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    onFocus={() =>
-                      setFocusedField("phone")
-                    }
-                    icon={<FiPhone size={15} />}
+                  <FF
+                    l="Phone Number"
+                    n="phone"
+                    t="tel"
+                    v={f.phone}
+                    p="Enter mobile number"
+                    r
+                    err={ve.phone}
+                    f2={fc === "phone"}
+                    dm={isDarkMode}
+                    ib={ib}
+                    oc={hc}
+                    ob={hb}
+                    of={() => setFc("phone")}
+                    ic={<FiPhone size={15} />}
                   />
                 </div>
-
-                {/* SERVICE */}
 
                 <div>
                   <label
                     htmlFor="service"
-                    className="mb-2 block text-xs font-semibold uppercase tracking-wider"
-                    style={{
-                      color: "var(--text-body)",
-                    }}
+                    className="mb-1.5 block text-xs font-semibold uppercase tracking-wider"
+                    style={{ color: "var(--text-body)" }}
                   >
-                    What can I help you with?
+                    Service Needed
                   </label>
-
                   <select
                     id="service"
                     name="service"
-                    value={formData.service}
-                    onChange={handleChange}
-                    className={`${inputBase} cursor-pointer appearance-none`}
+                    value={f.service}
+                    onChange={hc}
+                    className={`${ib} cursor-pointer appearance-none`}
                     style={{
                       backgroundColor: isDarkMode
-                        ? "rgba(255,255,255,0.04)"
+                        ? "rgba(255,255,255,0.03)"
                         : "rgba(0,0,0,0.02)",
                       borderColor:
                         isDarkMode
-                          ? "rgba(255,255,255,0.1)"
-                          : "rgba(0,0,0,0.1)",
-                      color: formData.service
+                          ? "rgba(255,255,255,0.12)"
+                          : "rgba(0,0,0,0.12)",
+                      color: f.service
                         ? "var(--text-heading)"
                         : isDarkMode
-                        ? "#6b7280"
-                        : "#9ca3af",
+                        ? "#9ca3af"
+                        : "#6b7280",
                     }}
                   >
-                    <option value="">
-                      Select a service
-                    </option>
-
-                    <option value="Web Development">
-                      Web Development
-                    </option>
-
-                    <option value="React Native Development">
-                      React Native Development
-                    </option>
-
-                    <option value="MERN Stack Development">
-                      MERN Stack Development
-                    </option>
-
-                    <option value="E-Commerce Development">
-                      E-Commerce Development
-                    </option>
-
-                    <option value="Dashboard Development">
-                      Dashboard Development
-                    </option>
-
-                    <option value="Other">
-                      Other
-                    </option>
+                    <option value="">Select a service (Optional)</option>
+                    {[
+                      "Full-Stack Web Development",
+                      "React Native App Development",
+                      "MERN Stack Application",
+                      "Frontend UI / UX Engineering",
+                      "API & Backend Integration",
+                      "Other Inquiries",
+                    ].map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
                   </select>
                 </div>
-
-                {/* MESSAGE */}
 
                 <div>
                   <label
                     htmlFor="message"
-                    className="mb-2 block text-xs font-semibold uppercase tracking-wider"
-                    style={{
-                      color: "var(--text-body)",
-                    }}
+                    className="mb-1.5 block text-xs font-semibold uppercase tracking-wider"
+                    style={{ color: "var(--text-body)" }}
                   >
                     Your Message
                   </label>
-
                   <textarea
                     id="message"
                     name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={6}
-                    placeholder="Tell me about your project, goals, timeline, or anything else you'd like to discuss..."
-                    className={`${inputBase} resize-none`}
+                    value={f.message}
+                    onChange={hc}
+                    rows={4}
+                    placeholder="Tell me a bit about your project, goals, or timeline..."
+                    className={`${ib} resize-none`}
                     style={{
                       backgroundColor: isDarkMode
-                        ? "rgba(255,255,255,0.04)"
+                        ? "rgba(255,255,255,0.03)"
                         : "rgba(0,0,0,0.02)",
                       borderColor:
-                        focusedField === "message"
+                        fc === "message"
                           ? "var(--primary)"
                           : isDarkMode
-                          ? "rgba(255,255,255,0.1)"
-                          : "rgba(0,0,0,0.1)",
+                          ? "rgba(255,255,255,0.12)"
+                          : "rgba(0,0,0,0.12)",
                       color: "var(--text-heading)",
                       boxShadow:
-                        focusedField === "message"
-                          ? `0 0 0 4px ${
-                              isDarkMode
-                                ? "rgba(135,80,247,0.12)"
-                                : "rgba(135,80,247,0.08)"
-                            }`
+                        fc === "message"
+                          ? `0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent)`
                           : "none",
                     }}
-                    onFocus={() =>
-                      setFocusedField("message")
-                    }
-                    onBlur={() =>
-                      setFocusedField(null)
-                    }
+                    onFocus={() => setFc("message")}
+                    onBlur={() => setFc(null)}
                   />
                 </div>
 
-                {/* SUBMIT */}
-
+                {/* SUBMIT BUTTON */}
                 <motion.button
                   type="submit"
                   disabled={
-                    formStatus === "loading" ||
-                    formStatus === "succeeded"
+                    formStatus === "loading" || formStatus === "succeeded"
                   }
-                  whileHover={{
-                    y: -2,
-                  }}
-                  whileTap={{
-                    scale: 0.985,
-                  }}
-                  className="group relative w-full overflow-hidden rounded-xl py-4 px-6 font-semibold text-white transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-60"
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.985 }}
+                  className="group relative w-full overflow-hidden rounded-xl py-3.5 px-6 text-sm sm:text-base font-semibold text-white transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-60 shadow-md"
                   style={{
                     background:
                       formStatus === "succeeded"
-                        ? "linear-gradient(135deg,#22c55e,#16a34a)"
-                        : "linear-gradient(135deg,var(--primary),var(--primary-2))",
+                        ? "linear-gradient(135deg, #22c55e, #16a34a)"
+                        : "linear-gradient(135deg, var(--primary), var(--primary-2, #a855f7))",
                     boxShadow:
                       formStatus === "succeeded"
-                        ? "none"
-                        : "0 12px 30px color-mix(in srgb, var(--primary) 20%, transparent)",
+                        ? "0 4px 15px rgba(34, 197, 94, 0.3)"
+                        : "0 8px 24px color-mix(in srgb, var(--primary) 28%, transparent)",
                   }}
                 >
-                  {/* SHINE */}
-
                   {formStatus === "idle" && (
-                    <span className="absolute inset-0 -translate-x-full bg-white/10 transition-transform duration-700 group-hover:translate-x-full" />
+                    <span className="absolute inset-0 -translate-x-full bg-white/15 transition-transform duration-700 group-hover:translate-x-full" />
                   )}
-
                   <span className="relative flex items-center justify-center gap-2">
                     {formStatus === "idle" && (
                       <>
-                        Send Message
+                        <span>Send Message</span>
                         <FiArrowUpRight
-                          size={17}
+                          size={16}
                           className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                         />
                       </>
                     )}
-
                     {formStatus === "loading" && (
                       <>
-                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                        Sending...
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                        <span>Sending...</span>
                       </>
                     )}
-
                     {formStatus === "succeeded" && (
                       <>
-                        <FiCheck size={18} />
-                        Message Sent
+                        <FiCheck size={16} />
+                        <span>Message Sent!</span>
                       </>
                     )}
-
                     {formStatus === "failed" && (
                       <>
-                        Try Again
-                        <FiArrowUpRight size={17} />
+                        <span>Try Again</span>
+                        <FiArrowUpRight size={16} />
                       </>
                     )}
                   </span>
@@ -1150,13 +829,10 @@ export default function Contact() {
 
                 <p
                   className={`text-center text-[11px] ${
-                    isDarkMode
-                      ? "text-gray-600"
-                      : "text-gray-400"
+                    isDarkMode ? "text-gray-500" : "text-gray-400"
                   }`}
                 >
-                  Your information is only used to respond to
-                  your enquiry.
+                  🔒 Your information is confidential and will only be used to reply.
                 </p>
               </form>
             </div>
@@ -1167,119 +843,68 @@ export default function Contact() {
   );
 }
 
-/* =============================================================
-   FORM FIELD
-============================================================= */
-
-function FormField({
-  label,
-  name,
-  type = "text",
-  value,
-  placeholder,
-  required,
-  error,
-  focused,
-  isDarkMode,
-  inputBase,
-  onChange,
-  onBlur,
-  onFocus,
-  icon,
-}) {
+function FF({ l, n, t = "text", v, p, r, err, f2, dm, ib, oc, ob, of, ic }) {
   return (
     <div className="min-w-0">
       <label
-        htmlFor={name}
-        className="mb-2 block text-xs font-semibold uppercase tracking-wider"
-        style={{
-          color: "var(--text-body)",
-        }}
+        htmlFor={n}
+        className="mb-1.5 block text-xs font-semibold uppercase tracking-wider"
+        style={{ color: "var(--text-body)" }}
       >
-        {label}
-
-        {required && (
-          <span className="ml-1 text-red-500">
-            *
-          </span>
-        )}
+        {l}
+        {r && <span className="ml-1 text-red-500">*</span>}
       </label>
-
       <div className="relative">
-        {icon && (
+        {ic && (
           <span
-            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2"
+            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2"
             style={{
-              color: focused
-                ? "var(--primary)"
-                : isDarkMode
-                ? "#6b7280"
-                : "#9ca3af",
+              color: f2 ? "var(--primary)" : dm ? "#6b7280" : "#9ca3af",
             }}
           >
-            {icon}
+            {ic}
           </span>
         )}
-
         <input
-          id={name}
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          placeholder={placeholder}
-          className={`${inputBase} ${
-            icon ? "pl-11" : ""
-          }`}
+          id={n}
+          type={t}
+          name={n}
+          value={v}
+          onChange={oc}
+          onBlur={ob}
+          onFocus={of}
+          placeholder={p}
+          className={`${ib} ${ic ? "pl-10" : ""}`}
           style={{
-            backgroundColor: isDarkMode
-              ? "rgba(255,255,255,0.04)"
+            backgroundColor: dm
+              ? "rgba(255,255,255,0.03)"
               : "rgba(0,0,0,0.02)",
-            borderColor: error
+            borderColor: err
               ? "#ef4444"
-              : focused
+              : f2
               ? "var(--primary)"
-              : isDarkMode
-              ? "rgba(255,255,255,0.1)"
-              : "rgba(0,0,0,0.1)",
+              : dm
+              ? "rgba(255,255,255,0.12)"
+              : "rgba(0,0,0,0.12)",
             color: "var(--text-heading)",
-            boxShadow: error
-              ? "0 0 0 3px rgba(239,68,68,0.08)"
-              : focused
-              ? `0 0 0 4px ${
-                  isDarkMode
-                    ? "rgba(135,80,247,0.12)"
-                    : "rgba(135,80,247,0.08)"
-                }`
+            boxShadow: err
+              ? "0 0 0 3px rgba(239,68,68,0.12)"
+              : f2
+              ? `0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent)`
               : "none",
           }}
         />
       </div>
-
       <AnimatePresence>
-        {error && (
+        {err && (
           <motion.p
-            initial={{
-              opacity: 0,
-              height: 0,
-              y: -5,
-            }}
-            animate={{
-              opacity: 1,
-              height: "auto",
-              y: 0,
-            }}
-            exit={{
-              opacity: 0,
-              height: 0,
-              y: -5,
-            }}
-            className="mt-1.5 flex items-center gap-1 text-[11px] text-red-500"
+            initial={{ opacity: 0, height: 0, y: -4 }}
+            animate={{ opacity: 1, height: "auto", y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -4 }}
+            className="mt-1 flex items-center gap-1 text-[11px] text-red-500"
           >
             <FiX size={12} />
-            {error}
+            {err}
           </motion.p>
         )}
       </AnimatePresence>

@@ -1,0 +1,132 @@
+/* Hide default cursor on desktop */
+@media (hover: hover) and (pointer: fine) {
+  html, body, a, button, input, textarea, select, [role="button"], .cursor-pointer {
+    cursor: none !important;
+  }
+}
+
+/* Custom cursor root */
+.custom-neon-cursor-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999999;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.custom-neon-cursor-root.is-active {
+  opacity: 1;
+}
+
+/* Pointer Arrow */
+.custom-cursor-pointer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 10000000;
+  will-change: transform;
+  transform-origin: 3px 3px;
+  transition: transform 0.05s ease-out;
+}
+
+.neon-cursor-svg {
+  width: 32px;
+  height: 32px;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px var(--primary, #8750f7)) drop-shadow(0 0 14px color-mix(in srgb, var(--primary, #8750f7) 80%, transparent));
+}
+
+/* Rounded Circle Pulse on Cursor Stop */
+.cursor-stop-pulse-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 64px;
+  margin-left: -32px;
+  margin-top: -32px;
+  pointer-events: none;
+  z-index: 9999996;
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+}
+
+.custom-neon-cursor-root.is-stopped .cursor-stop-pulse-layer {
+  opacity: 1;
+}
+
+.cursor-pulse-circle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--primary, #8750f7) 85%, transparent);
+  box-shadow: 0 0 12px var(--primary, #8750f7), inset 0 0 10px color-mix(in srgb, var(--primary, #8750f7) 50%, transparent);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.custom-neon-cursor-root.is-stopped .cursor-pulse-circle.ring-1 {
+  animation: cursorPulseCircleAnim 2s cubic-bezier(0.15, 0.8, 0.25, 1) infinite;
+}
+
+.custom-neon-cursor-root.is-stopped .cursor-pulse-circle.ring-2 {
+  animation: cursorPulseCircleAnim 2s cubic-bezier(0.15, 0.8, 0.25, 1) 0.65s infinite;
+}
+
+.custom-neon-cursor-root.is-stopped .cursor-pulse-circle.ring-3 {
+  animation: cursorPulseCircleAnim 2s cubic-bezier(0.15, 0.8, 0.25, 1) 1.3s infinite;
+}
+
+@keyframes cursorPulseCircleAnim {
+  0% {
+    transform: scale(0.2);
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Extended Dot Trail Layer */
+.custom-cursor-trail-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999998;
+}
+
+/* Individual Trail Dots */
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+  transform: translate3d(-100px, -100px, 0);
+}
+
+/* Disable on touch devices */
+@media (hover: none) or (pointer: coarse) {
+  .custom-neon-cursor-root {
+    display: none !important;
+  }
+  html, body, a, button, input, textarea, select, [role="button"], .cursor-pointer {
+    cursor: auto !important;
+  }
+}

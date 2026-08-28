@@ -1,0 +1,1006 @@
+
+/* =========================================
+   MAIN SECTION
+========================================= */
+
+.techstack-new {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  padding: clamp(60px, 8vw, 100px) 16px;
+
+  background: #0b080c;
+}
+
+
+/* =========================================
+   VIDEO BACKGROUND
+========================================= */
+
+.techstack-video-container {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  z-index: 0;
+}
+
+.techstack-video {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+
+/* =========================================
+   DARK OVERLAY
+========================================= */
+
+.techstack-overlay {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(11, 8, 12, 0.65) 0%,
+      rgba(0, 0, 0, 0.48) 40%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+
+  z-index: 1;
+}
+
+
+/* =========================================
+   TOP / BOTTOM FADE
+========================================= */
+
+.techstack-video-container::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: clamp(90px, 12vw, 180px);
+
+  background: linear-gradient(
+    to bottom,
+    #0b080c 0%,
+    rgba(11, 8, 12, 0.8) 25%,
+    transparent 100%
+  );
+
+  z-index: 2;
+
+  pointer-events: none;
+}
+
+.techstack-video-container::after {
+  content: "";
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  height: clamp(90px, 12vw, 180px);
+
+  background: linear-gradient(
+    to top,
+    #0b080c 0%,
+    rgba(11, 8, 12, 0.8) 25%,
+    transparent 100%
+  );
+
+  z-index: 2;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.techstack-content {
+  position: relative;
+  z-index: 3;
+
+  width: 100%;
+  max-width: 1150px;
+
+  margin: 0 auto;
+
+  padding: 0 10px;
+}
+
+
+/* =========================================
+   HEADER & TITLE
+========================================= */
+
+.techstack-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: clamp(12px, 2vw, 26px);
+
+  margin: 0 auto clamp(28px, 4.5vw, 50px);
+
+  width: 100%;
+  max-width: 1050px;
+}
+
+.techstack-decor {
+  display: flex;
+  align-items: center;
+
+  gap: clamp(8px, 1.2vw, 14px);
+
+  flex: 1;
+
+  max-width: clamp(140px, 24vw, 340px);
+}
+
+.techstack-decor.left-decor {
+  justify-content: flex-end;
+}
+
+.techstack-decor.right-decor {
+  justify-content: flex-start;
+}
+
+
+/* =========================================
+   MULTI-LINES
+========================================= */
+
+.techstack-lines-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3.5px;
+
+  flex: 1;
+
+  width: 100%;
+}
+
+.techstack-decor.left-decor .techstack-lines-group {
+  align-items: flex-end;
+}
+
+.techstack-decor.right-decor .techstack-lines-group {
+  align-items: flex-start;
+}
+
+.techstack-line {
+  border-radius: 2px;
+}
+
+
+/* =========================================
+   3 TIERED LINE LENGTHS
+========================================= */
+
+.techstack-line.line-1 {
+  width: 100%;
+  height: 2px;
+}
+
+.techstack-line.line-2 {
+  width: 72%;
+  height: 1.5px;
+
+  opacity: 0.8;
+}
+
+.techstack-line.line-3 {
+  width: 44%;
+  height: 1px;
+
+  opacity: 0.55;
+}
+
+
+/* =========================================
+   LEFT GRADIENT LINES
+========================================= */
+
+.techstack-line.left-line {
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(194, 164, 255, 0.4) 40%,
+      #c2a4ff 100%
+    );
+
+  box-shadow:
+    0 0 10px rgba(194, 164, 255, 0.45);
+}
+
+
+/* =========================================
+   RIGHT GRADIENT LINES
+========================================= */
+
+.techstack-line.right-line {
+  background:
+    linear-gradient(
+      90deg,
+      #c2a4ff 0%,
+      rgba(194, 164, 255, 0.4) 60%,
+      transparent 100%
+    );
+
+  box-shadow:
+    0 0 10px rgba(194, 164, 255, 0.45);
+}
+
+
+/* =========================================
+   DUAL DOTS
+========================================= */
+
+.techstack-dots-group {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  flex-shrink: 0;
+}
+
+.techstack-dot {
+  border-radius: 50%;
+
+  background: #c2a4ff;
+
+  flex-shrink: 0;
+
+  box-shadow:
+    0 0 8px #c2a4ff,
+    0 0 14px rgba(194, 164, 255, 0.7);
+}
+
+.techstack-dot.dot-inner {
+  width: 6px;
+  height: 6px;
+}
+
+.techstack-dot.dot-outer {
+  width: 4px;
+  height: 4px;
+
+  opacity: 0.75;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.techstack-title {
+  margin: 0;
+
+  text-align: center;
+
+  font-size: clamp(24px, 3.8vw, 42px);
+
+  line-height: 1.2;
+
+  font-weight: 650;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+
+  color: #c2a4ff;
+
+  text-shadow:
+    0 0 24px rgba(194, 164, 255, 0.5);
+
+  white-space: nowrap;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   PYRAMID
+========================================= */
+
+.techstack-pyramid {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: clamp(16px, 2vw, 28px);
+}
+
+
+/* =========================================
+   ROW
+========================================= */
+
+.techstack-row {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: clamp(16px, 1.8vw, 28px);
+
+  flex-wrap: wrap;
+}
+
+
+/* =========================================
+   PROJECT CARD
+========================================= */
+
+.techstack-item {
+  flex: 0 0 auto;
+
+  width: clamp(110px, 11.5vw, 155px);
+  height: clamp(128px, 13vw, 175px);
+
+  padding: clamp(14px, 1.6vw, 22px);
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: clamp(20px, 2.2vw, 30px);
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  position: relative;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+
+/* =========================================
+   PROJECT IMAGE
+========================================= */
+
+.techstack-item img {
+  width: clamp(46px, 5.2vw, 66px);
+  height: clamp(46px, 5.2vw, 66px);
+
+  object-fit: cover;
+
+  border-radius: 14px;
+
+  filter:
+    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+
+  opacity: 0.92;
+
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.35s ease,
+    opacity 0.35s ease;
+}
+
+
+/* =========================================
+   PROJECT NAME
+========================================= */
+
+.techstack-item > span {
+  width: 100%;
+
+  margin-top: 10px;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  font-size: clamp(13px, 1.3vw, 17px);
+
+  line-height: 1.2;
+
+  font-weight: 500;
+
+  text-align: center;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  transition:
+    color 0.3s ease,
+    text-shadow 0.3s ease;
+}
+
+
+/* =========================================
+   HOVER OVERLAY
+========================================= */
+
+.techstack-item-overlay {
+  position: absolute;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 62%;
+
+  z-index: 5;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding:
+    clamp(7px, 0.8vw, 12px)
+    clamp(8px, 1vw, 14px);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 10, 25, 0.72) 0%,
+      rgba(30, 20, 50, 0.94) 50%,
+      rgba(20, 14, 38, 0.99) 100%
+    );
+
+  border-radius: 0 0 inherit inherit;
+
+  opacity: 0;
+
+  transform: translateY(100%);
+
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s cubic-bezier(
+      0.25,
+      0.46,
+      0.45,
+      0.94
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   SHOW OVERLAY ON HOVER
+========================================= */
+
+.techstack-item:hover .techstack-item-overlay {
+  opacity: 1;
+
+  transform: translateY(0);
+
+  pointer-events: auto;
+}
+
+
+/* =========================================
+   OVERLAY TITLE
+========================================= */
+
+.techstack-item-overlay-title {
+  margin: 0 0 5px;
+
+  font-size: clamp(10px, 1vw, 13px);
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.05em;
+
+  line-height: 1.15;
+
+  color: #ffffff;
+
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.35);
+
+  text-align: center;
+}
+
+
+/* =========================================
+   OVERLAY DESCRIPTION
+========================================= */
+
+.techstack-item-overlay-desc {
+  display: -webkit-box;
+
+  -webkit-box-orient: vertical;
+
+  -webkit-line-clamp: 3;
+
+  overflow: hidden;
+
+  margin: 3px 0 8px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: clamp(8px, 0.82vw, 11px);
+
+  line-height: 1.35;
+
+  font-weight: 400;
+
+  text-align: center;
+
+  max-width: 100%;
+}
+
+
+/* =========================================
+   VIEW PROJECT BUTTON
+========================================= */
+
+.techstack-item-overlay-link {
+  min-width: clamp(48px, 4.5vw, 65px);
+
+  height: clamp(24px, 2.5vw, 30px);
+
+  padding: 0 8px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 3px;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  border-radius: 999px;
+
+  color: #c2a4ff;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.3);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.techstack-item-overlay-link:hover {
+  transform: scale(1.08);
+
+  background: #ffffff;
+
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================
+   VIEW TEXT
+========================================= */
+
+.view-project-text {
+  font-size: clamp(8px, 0.75vw, 10px);
+
+  font-weight: 700;
+
+  line-height: 1;
+}
+
+
+/* =========================================
+   VIEW ICON
+========================================= */
+
+.techstack-item-overlay-link svg {
+  width: clamp(10px, 1.1vw, 14px);
+
+  height: clamp(10px, 1.1vw, 14px);
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   CARD HOVER
+========================================= */
+
+.techstack-item:hover {
+  transform: translateY(-8px);
+
+  background: rgba(194, 164, 255, 0.08);
+
+  border-color: rgba(194, 164, 255, 0.55);
+
+  box-shadow:
+    0 12px 30px rgba(194, 164, 255, 0.2),
+    0 0 20px rgba(194, 164, 255, 0.12);
+}
+
+.techstack-item:hover img {
+  opacity: 1;
+
+  filter:
+    drop-shadow(0 0 14px rgba(194, 164, 255, 0.7));
+
+  transform:
+    translateY(-3px)
+    scale(1.08);
+}
+
+.techstack-item:hover > span {
+  color: #ffffff;
+
+  text-shadow:
+    0 0 12px rgba(194, 164, 255, 0.7);
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media screen and (max-width: 768px) {
+
+  .techstack-new {
+    padding: 70px 12px;
+  }
+
+  .techstack-content {
+    max-width: 660px;
+  }
+
+  .techstack-header {
+    margin-bottom: 30px;
+  }
+
+  .techstack-row {
+    gap: 14px;
+  }
+
+  .techstack-item {
+    width: 92px;
+    height: 106px;
+
+    padding: 12px;
+  }
+
+  .techstack-item img {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 10px;
+  }
+
+  .techstack-item > span {
+    font-size: 11.5px;
+  }
+
+  .techstack-item:hover {
+    transform: translateY(-5px);
+  }
+
+  .techstack-item-overlay {
+    height: 65%;
+
+    padding: 6px;
+  }
+
+  .techstack-item-overlay-title {
+    font-size: 9px;
+
+    margin-bottom: 3px;
+  }
+
+  .techstack-item-overlay-desc {
+    font-size: 7.5px;
+
+    line-height: 1.25;
+
+    -webkit-line-clamp: 3;
+
+    margin: 2px 0 5px;
+  }
+
+  .techstack-item-overlay-link {
+    min-width: 42px;
+
+    height: 22px;
+
+    padding: 0 6px;
+  }
+
+  .view-project-text {
+    font-size: 7px;
+  }
+
+  .techstack-item-overlay-link svg {
+    width: 9px;
+    height: 9px;
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media screen and (max-width: 480px) {
+
+  .techstack-new {
+    min-height: auto;
+
+    padding: 80px 10px;
+  }
+
+  .techstack-content {
+    padding: 0 4px;
+  }
+
+  .techstack-header {
+    margin-bottom: 24px;
+
+    gap: 8px;
+  }
+
+  .techstack-decor {
+    max-width: clamp(50px, 16vw, 110px);
+
+    gap: 6px;
+  }
+
+  .techstack-title {
+    font-size: 21px;
+
+    letter-spacing: 0.05em;
+  }
+
+  .techstack-dot.dot-inner {
+    width: 5px;
+    height: 5px;
+  }
+
+  .techstack-dot.dot-outer {
+    width: 3.5px;
+    height: 3.5px;
+  }
+
+  .techstack-pyramid {
+    gap: 12px;
+  }
+
+  .techstack-row {
+    gap: 10px;
+  }
+
+  .techstack-item {
+    width: 74px;
+    height: 86px;
+
+    padding: 9px;
+
+    border-radius: 16px;
+  }
+
+  .techstack-item img {
+    width: 33px;
+    height: 33px;
+
+    border-radius: 8px;
+  }
+
+  .techstack-item > span {
+    margin-top: 5px;
+
+    font-size: 10px;
+
+    max-width: 64px;
+  }
+
+  .techstack-item:hover {
+    transform: translateY(-4px);
+  }
+
+  .techstack-item-overlay {
+    height: 68%;
+
+    padding: 5px;
+  }
+
+  .techstack-item-overlay-title {
+    font-size: 8px;
+
+    margin-bottom: 2px;
+  }
+
+  .techstack-item-overlay-desc {
+    font-size: 6.5px;
+
+    line-height: 1.2;
+
+    -webkit-line-clamp: 3;
+
+    margin: 2px 0 4px;
+  }
+
+  .techstack-item-overlay-link {
+    min-width: 36px;
+
+    height: 19px;
+
+    padding: 0 5px;
+
+    gap: 2px;
+  }
+
+  .view-project-text {
+    font-size: 6.5px;
+  }
+
+  .techstack-item-overlay-link svg {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+========================================= */
+
+@media screen and (max-width: 360px) {
+
+  .techstack-new {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .techstack-header {
+    margin-bottom: 20px;
+
+    gap: 8px;
+  }
+
+  .techstack-title {
+    font-size: 17px;
+  }
+
+  .techstack-line {
+    max-width: 30px;
+  }
+
+  .techstack-row {
+    gap: 6px;
+  }
+
+  .techstack-item {
+    width: 64px;
+    height: 76px;
+
+    padding: 7px;
+  }
+
+  .techstack-item img {
+    width: 28px;
+    height: 28px;
+
+    border-radius: 7px;
+  }
+
+  .techstack-item > span {
+    font-size: 8.5px;
+
+    max-width: 55px;
+  }
+
+  .techstack-item-overlay {
+    height: 70%;
+
+    padding: 4px;
+  }
+
+  .techstack-item-overlay-title {
+    font-size: 7px;
+  }
+
+  .techstack-item-overlay-desc {
+    font-size: 5.5px;
+
+    line-height: 1.15;
+
+    -webkit-line-clamp: 3;
+
+    margin: 1px 0 3px;
+  }
+
+  .techstack-item-overlay-link {
+    min-width: 31px;
+
+    height: 17px;
+
+    padding: 0 4px;
+  }
+
+  .view-project-text {
+    font-size: 5.5px;
+  }
+
+  .techstack-item-overlay-link svg {
+    width: 7px;
+    height: 7px;
+  }
+}
+
+
+/* =========================================
+   REDUCE MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .techstack-item,
+  .techstack-item img,
+  .techstack-item > span,
+  .techstack-item-overlay,
+  .techstack-item-overlay-link {
+    transition: none;
+  }
+
+  .techstack-item:hover {
+    transform: none;
+  }
+}

@@ -6,7 +6,7 @@ import React from "react";
 export const metadata = generateMetadata({
   title: "Blog",
   description:
-    "Read the blog posts by Nishitha Reddy Musku, covering topics on React Native development, MERN Stack, web development tips, mobile app development, and career insights for developers.",
+    "Read the blog posts by Your Name, covering topics on React Native development, MERN Stack, web development tips, mobile app development, and career insights for developers.",
   path: "/Blog",
   keywords: [
     "React Native Blog",
@@ -14,7 +14,7 @@ export const metadata = generateMetadata({
     "Web Development Blog",
     "Mobile App Development Tips",
     "Developer Blog India",
-    "Nishitha Reddy Musku Blog",
+    "Your Name Blog",
   ],
   type: "website",
 });
@@ -34,7 +34,7 @@ const page = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <section className="sr-only" aria-hidden="false">
-        <h1>Blog - Nishitha Reddy Musku | React Native & MERN Stack Developer</h1>
+        <h1>Blog - Ganesh Sherkar | React  & MERN Stack Developer</h1>
         <p>
           Explore blog posts about React Native development, MERN Stack tutorials, 
           web development best practices, and insights from my journey as a developer.

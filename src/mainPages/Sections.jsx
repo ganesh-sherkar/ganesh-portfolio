@@ -340,7 +340,7 @@ export function Contact() {
   const info = [
     { icon: '📞', label: 'Phone', value: '+01 123 654 8096' },
     { icon: '✉️', label: 'Email', value: 'gerolddesign@mail.com' },
-    { icon: '📍', label: 'Address', value: 'Sr nagar, Hyderabad, Telangana, India' },
+    { icon: '📍', label: 'Address', value: 'Ameerpet, Hyderabad, Telangana, India' },
   ];
 
   return (

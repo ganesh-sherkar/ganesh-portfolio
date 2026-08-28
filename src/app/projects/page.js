@@ -6,14 +6,12 @@ import React from "react";
 export const metadata = generateMetadata({
   title: "Projects",
   description:
-    "Explore the projects built by Nishitha Reddy Musku, a React Native & MERN Stack Developer. View live demos and case studies of mobile apps, web applications, and full-stack solutions.",
+    "Explore the projects built by React , React & MERN Stack Developer. View live demos and case studies of mobile apps, web applications, and full-stack solutions.",
   path: "/projects",
   keywords: [
-    "Nishitha Reddy Musku Projects",
-    "React Native Projects",
+    "React Projects",
     "MERN Stack Projects",
     "Web Development Projects",
-    "Mobile App Development Projects",
     "Full Stack Project Examples",
   ],
   type: "website",
@@ -34,7 +32,7 @@ const page = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <section className="sr-only" aria-hidden="false">
-        <h1>Projects by Nishitha Reddy Musku - React Native & MERN Stack Developer</h1>
+        <h1>Projects by Ganesh Sherkar - React & MERN Stack Developer</h1>
         <p>
           Browse through my portfolio of projects including mobile apps, web applications, 
           and full-stack solutions built with React Native, MERN Stack, and modern technologies.

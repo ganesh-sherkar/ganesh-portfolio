@@ -1,671 +1,281 @@
 "use client";
 
-import { useTheme } from "@/components/ThemeProvider";
-import { fallbackResume } from "@/lib/publicContent";
 import { motion } from "framer-motion";
-import {
-  FiBriefcase,
-  FiCalendar,
-  FiCheckCircle,
-  FiMapPin,
-} from "react-icons/fi";
+import "./styles/Experience.css";
 
+/* ─────────────────────────────────────────
+   JOURNEY DATA
+───────────────────────────────────────── */
+const journeyData = [
+  {
+    number: "01",
+    title: "Education",
+    date: "2020 – 2022",
+    description:
+      "Completed my education with a strong foundation in computer science and problem solving.",
+    icon: "🎓",
+  },
+  {
+    number: "02",
+    title: "Started Coding",
+    date: "2022",
+    description:
+      "Began my coding journey and explored web development. Built small projects and learned daily.",
+    icon: "💻",
+  },
+  {
+    number: "03",
+    title: "First Projects",
+    date: "2022 – 2023",
+    description:
+      "Built my first projects using HTML, CSS, JavaScript and gained hands-on experience in frontend development.",
+    icon: "🚀",
+  },
+  {
+    number: "04",
+    title: "Professional Start",
+    date: "2023 – 2024",
+    description:
+      "Started my professional journey as a Frontend Developer and worked on real-world applications.",
+    icon: "💼",
+  },
+  {
+    number: "05",
+    title: "Growth & Learning",
+    date: "2024",
+    description:
+      "Focused on improving skills, exploring new technologies and building scalable projects.",
+    icon: "🏆",
+  },
+  {
+    number: "06",
+    title: "Building Impact",
+    date: "2024 – Present",
+    description:
+      "Working on meaningful projects that solve real problems and create value for users.",
+    icon: "💡",
+  },
+  {
+    number: "07",
+    title: "Future Goals",
+    date: "Beyond",
+    description:
+      "Continuing to learn, grow and build innovative solutions that make a difference.",
+    icon: "⭐",
+  },
+];
+
+const bottomValues = [
+  { icon: "</>", label: "Passion for Code" },
+  { icon: "⚙️", label: "Love for Learning" },
+  { icon: "🎯", label: "Focus on Impact" },
+  { icon: "♥", label: "Driven by Purpose" },
+];
+
+/* ─────────────────────────────────────────
+   COMPONENT
+───────────────────────────────────────── */
 const Experience = () => {
-  const { isDarkMode } = useTheme();
-  const { experiences } = fallbackResume;
+  const row1 = journeyData.slice(0, 4);
+  const row2 = journeyData.slice(4, 7);
 
   return (
-    <section
-      className={`relative overflow-hidden py-20 sm:py-24 lg:py-28 transition-colors duration-500 ${
-        isDarkMode
-          ? "bg-gradient-to-b from-[#050816] via-[#070912] to-[#02040b]"
-          : "bg-gradient-to-b from-gray-50 via-white to-gray-50"
-      }`}
-    >
-      {/* =========================================================
-          BACKGROUND DECORATION
-      ========================================================= */}
-      <div
-        className="pointer-events-none absolute -top-32 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full blur-3xl opacity-10"
-        style={{
-          background: "var(--primary)",
-        }}
-      />
+    <section className="exp-journey">
+      {/* ── Decorative corner dots ── */}
+      <div className="exp-corner-dots top-left" />
+      <div className="exp-corner-dots top-right" />
 
-      <div
-        className="pointer-events-none absolute top-[35%] -left-40 h-80 w-80 rounded-full blur-3xl opacity-[0.06]"
-        style={{
-          background: "var(--primary)",
-        }}
-      />
-
-      <div
-        className="pointer-events-none absolute bottom-0 -right-40 h-80 w-80 rounded-full blur-3xl opacity-[0.06]"
-        style={{
-          background: "var(--primary)",
-        }}
-      />
-
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-        {/* =========================================================
-            HEADER
-        ========================================================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5 }}
-          className="text-center max-w-2xl mx-auto mb-16 sm:mb-20"
-        >
-          {/* SMALL LABEL */}
-          <div className="inline-flex items-center gap-2 mb-4">
-            <span
-              className="h-px w-8"
-              style={{
-                background: "var(--primary)",
-              }}
-            />
-
-            <span
-              className="text-xs sm:text-sm font-semibold uppercase tracking-[0.22em]"
-              style={{
-                color: "var(--primary)",
-              }}
-            >
-              My Journey
-            </span>
-
-            <span
-              className="h-px w-8"
-              style={{
-                background: "var(--primary)",
-              }}
-            />
+      {/* ── HEADER ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6 }}
+        className="exp-header"
+      >
+        <div className="exp-title-wrapper">
+          <div className="exp-decor-side exp-decor-left" aria-hidden="true">
+            <span className="exp-decor-dot" />
+            <span className="exp-decor-bar" />
+            <span className="exp-decor-diamond" />
           </div>
-
-          {/* TITLE */}
-          <h2
-            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight"
-            style={{
-              color: "var(--text-heading)",
-            }}
-          >
-            Work{" "}
-            <span
-              style={{
-                color: "var(--primary)",
-              }}
-            >
-              Experience
-            </span>
+          <h2 className="exp-title">
+            My <span className="exp-title-accent">Journey</span>
           </h2>
-
-          {/* UNDERLINE */}
-          <div
-            className="w-20 h-1 mx-auto mt-5 rounded-full"
-            style={{
-              background:
-                "linear-gradient(to right, var(--primary), var(--primary-2))",
-            }}
-          />
-
-          {/* DESCRIPTION */}
-          <p
-            className={`mt-5 text-sm sm:text-base leading-relaxed ${
-              isDarkMode ? "text-gray-400" : "text-gray-600"
-            }`}
-          >
-            My professional journey, from learning full-stack development
-            to building production-ready web and mobile applications.
-          </p>
-        </motion.div>
-
-        {/* =========================================================
-            EXPERIENCE TIMELINE
-        ========================================================= */}
-        <div className="relative">
-          {/* DESKTOP CENTER LINE */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2">
-            <div
-              className="w-px h-full opacity-50"
-              style={{
-                background: `linear-gradient(
-                  to bottom,
-                  transparent,
-                  var(--primary) 8%,
-                  var(--primary) 92%,
-                  transparent
-                )`,
-              }}
-            />
-          </div>
-
-          {/* MOBILE LINE */}
-          <div
-            className="md:hidden absolute left-[15px] top-0 bottom-0 w-px"
-            style={{
-              background: `linear-gradient(
-                to bottom,
-                transparent,
-                var(--primary) 8%,
-                var(--primary) 92%,
-                transparent
-              )`,
-              opacity: 0.45,
-            }}
-          />
-
-          <div className="space-y-10 md:space-y-20">
-            {experiences.map((exp, index) => {
-              const isLeft = index % 2 === 0;
-
-              return (
-                <motion.div
-                  key={`${exp.role}-${index}`}
-                  initial={{
-                    opacity: 0,
-                    y: 40,
-                  }}
-                  whileInView={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  viewport={{
-                    once: true,
-                    amount: 0.15,
-                  }}
-                  transition={{
-                    duration: 0.55,
-                    delay: index * 0.1,
-                  }}
-                  className="relative"
-                >
-                  {/* =================================================
-                      DESKTOP LAYOUT
-                  ================================================= */}
-                  <div className="hidden md:grid md:grid-cols-[1fr_80px_1fr] items-center gap-0">
-                    {/* LEFT SIDE */}
-                    <div className={isLeft ? "pr-8" : "pr-8"}>
-                      {isLeft ? (
-                        <ExperienceCard
-                          exp={exp}
-                          index={index}
-                          isDarkMode={isDarkMode}
-                        />
-                      ) : (
-                        <div className="flex justify-end">
-                          <DateBadge
-                            duration={exp.duration}
-                            index={index}
-                            isDarkMode={isDarkMode}
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* CENTER */}
-                    <div className="relative flex justify-center h-full min-h-[320px]">
-                      {/* TIMELINE DOT */}
-                      <motion.div
-                        initial={{
-                          scale: 0.5,
-                          opacity: 0,
-                        }}
-                        whileInView={{
-                          scale: 1,
-                          opacity: 1,
-                        }}
-                        viewport={{
-                          once: true,
-                        }}
-                        transition={{
-                          duration: 0.4,
-                          delay: index * 0.1 + 0.15,
-                        }}
-                        className="relative z-20 flex items-center justify-center"
-                      >
-                        {/* OUTER RING */}
-                        <div
-                          className="absolute h-12 w-12 rounded-full border opacity-30"
-                          style={{
-                            borderColor: "var(--primary)",
-                          }}
-                        />
-
-                        {/* GLOW */}
-                        <div
-                          className="absolute h-7 w-7 rounded-full blur-md opacity-60"
-                          style={{
-                            background: "var(--primary)",
-                          }}
-                        />
-
-                        {/* DOT */}
-                        <div
-                          className="relative h-3.5 w-3.5 rounded-full border-2 border-white"
-                          style={{
-                            background: "var(--primary)",
-                          }}
-                        />
-                      </motion.div>
-                    </div>
-
-                    {/* RIGHT SIDE */}
-                    <div className="pl-8">
-                      {!isLeft ? (
-                        <ExperienceCard
-                          exp={exp}
-                          index={index}
-                          isDarkMode={isDarkMode}
-                        />
-                      ) : (
-                        <div className="flex justify-start">
-                          <DateBadge
-                            duration={exp.duration}
-                            index={index}
-                            isDarkMode={isDarkMode}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* =================================================
-                      MOBILE LAYOUT
-                  ================================================= */}
-                  <div className="md:hidden relative pl-10">
-                    {/* MOBILE DOT */}
-                    <div className="absolute left-0 top-8 z-20">
-                      <div
-                        className="relative flex h-8 w-8 items-center justify-center rounded-full border"
-                        style={{
-                          borderColor:
-                            "color-mix(in srgb, var(--primary) 45%, transparent)",
-                          background: isDarkMode
-                            ? "#070912"
-                            : "#ffffff",
-                        }}
-                      >
-                        <div
-                          className="h-2.5 w-2.5 rounded-full"
-                          style={{
-                            background: "var(--primary)",
-                            boxShadow:
-                              "0 0 12px var(--primary)",
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    <ExperienceCard
-                      exp={exp}
-                      index={index}
-                      isDarkMode={isDarkMode}
-                    />
-                  </div>
-                </motion.div>
-              );
-            })}
+          <div className="exp-decor-side exp-decor-right" aria-hidden="true">
+            <span className="exp-decor-diamond" />
+            <span className="exp-decor-bar" />
+            <span className="exp-decor-dot" />
           </div>
         </div>
+        <p className="exp-subtitle">
+          A journey of continuous learning, building, and growing.
+          <br />
+          Turning ideas into real-world digital experiences.
+        </p>
+      </motion.div>
 
-        {/* =========================================================
-            BOTTOM SUMMARY
-        ========================================================= */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 25,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.3,
-          }}
-          transition={{
-            duration: 0.5,
-          }}
-          className="mt-16 sm:mt-20 flex justify-center"
+      {/* ── ROW 1 : 4 CARDS ── */}
+      <div className="exp-row exp-row-1">
+        {/* SVG Connecting Dotted Lines with Start Dots */}
+        <svg
+          className="exp-connector exp-connector-row1"
+          viewBox="0 0 1100 60"
+          fill="none"
+          preserveAspectRatio="none"
         >
-          <div
-            className={`inline-flex flex-wrap justify-center items-center gap-x-6 gap-y-3 rounded-2xl border px-6 py-4 text-center ${
-              isDarkMode
-                ? "bg-white/[0.03] border-white/10"
-                : "bg-white border-gray-200 shadow-sm"
-            }`}
-          >
-            <div>
-              <p
-                className="text-xl sm:text-2xl font-bold"
-                style={{
-                  color: "var(--primary)",
-                }}
-              >
-                2+
-              </p>
-              <p
-                className={`text-[11px] sm:text-xs ${
-                  isDarkMode
-                    ? "text-gray-500"
-                    : "text-gray-500"
-                }`}
-              >
-                Years Experience
-              </p>
-            </div>
-
-            <div
-              className={`h-8 w-px ${
-                isDarkMode
-                  ? "bg-white/10"
-                  : "bg-gray-200"
-              }`}
-            />
-
-            <div>
-              <p
-                className="text-xl sm:text-2xl font-bold"
-                style={{
-                  color: "var(--primary)",
-                }}
-              >
-                3+
-              </p>
-              <p
-                className={`text-[11px] sm:text-xs ${
-                  isDarkMode
-                    ? "text-gray-500"
-                    : "text-gray-500"
-                }`}
-              >
-                Professional Roles
-              </p>
-            </div>
-
-            <div
-              className={`h-8 w-px ${
-                isDarkMode
-                  ? "bg-white/10"
-                  : "bg-gray-200"
-              }`}
-            />
-
-            <div>
-              <p
-                className="text-xl sm:text-2xl font-bold"
-                style={{
-                  color: "var(--primary)",
-                }}
-              >
-                6+
-              </p>
-              <p
-                className={`text-[11px] sm:text-xs ${
-                  isDarkMode
-                    ? "text-gray-500"
-                    : "text-gray-500"
-                }`}
-              >
-                Projects
-              </p>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
-
-/* =============================================================
-   EXPERIENCE CARD
-============================================================= */
-
-function ExperienceCard({
-  exp,
-  index,
-  isDarkMode,
-}) {
-  return (
-    <motion.div
-      whileHover={{
-        y: -6,
-      }}
-      transition={{
-        duration: 0.25,
-      }}
-      className={`group relative w-full rounded-2xl border p-5 sm:p-6 lg:p-7 overflow-hidden transition-all duration-300 ${
-        isDarkMode
-          ? "bg-white/[0.045] border-white/10 hover:border-white/20"
-          : "bg-white border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-xl"
-      }`}
-      style={{
-        boxShadow: isDarkMode
-          ? "0 18px 50px rgba(0,0,0,0.22)"
-          : undefined,
-      }}
-    >
-      {/* BACKGROUND NUMBER */}
-      <div
-        className="pointer-events-none absolute -right-3 -top-7 text-[100px] sm:text-[120px] font-black leading-none opacity-[0.025]"
-        style={{
-          color: "var(--primary)",
-        }}
-      >
-        {String(index + 1).padStart(2, "0")}
-      </div>
-
-      {/* TOP GLOW */}
-      <div
-        className="absolute top-0 left-0 right-0 h-px opacity-60"
-        style={{
-          background:
-            "linear-gradient(to right, transparent, var(--primary), transparent)",
-        }}
-      />
-
-      {/* DATE */}
-      <div className="relative flex items-center gap-2 mb-4">
-        <span
-          className="flex h-7 w-7 items-center justify-center rounded-lg"
-          style={{
-            background:
-              "color-mix(in srgb, var(--primary) 12%, transparent)",
-            color: "var(--primary)",
-          }}
-        >
-          <FiCalendar size={13} />
-        </span>
-
-        <span
-          className="text-[11px] sm:text-xs font-semibold tracking-wide"
-          style={{
-            color: "var(--primary)",
-          }}
-        >
-          {exp.duration}
-        </span>
-      </div>
-
-      {/* ROLE */}
-      <h3
-        className="relative text-xl sm:text-2xl font-bold leading-tight mb-2"
-        style={{
-          color: "var(--text-heading)",
-        }}
-      >
-        {exp.role}
-      </h3>
-
-      {/* COMPANY */}
-      <div className="relative flex flex-wrap items-center gap-x-4 gap-y-1 mb-5">
-        <span
-          className={`inline-flex items-center gap-1.5 text-sm font-medium ${
-            isDarkMode
-              ? "text-gray-300"
-              : "text-gray-700"
-          }`}
-        >
-          <FiBriefcase
-            size={14}
-            style={{
-              color: "var(--primary)",
-            }}
+          {/* Start Glowing Dot */}
+          <circle cx="50" cy="30" r="7" fill="var(--primary)" fillOpacity="0.25" />
+          <circle cx="50" cy="30" r="3.5" fill="var(--primary)" />
+          <path
+            d="M 50 30 C 150 55, 200 55, 300 30 S 450 5, 550 30 S 700 55, 800 30 S 950 5, 1050 30"
+            stroke="var(--primary)"
+            strokeWidth="2"
+            strokeDasharray="6 6"
+            strokeLinecap="round"
+            strokeOpacity="0.45"
+            fill="none"
           />
+          <circle cx="1050" cy="30" r="3.5" fill="var(--primary)" fillOpacity="0.7" />
+        </svg>
 
-          {exp.company}
-        </span>
-
-        <span
-          className={`hidden sm:block h-1 w-1 rounded-full ${
-            isDarkMode
-              ? "bg-gray-600"
-              : "bg-gray-300"
-          }`}
-        />
-
-        <span
-          className={`inline-flex items-center gap-1.5 text-xs ${
-            isDarkMode
-              ? "text-gray-500"
-              : "text-gray-500"
-          }`}
-        >
-          <FiMapPin size={13} />
-
-          Hyderabad
-        </span>
-      </div>
-
-      {/* DIVIDER */}
-      <div
-        className={`h-px mb-5 ${
-          isDarkMode
-            ? "bg-white/10"
-            : "bg-gray-100"
-        }`}
-      />
-
-      {/* ACHIEVEMENTS */}
-      <div className="relative space-y-3">
-        {exp.points.map((point, pointIndex) => (
-          <div
-            key={pointIndex}
-            className="flex items-start gap-2.5"
+        {row1.map((item, i) => (
+          <motion.div
+            key={item.number}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: i * 0.12 }}
+            className="exp-card-wrapper"
           >
-            <span
-              className="mt-0.5 flex-shrink-0"
-              style={{
-                color: "var(--primary)",
-              }}
-            >
-              <FiCheckCircle size={14} />
-            </span>
+            {/* Icon Circle */}
+            <div className="exp-icon-circle">
+              <span className="exp-icon">{item.icon}</span>
+            </div>
 
-            <p
-              className={`text-xs sm:text-sm leading-relaxed ${
-                isDarkMode
-                  ? "text-gray-400"
-                  : "text-gray-600"
-              }`}
-            >
-              {point}
-            </p>
-          </div>
+            {/* Card */}
+            <div className="exp-card">
+              <span className="exp-card-number">{item.number}</span>
+              <h3 className="exp-card-title">{item.title}</h3>
+              <div className="exp-card-date">
+                <span className="exp-date-icon">📅</span>
+                <span>{item.date}</span>
+              </div>
+              <p className="exp-card-desc">{item.description}</p>
+            </div>
+          </motion.div>
         ))}
       </div>
 
-      {/* TECH STACK */}
-      {exp.tech?.length > 0 && (
-        <div className="relative mt-6 pt-5 border-t border-black/10 dark:border-white/10">
-          <p
-            className={`text-[10px] uppercase tracking-[0.18em] font-semibold mb-3 ${
-              isDarkMode
-                ? "text-gray-500"
-                : "text-gray-400"
-            }`}
+      {/* ── SVG CONNECTING ROW 1 → ROW 2 ── */}
+      <svg
+        className="exp-connector exp-connector-bridge"
+        viewBox="0 0 1100 80"
+        fill="none"
+        preserveAspectRatio="none"
+      >
+        <circle cx="1000" cy="0" r="3.5" fill="var(--primary)" fillOpacity="0.7" />
+        <path
+          d="M 1000 0 C 1000 40, 900 70, 700 70 S 300 70, 100 40"
+          stroke="var(--primary)"
+          strokeWidth="2"
+          strokeDasharray="6 6"
+          strokeLinecap="round"
+          strokeOpacity="0.4"
+          fill="none"
+        />
+        <circle cx="100" cy="40" r="3.5" fill="var(--primary)" fillOpacity="0.7" />
+      </svg>
+
+      {/* ── ROW 2 : 3 CARDS + MOTIVATION ── */}
+      <div className="exp-row exp-row-2">
+        {/* SVG Connecting Dotted Lines with Start Dots */}
+        <svg
+          className="exp-connector exp-connector-row2"
+          viewBox="0 0 800 60"
+          fill="none"
+          preserveAspectRatio="none"
+        >
+          {/* Start Glowing Dot */}
+          <circle cx="50" cy="30" r="7" fill="var(--primary)" fillOpacity="0.25" />
+          <circle cx="50" cy="30" r="3.5" fill="var(--primary)" />
+          <path
+            d="M 50 30 C 130 55, 200 55, 280 30 S 420 5, 500 30 S 620 55, 750 30"
+            stroke="var(--primary)"
+            strokeWidth="2"
+            strokeDasharray="6 6"
+            strokeLinecap="round"
+            strokeOpacity="0.45"
+            fill="none"
+          />
+          <circle cx="750" cy="30" r="3.5" fill="var(--primary)" fillOpacity="0.7" />
+        </svg>
+
+        {row2.map((item, i) => (
+          <motion.div
+            key={item.number}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: i * 0.12 + 0.3 }}
+            className="exp-card-wrapper"
           >
-            Technologies
-          </p>
+            {/* Icon Circle */}
+            <div className="exp-icon-circle">
+              <span className="exp-icon">{item.icon}</span>
+            </div>
 
-          <div className="flex flex-wrap gap-2">
-            {exp.tech.map((technology) => (
-              <span
-                key={technology}
-                className={`px-2.5 py-1.5 rounded-lg border text-[11px] sm:text-xs font-medium ${
-                  isDarkMode
-                    ? "bg-white/[0.03] border-white/10"
-                    : "bg-gray-50 border-gray-200"
-                }`}
-                style={{
-                  color: "var(--primary)",
-                }}
-              >
-                {technology}
-              </span>
-            ))}
+            {/* Card */}
+            <div className="exp-card">
+              <span className="exp-card-number">{item.number}</span>
+              <h3 className="exp-card-title">{item.title}</h3>
+              <div className="exp-card-date">
+                <span className="exp-date-icon">📅</span>
+                <span>{item.date}</span>
+              </div>
+              <p className="exp-card-desc">{item.description}</p>
+            </div>
+          </motion.div>
+        ))}
+
+        {/* ── MOTIVATION SECTION ── */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="exp-motivation"
+        >
+          <div className="exp-motivation-rings">
+            <div className="exp-ring exp-ring-outer" />
+            <div className="exp-ring exp-ring-inner" />
+            <div className="exp-motivation-icon">🏔️</div>
           </div>
-        </div>
-      )}
+          <p className="exp-motivation-text">
+            The Best is
+            <br />
+            <span className="exp-motivation-accent">Yet to Come</span>
+          </p>
+        </motion.div>
+      </div>
 
-      {/* HOVER ACCENT */}
-      <div
-        className="absolute bottom-0 left-1/2 h-0.5 w-0 -translate-x-1/2 transition-all duration-500 group-hover:w-2/3"
-        style={{
-          background: "var(--primary)",
-        }}
-      />
-    </motion.div>
-  );
-}
-
-/* =============================================================
-   DATE BADGE
-============================================================= */
-
-function DateBadge({
-  duration,
-  index,
-  isDarkMode,
-}) {
-  return (
-    <div
-      className={`flex flex-col items-center justify-center rounded-2xl border px-6 py-5 ${
-        isDarkMode
-          ? "bg-white/[0.025] border-white/10"
-          : "bg-white border-gray-200"
-      }`}
-    >
-      <span
-        className="text-2xl font-black opacity-10"
-        style={{
-          color: "var(--primary)",
-        }}
+      {/* ── BOTTOM VALUES BAR ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="exp-bottom-bar"
       >
-        {String(index + 1).padStart(2, "0")}
-      </span>
-
-      <FiCalendar
-        size={16}
-        className="mb-2"
-        style={{
-          color: "var(--primary)",
-        }}
-      />
-
-      <span
-        className={`text-xs font-semibold text-center ${
-          isDarkMode
-            ? "text-gray-400"
-            : "text-gray-600"
-        }`}
-      >
-        {duration}
-      </span>
-    </div>
+        {bottomValues.map((val, i) => (
+          <div key={i} className="exp-bottom-item">
+            <span className="exp-bottom-icon">{val.icon}</span>
+            <span className="exp-bottom-label">{val.label}</span>
+          </div>
+        ))}
+      </motion.div>
+    </section>
   );
-}
+};
 
 export default Experience;

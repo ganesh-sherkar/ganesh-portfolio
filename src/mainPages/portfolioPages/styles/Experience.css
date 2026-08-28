@@ -1,0 +1,545 @@
+/* =============================================================
+   EXPERIENCE / MY JOURNEY
+   ── Matching the golden-accent dark reference design ──
+============================================================= */
+
+/* ─── SECTION ─── */
+.exp-journey {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: clamp(50px, 6vw, 80px) 20px clamp(35px, 4vw, 50px);
+
+  background: #0a0a12;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, system-ui;
+}
+
+/* ─── DECORATIVE CORNER DOTS ─── */
+.exp-corner-dots {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background-image: radial-gradient(circle, var(--primary) 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.exp-corner-dots.top-left {
+  top: 30px;
+  left: 30px;
+}
+
+.exp-corner-dots.top-right {
+  top: 30px;
+  right: 30px;
+}
+
+/* ═════════════════════════════════════════
+   HEADER
+═════════════════════════════════════════ */
+
+.exp-header {
+  text-align: center;
+  margin-bottom: clamp(32px, 4vw, 48px);
+  max-width: 600px;
+}
+
+.exp-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--primary);
+  opacity: 0.85;
+  margin-bottom: 6px;
+}
+
+.exp-title-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 1.8vw, 18px);
+  margin-bottom: 12px;
+}
+
+.exp-title {
+  margin: 0;
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.exp-title-accent {
+  color: var(--primary);
+  font-style: normal;
+}
+
+/* ─── Left & Right Text Decorations ─── */
+.exp-decor-side {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.exp-decor-bar {
+  width: clamp(24px, 4vw, 45px);
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--primary));
+  opacity: 0.6;
+}
+
+.exp-decor-right .exp-decor-bar {
+  background: linear-gradient(90deg, var(--primary), transparent);
+}
+
+.exp-decor-diamond {
+  width: 7px;
+  height: 7px;
+  background: var(--primary);
+  transform: rotate(45deg);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.exp-decor-dot {
+  width: 4.5px;
+  height: 4.5px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.5;
+}
+
+.exp-subtitle {
+  margin: 0 auto;
+  font-size: clamp(12px, 1.1vw, 13.5px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: normal;
+  max-width: 480px;
+}
+
+/* ═════════════════════════════════════════
+   ROWS
+═════════════════════════════════════════ */
+
+.exp-row {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  gap: clamp(14px, 1.8vw, 26px);
+}
+
+.exp-row-1 {
+  margin-bottom: 10px;
+}
+
+.exp-row-2 {
+  margin-bottom: clamp(30px, 4vw, 55px);
+}
+
+/* ═════════════════════════════════════════
+   SVG CONNECTORS
+═════════════════════════════════════════ */
+
+.exp-connector {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.exp-connector-row1 {
+  top: 36px;
+  height: 60px;
+  width: 100%;
+}
+
+.exp-connector-row2 {
+  top: 36px;
+  height: 60px;
+  width: 80%;
+  left: 0;
+}
+
+.exp-connector-bridge {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  height: 40px;
+  margin-bottom: 0;
+}
+
+/* ═════════════════════════════════════════
+   CARD WRAPPER
+═════════════════════════════════════════ */
+
+.exp-card-wrapper {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  flex: 1;
+  max-width: 250px;
+  min-width: 160px;
+}
+
+/* ─── ICON CIRCLE ─── */
+.exp-icon-circle {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  border: 1.5px solid var(--primary);
+
+  background: rgba(0, 0, 0, 0.5);
+
+  margin-bottom: -18px;
+  z-index: 2;
+
+  box-shadow: 0 0 18px color-mix(in srgb, var(--primary) 30%, transparent);
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.exp-card-wrapper:hover .exp-icon-circle {
+  transform: scale(1.1);
+  box-shadow: 0 0 28px color-mix(in srgb, var(--primary) 55%, transparent);
+}
+
+.exp-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* ═════════════════════════════════════════
+   CARD
+═════════════════════════════════════════ */
+
+.exp-card {
+  width: 100%;
+  padding: 26px 16px 18px;
+
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease,
+              background 0.35s ease;
+}
+
+.exp-card-wrapper:hover .exp-card {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--primary) 60%, transparent);
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow:
+    0 10px 30px color-mix(in srgb, var(--primary) 15%, transparent),
+    0 0 16px color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+/* ─── Card Number ─── */
+.exp-card-number {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+/* ─── Card Title ─── */
+.exp-card-title {
+  margin: 0 0 6px;
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+/* ─── Card Date ─── */
+.exp-card-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--primary);
+  opacity: 0.85;
+
+  margin-bottom: 8px;
+}
+
+.exp-date-icon {
+  font-size: 11px;
+}
+
+/* ─── Card Description ─── */
+.exp-card-desc {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 400;
+}
+
+/* ═════════════════════════════════════════
+   MOTIVATION SECTION
+═════════════════════════════════════════ */
+
+.exp-motivation {
+  flex: 1;
+  max-width: 250px;
+  min-width: 160px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px 10px;
+
+  text-align: center;
+}
+
+.exp-motivation-rings {
+  position: relative;
+  width: 90px;
+  height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+}
+
+.exp-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid var(--primary);
+}
+
+.exp-ring-outer {
+  width: 90px;
+  height: 90px;
+  opacity: 0.3;
+  animation: exp-ring-pulse 3s ease-in-out infinite;
+}
+
+.exp-ring-inner {
+  width: 65px;
+  height: 65px;
+  opacity: 0.55;
+  animation: exp-ring-pulse 3s ease-in-out infinite 0.5s;
+}
+
+@keyframes exp-ring-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.6;
+  }
+}
+
+.exp-motivation-icon {
+  position: relative;
+  font-size: 28px;
+  z-index: 1;
+  filter: drop-shadow(0 0 10px var(--primary));
+}
+
+.exp-motivation-text {
+  margin: 0;
+  font-size: clamp(12.5px, 1.15vw, 14.5px);
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: normal;
+}
+
+.exp-motivation-accent {
+  color: var(--primary);
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ═════════════════════════════════════════
+   BOTTOM VALUES BAR
+═════════════════════════════════════════ */
+
+.exp-bottom-bar {
+  width: 100%;
+  max-width: 900px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: clamp(16px, 2.5vw, 40px);
+
+  padding: 16px 20px;
+
+  border-top: 1px solid color-mix(in srgb, var(--primary) 15%, transparent);
+}
+
+.exp-bottom-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exp-bottom-icon {
+  font-size: 15px;
+  color: var(--primary);
+  opacity: 0.8;
+}
+
+.exp-bottom-label {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.02em;
+}
+
+/* ═════════════════════════════════════════
+   TABLET
+═════════════════════════════════════════ */
+
+@media screen and (max-width: 900px) {
+  .exp-row {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .exp-card-wrapper {
+    max-width: 220px;
+    min-width: 140px;
+    flex: 0 0 calc(50% - 20px);
+  }
+
+  .exp-motivation {
+    flex: 0 0 calc(50% - 20px);
+    max-width: 220px;
+  }
+
+  .exp-connector {
+    display: none;
+  }
+
+  .exp-connector-bridge {
+    display: none;
+  }
+}
+
+/* ═════════════════════════════════════════
+   MOBILE
+═════════════════════════════════════════ */
+
+@media screen and (max-width: 600px) {
+  .exp-journey {
+    padding: 50px 14px 30px;
+  }
+
+  .exp-header {
+    margin-bottom: 30px;
+  }
+
+  .exp-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .exp-card-wrapper {
+    flex: 0 0 auto;
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .exp-motivation {
+    flex: 0 0 auto;
+    max-width: 320px;
+    width: 100%;
+    padding: 30px 10px;
+  }
+
+  .exp-corner-dots {
+    display: none;
+  }
+
+  .exp-bottom-bar {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
+
+/* ═════════════════════════════════════════
+   VERY SMALL PHONES
+═════════════════════════════════════════ */
+
+@media screen and (max-width: 380px) {
+  .exp-title {
+    font-size: 22px;
+  }
+
+  .exp-decor-bar {
+    width: 14px;
+  }
+
+  .exp-card-wrapper {
+    max-width: 100%;
+  }
+
+  .exp-motivation {
+    max-width: 100%;
+  }
+}
+
+/* ═════════════════════════════════════════
+   REDUCE MOTION
+═════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .exp-card,
+  .exp-icon-circle {
+    transition: none;
+  }
+
+  .exp-ring-outer,
+  .exp-ring-inner {
+    animation: none;
+  }
+}

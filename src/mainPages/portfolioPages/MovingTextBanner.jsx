@@ -27,15 +27,15 @@ const Spark = ({ outlined = false, animated = false }) => (
 );
 
 const getBannerItems = (content) => {
-  const name = (content?.name || "Musku Nishitha").toUpperCase();
-  const badge = (content?.badge || "Full Stack Mern & React Native Developer").toUpperCase();
+const name = (content?.name || "Ganesh Sherkar").toUpperCase();
+  const badge = (content?.badge || "Full Stack Developer").toUpperCase();
   const stack = Array.isArray(content?.techStack) ? content.techStack.slice(0, 6) : [];
 
   const topItems = [
     `🔥 ${name}`,
     badge,
     "💼 OPEN TO WORK",
-    "📊 2+ YEARS",
+    "📊 1+ YEARS",
     ...stack.map((item) => `⚡ ${item.toUpperCase()}`),
   ];
 

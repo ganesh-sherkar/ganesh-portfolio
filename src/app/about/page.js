@@ -6,13 +6,11 @@ import React from "react";
 export const metadata = generateMetadata({
   title: "About Me",
   description:
-    "Learn more about Nishitha Reddy Musku, a passionate React Native & MERN Stack Developer with 2+ years of experience. Discover my journey, skills, education, and passion for building scalable mobile and web applications.",
+    "Learn more about Your Name, a passionate React Native & MERN Stack Developer with 1+ years of experience. Discover my journey, skills, education, and passion for building scalable mobile and web applications.",
   path: "/about",
   keywords: [
-    "About Nishitha Reddy Musku",
-    "React Native Developer About",
+    "Ganesh Sherkar",
     "MERN Stack Developer Background",
-    "Hyderabad Developer Profile",
     "Web Developer Experience",
   ],
   type: "profile",
@@ -33,10 +31,10 @@ const page = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <section className="sr-only" aria-hidden="false">
-        <h1>About Nishitha Reddy Musku - React Native & MERN Stack Developer</h1>
+        <h1>About Your Name - React Native & MERN Stack Developer</h1>
         <p>
-          Learn about Nishitha Reddy Musku, a passionate React Native & MERN Stack Developer 
-          based in Hyderabad, India. With 2+ years of experience in building scalable mobile 
+          Learn about Your Name, a passionate React Native & MERN Stack Developer 
+          based in Hyderabad, India. With 1+ years of experience in building scalable mobile 
           and web applications, I specialize in modern JavaScript frameworks and libraries.
         </p>
       </section>

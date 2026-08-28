@@ -1,12 +1,11 @@
 export const fallbackHero = {
-  badge: "REACT.JS | REACT NATIVE | MERN STACK DEVELOPER",
-  name: "Musku Nishitha",
+  badge: "REACT.JS  & MERN STACK DEVELOPER",
+  name: "Ganesh Sherkar",
   headline: "Hi, I'm",
   summary:
-    "React.js | React Native | MERN Stack Developer with 2+ years of experience building scalable web and mobile applications across e-commerce and enterprise platforms. Track record of cutting backend API response time by 40%, growing user engagement by 25%+, and sustaining 95%+ on-time Agile delivery.",
+    "React.js | React | MERN Stack Developer with 1+ years of experience building scalable web and mobile applications across e-commerce and enterprise platforms. Track record of cutting backend API response time by 40%, growing user engagement by 25%+, and sustaining 95%+ on-time Agile delivery.",
   techStack: [
     "React.js",
-    "React Native",
     "Next.js",
     "Node.js",
     "Express.js",
@@ -184,7 +183,7 @@ export const fallbackPortfolio = {
 export const fallbackResume = {
   experiences: [
     {
-      role: "MERN Stack & React Native Developer",
+      role: "MERN Stack & React Developer",
       company: "Dexterous Technology",
       duration: "Jun 2024 - Present",
       points: [
@@ -197,7 +196,6 @@ export const fallbackResume = {
       ],
       tech: [
         "React.js",
-        "React Native",
         "Next.js",
         "Node.js",
         "Express.js",
@@ -252,23 +250,7 @@ export const fallbackResume = {
       icon: "☕",
     },
   ],
-  achievements: [
-    {
-      title: "Best Performer of the Month",
-      desc: "Recognized for delivering multiple projects ahead of schedule",
-      icon: "🏆",
-    },
-    {
-      title: "Zero Critical Bugs",
-      desc: "Deployed production applications with zero critical post-launch bugs",
-      icon: "🐛",
-    },
-    {
-      title: "95%+ Task Completion",
-      desc: "Sustained 95%+ task completion rate in an Agile environment",
-      icon: "✅",
-    },
-  ],
+
   resumeUrl: "/MUSKU NISHITHA.pdf",
 };
 
@@ -307,11 +289,10 @@ export const fallbackServices = {
 };
 export const fallbackAbout = {
   profile: {
-    firstName: "Musku",
-    lastName: "Nishitha",
+    firstName: "Ganesh",
+    lastName: "Sherkar",
     role: [
       "React.js Developer",
-      "React Native Developer",
       "MERN Stack Developer",
     ],
     tagline: "Building fast, scalable web & mobile products",
@@ -319,24 +300,23 @@ export const fallbackAbout = {
       "I specialize in shipping production-grade applications end-to-end — from architecting REST APIs and database schemas to building polished, responsive UIs in React, React Native, and Next.js. My focus is on performance and reliability: optimized queries, real-time sync, and clean state management with Redux Toolkit. I've worked across e-commerce, healthcare, and dashboard products, consistently delivering within Agile sprint cycles and keeping post-launch bugs at zero.",
     birthdate: "2003-08-11",
     available: true,
-    address: "Sr Nagar, Hyderabad",
-    experience: "2",
+    address: "Ameerpet, Hyderabad",
+    experience: "1",
     nationality: "Indian",
     completedProjects: "6",
     happyCustomers: "3",
-    languages: ["English", "Telugu", "Hindi"],
-    email: "muskunishitha2003@gmail.com",
-    phone: "7416264657",
+    languages: ["English", "Hindi", "Marathi"],
+    email: "ganeshdex9356@gmail.com",
+    phone: "9356102292",
     freelance: true,
     socialLinks: {
-      github: "https://github.com/MuskuNishitha",
+      github: "https://github.com/Ganeshsherkar2003",
       linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b",
       instagram: "", // add your real handle here, or remove this field if unused
     },
   },
   skills: [
     { name: "React.js", percentage: 85, icon: "React" },
-    { name: "React Native", percentage: 83, icon: "Mobile" },
     { name: "Next.js", percentage: 85, icon: "Next" },
     { name: "Node.js", percentage: 80, icon: "Node" },
     { name: "Express.js", percentage: 84, icon: "API" },
@@ -347,30 +327,4 @@ export const fallbackAbout = {
   ],
   education: fallbackResume.education,
   experience: fallbackResume.experiences,
-  stats: [
-    {
-      value: "2+",
-      label: "Years Experience",
-      icon: "Work",
-      color: "from-primary to-secondary",
-    },
-    {
-      value: "6+",
-      label: "Projects Completed",
-      icon: "Projects",
-      color: "from-blue-500 to-cyan-500",
-    },
-    {
-      value: "3+",
-      label: "Freelance Clients",
-      icon: "Clients",
-      color: "from-green-500 to-emerald-500",
-    },
-    {
-      value: "Open",
-      label: "Availability",
-      icon: "Status",
-      color: "from-orange-500 to-red-500",
-    },
-  ],
 };

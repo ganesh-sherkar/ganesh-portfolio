@@ -202,7 +202,7 @@ export function mapAboutContent(profile, experiences, skillCategories) {
   const workExperience = resumeContent.experiences;
   const stats = [
     {
-      value: `${profile.Experience || fallbackAbout.stats[0].value}+`,
+      value: `${profile.Experience || fallbackAbout.profile.experience || "1"}+`,
       label: "Years Experience",
       icon: "Work",
       color: "from-primary to-secondary",

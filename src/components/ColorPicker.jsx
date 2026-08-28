@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiCheck, FiDroplet } from 'react-icons/fi';
+import { FaDropbox } from 'react-icons/fa';
 
 const colors = [
   { id: 'purple', color: '#8750f7' },
@@ -54,31 +55,29 @@ export default function PremiumColorPicker() {
     setActive(id);
     document.documentElement.setAttribute('data-primary', id);
     localStorage.setItem('primary-color', id);
-    
+
     // 🔥 CRITICAL: Dispatch custom event so the script updates status bar
     window.dispatchEvent(new Event('primaryColorChanged'));
-    
+
     setTimeout(() => setOpen(false), 180);
   };
 
   // (Rest of your component remains the same)
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="relative inline-flex items-center">
       <motion.button
         onClick={() => setOpen(!open)}
-        whileHover={{ scale: 1.12, rotate: 8 }}
+        whileHover={{ scale: 1.1, rotate: 6 }}
         whileTap={{ scale: 0.92 }}
-        animate={{ y: [0, -3, 0] }}
-        transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
-        className="z-50 p-3.5 rounded-full text-white focus:outline-none focus:ring-2 focus:ring-primary/60"
+        className="relative w-8 h-8 lg:w-9 lg:h-9 rounded-full flex items-center justify-center transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-white cursor-pointer"
         style={{
-          background: 'linear-gradient(135deg, var(--primary), var(--primary-2))',
-          boxShadow: '0 10px 30px rgba(var(--primary-rgb),0.45)',
+          background: 'linear-gradient(135deg, var(--primary), var(--primary-2, var(--primary)))',
+          boxShadow: '0 4px 14px rgba(var(--primary-rgb), 0.35)',
         }}
         aria-label="Open color picker"
         aria-expanded={open}
       >
-        <FiDroplet className="w-5 h-5" />
+        <FaDropbox className="w-4 h-4 lg:w-4.5 lg:h-4.5" />
       </motion.button>
 
       <AnimatePresence>

@@ -1,7 +1,6 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import ColorPicker from './ColorPicker'
 import { fetchSiteSettings } from '@/lib/publicApi'
 
 const ThemeContext = createContext()
@@ -77,10 +76,7 @@ export default function ThemeProvider({ children }) {
     }
   }
 
-  // Prevent flash of wrong theme
-  if (!mounted) {
-    return null
-  }
+
 
   const value = {
     isDarkMode,
@@ -89,12 +85,6 @@ export default function ThemeProvider({ children }) {
 
   return (
     <ThemeContext.Provider value={value}>
-      {/* Combined Theme Controls */}
-      <div className="fixed top-24 right-6 z-50 flex flex-col gap-2">
-
-        {/* Color Picker */}
-        <ColorPicker />
-      </div>
       {children}
     </ThemeContext.Provider>
   )

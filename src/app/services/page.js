@@ -6,14 +6,11 @@ import React from "react";
 export const metadata = generateMetadata({
   title: "Services",
   description:
-    "Explore the services offered by Nishitha Reddy Musku, a React Native & MERN Stack Developer. Specializing in mobile app development, web application development, UI/UX design, and full-stack solutions.",
+    "Explore the services offered by Ganesh Sherkar, React & MERN Stack Developer. Specializing in web application development, and full-stack solutions.",
   path: "/services",
   keywords: [
-    "React Native Development Services",
     "MERN Stack Development Services",
-    "Mobile App Development Services",
-    "Web Development Services Hyderabad",
-    "Freelance Developer Services",
+      "Web Development Services Hyderabad",
     "Full Stack Development Services",
   ],
   type: "website",
@@ -34,7 +31,7 @@ const page = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <section className="sr-only" aria-hidden="false">
-        <h1>Services - Nishitha Reddy Musku | React Native & MERN Stack Developer</h1>
+        <h1>Services - Ganesh Sherkar | React  & MERN Stack Developer</h1>
         <p>
           Professional development services including React Native mobile apps, MERN Stack web applications, 
           custom UI/UX design, and full-stack solutions. Based in Hyderabad, serving clients worldwide.

@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/components/ThemeProvider";
+import DevCodingBackground from "@/components/DevCodingBackground";
 import {
   FaHtml5,
   FaCss3Alt,
@@ -38,12 +39,6 @@ const SkillsHome = () => {
       category: "Languages",
     },
     {
-      name: "TypeScript",
-      icon: <SiTypescript />,
-      color: "#3178c6",
-      category: "Languages",
-    },
-    {
       name: "HTML5",
       icon: <FaHtml5 />,
       color: "#e34f26",
@@ -55,12 +50,7 @@ const SkillsHome = () => {
       color: "#264de4",
       category: "Languages",
     },
-    {
-      name: "Java (Basics)",
-      icon: <FaCode />, // Using FaCode instead of SiJava
-      color: "#007396",
-      category: "Languages",
-    },
+  
 
     // FRONTEND & MOBILE (as per resume: React.js, React Native, Next.js, Redux Toolkit, Tailwind CSS, Framer Motion, Responsive & Cross-Platform UI)
     {
@@ -69,12 +59,7 @@ const SkillsHome = () => {
       color: "#38bdf8",
       category: "Frontend",
     },
-    {
-      name: "React Native",
-      icon: <FaReact />,
-      color: "#61dafb",
-      category: "Frontend",
-    },
+  
     {
       name: "Next.js",
       icon: <SiNextdotjs />,
@@ -146,33 +131,16 @@ const SkillsHome = () => {
       category: "Database",
     },
     {
-      name: "Firestore",
-      icon: <SiFirebase />,
-      color: "#ffca28",
-      category: "Database",
-    },
-    {
       name: "Realtime DB",
       icon: <SiFirebase />,
       color: "#ffca28",
       category: "Database",
     },
-    {
-      name: "Cloud Messaging",
-      icon: <SiFirebase />,
-      color: "#ffca28",
-      category: "Database",
-    },
+  
 
     // TOOLS & PRACTICES (as per resume: Git, GitHub, Google Maps API, Postman, Vite, Agile/Scrum, CI/CD Basics)
     { name: "Git", icon: <FaGitAlt />, color: "#f05032", category: "Tools" },
     { name: "GitHub", icon: <FaGitAlt />, color: "#6e5494", category: "Tools" },
-    {
-      name: "Google Maps API",
-      icon: <SiGooglemaps />,
-      color: "#34d399",
-      category: "Tools",
-    },
     {
       name: "Postman",
       icon: <SiPostman />,
@@ -180,18 +148,6 @@ const SkillsHome = () => {
       category: "Tools",
     },
     { name: "Vite", icon: <SiVite />, color: "#646cff", category: "Tools" },
-    {
-      name: "Agile/Scrum",
-      icon: <FaGitAlt />,
-      color: "#ffb347",
-      category: "Tools",
-    },
-    {
-      name: "CI/CD Basics",
-      icon: <FaGitAlt />,
-      color: "#00bfff",
-      category: "Tools",
-    },
   ];
 
   const categories = [
@@ -209,7 +165,9 @@ const SkillsHome = () => {
       : skills.filter((s) => s.category === activeCategory);
 
   return (
-    <section className="py-20 px-4 md:px-10 max-w-7xl mx-auto">
+    <section className="relative overflow-hidden py-20 px-4 md:px-10 max-w-7xl mx-auto">
+      {/* DEVELOPER CODING BACKGROUND ANIMATION */}
+      <DevCodingBackground />
       {/* HEADER */}
       <div className="text-center mb-10">
         <h2 className="text-sm tracking-widest text-[var(--primary)] mb-2">

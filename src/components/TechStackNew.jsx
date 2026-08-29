@@ -8,7 +8,7 @@ const projectData = [
     {
       name: "SafeChat",
       image: "/assets/safechat.jpg",
-      url: "https://github.com/yourusername/safechat",
+      url: "https://safeechats.web.app/",
       desc: "A modern chatting website with real-time messaging, user profiles, online status, notifications and a smooth WhatsApp-like chat experience.",
     },
     {
@@ -20,7 +20,7 @@ const projectData = [
     {
       name: "Zestore",
       image: "/assets/zestore.jpg",
-      url: "https://github.com/yourusername/zestore",
+      url: "https://zestorecom.web.app/",
       desc: "A complete e-commerce shopping website with products, categories, search, filters, cart, wishlist, checkout and a modern shopping experience.",
     },
   ],
@@ -29,7 +29,7 @@ const projectData = [
     {
       name: "BookMyTicket",
       image: "/assets/bookmyticket.jpg",
-      url: "https://github.com/yourusername/bookmyticket",
+      url: "https://vehicle-book.web.app/",
       desc: "An online ticket booking platform where users can explore shows, select seats, book tickets and manage their booking details.",
     },
     {

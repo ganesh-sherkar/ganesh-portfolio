@@ -22,7 +22,7 @@ const content = {
   summary:
     "I build scalable web and mobile applications with clean UI, strong performance, and practical solutions for real-world business needs.",
   image: "/assets/Professional1.jpg",
-  resume: "/Ganesh Sherkar Resume.pdf",
+  resume: "/Ganesh_sherkar.pdf",
   stats: [
     { value: "1+", label: "Years Experience" },
     { value: "10K+", label: "Users Reached" },

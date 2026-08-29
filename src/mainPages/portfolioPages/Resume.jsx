@@ -28,7 +28,7 @@ export default function Resume() {
     experiences = [],
     education = [],
     certifications = [],
-    resumeUrl = "/Ganesh Sherkar Resume.pdf",
+    resumeUrl = "/Ganesh_sherkar.pdf",
   } = fallbackResume;
 
   const totalCount =

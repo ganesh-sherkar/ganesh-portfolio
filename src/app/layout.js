@@ -10,7 +10,7 @@ import Cursor from "@/components/Cursor";
 import Script from "next/script";
 import { getPersonSchema, getWebsiteSchema, getLocalBusinessSchema } from "@/lib/seo-utils";
 
-const BASE_URL = "https://muskunishitha.vercel.app";
+const BASE_URL = "https://ganesh-portfolio-blond.vercel.app";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -52,11 +52,11 @@ export const metadata = {
 
   title: {
     default: "Ganesh Sherkar | MERN Stack Developer Portfolio",
-    template: "%s | Your Name",
+    template: "%s | Ganesh Sherkar",
   },
 
   description:
-    "Portfolio Ganesh Sherkar, a skilled React Native & MERN Stack Developer with 1+ years of experience. Specializing in building scalable mobile apps, web applications, and modern UI/UX design. Available for freelance and full-time opportunities.",
+    "Portfolio Ganesh Sherkar & MERN Stack Developer with 1+ years of experience. Specializing in building scalable  web applications, and modern UI/UX design. Available for freelance and full-time opportunities.",
 
   keywords: [
     "Ganesh Sherkar",
@@ -80,7 +80,7 @@ export const metadata = {
   creator: "Ganesh Sherkar",
   publisher: "Ganesh Sherkar",
   generator: "Next.js",
-  applicationName: "Your Name Portfolio",
+  applicationName: "Ganesh | Portfolio",
   referrer: "origin-when-cross-origin",
 
   openGraph: {
@@ -94,7 +94,7 @@ export const metadata = {
         url: `${BASE_URL}/seo_image.png`,
         width: 1200,
         height: 630,
-        alt: "Ganesh Sherkar - React Native & MERN Stack Developer Portfolio - Hyderabad, India",
+        alt: "Ganesh Sherkar - React  & MERN Stack Developer Portfolio - Hyderabad, India",
         type: "image/png",
         secureUrl: `${BASE_URL}/seo_image.png`,
       },
@@ -115,9 +115,9 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Ganesh Sherkar | React Native & MERN Stack Developer",
+    title: "Ganesh Sherkar | React & MERN Stack Developer",
     description:
-      "Portfolio of Your Name - React Native & MERN Stack Developer with 1+ years of experience building scalable apps with modern UI/UX.",
+      "Portfolio of Ganesh Sherkar - React  & MERN Stack Developer with 1+ years of experience building scalable apps with modern UI/UX.",
     creator: "@yourname",
     site: "@yourname",
     images: [`${BASE_URL}/seo_image.png`],
@@ -217,13 +217,12 @@ export default function RootLayout({ children }) {
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
         {/* RSS Feed */}
-        <link rel="alternate" type="application/rss+xml" title="Nishitha Reddy Musku Portfolio RSS Feed" href={`${BASE_URL}/rss.xml`} />
+        <link rel="alternate" type="application/rss+xml" title="Ganesh Reddy Musku Portfolio RSS Feed" href={`${BASE_URL}/rss.xml`} />
 
         {/* Mobile App Links */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Nishitha Portfolio" />
-        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="Ganesh Portfolio" />
         <meta name="HandheldFriendly" content="True" />
         <meta name="MobileOptimized" content="width" />
 
@@ -252,7 +251,7 @@ export default function RootLayout({ children }) {
         <meta name="coverage" content="Worldwide" />
 
         {/* Resource Hints */}
-        <link rel="preload" as="image" href="/seo_image.png" />
+        <link rel="preload" as="image" href="/Professional1.jpg" />
        <link rel="preload" as="image" href="/assets/Professional1.jpg" />
       </head>
       <body className="font-sora overflow-x-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
@@ -404,7 +403,7 @@ export default function RootLayout({ children }) {
                 {
                   "@type": "ListItem",
                   position: 3,
-                  name: "Nishitha Reddy Musku",
+                  name: "Ganesh Sherkar",
                   item: BASE_URL,
                 },
               ],
@@ -421,22 +420,22 @@ export default function RootLayout({ children }) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebPage",
-              name: "Nishitha Reddy Musku Portfolio",
+              name: "Ganesh Sherkar Portfolio",
               description:
-                "Portfolio of Nishitha Reddy Musku, React Native & MERN Stack Developer",
+                "Portfolio of Ganesh Sherkar, React Native & MERN Stack Developer",
               url: BASE_URL,
               isPartOf: {
                 "@type": "WebSite",
-                name: "Nishitha Reddy Musku Portfolio",
+                name: "Ganesh Sherkar Portfolio",
                 url: BASE_URL,
               },
               about: {
                 "@type": "Person",
-                name: "Nishitha Reddy Musku",
+                name: "Ganesh Sherkar",
               },
               primaryImageOfPage: {
                 "@type": "ImageObject",
-                url: `${BASE_URL}/seo_image.png`,
+                url: `${BASE_URL}/Professional1.jpg`,
               },
               inLanguage: "en-US",
               dateCreated: "2024-01-01",

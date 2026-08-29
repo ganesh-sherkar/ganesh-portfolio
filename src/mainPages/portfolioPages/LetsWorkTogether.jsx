@@ -170,8 +170,8 @@ export default function LetsWorkTogether() {
                   }}
                 >
                   <Image
-                    src="/assets/no_background_new.png"
-                    alt="Nishitha Reddy Musku"
+                    src="/assets/Professional1.jpg"
+                    alt="Ganesh"
                     width={400}
                     height={400}
                     className="w-full h-auto"

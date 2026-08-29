@@ -14,7 +14,7 @@ const projectData = [
     {
       name: "FreshGo",
       image: "/assets/freshgo.jpg",
-      url: "https://github.com/yourusername/freshgo",
+      url: "https://",
       desc: "A quick-commerce grocery website inspired by modern delivery platforms with categories, products, cart, search and fast delivery experience.",
     },
     {

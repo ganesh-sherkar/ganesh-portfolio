@@ -1,4 +1,4 @@
-# robots.txt for Nishitha Reddy Musku Portfolio
+# robots.txt for Ganesh Sherkar Portfolio
 # https://muskunishitha.vercel.app
 
 User-agent: *

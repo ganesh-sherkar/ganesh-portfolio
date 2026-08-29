@@ -26,8 +26,8 @@ export function generateMetadata({
   noIndex = false,
 }) {
   const fullTitle = title
-    ? `${title} | Nishitha Reddy Musku`
-    : "Nishitha Reddy Musku | React Native & MERN Stack Developer";
+    ? `${title} | Ganesh Sherkar`
+    : "Ganesh Sherkar | React Native & MERN Stack Developer";
   const url = `${BASE_URL}${path}`;
   const imageUrl = ogImage.startsWith("http") ? ogImage : `${BASE_URL}${ogImage}`;
 
@@ -35,7 +35,7 @@ export function generateMetadata({
     title: title,
     description: description,
     keywords: [
-      "Nishitha Reddy Musku",
+      "Ganesh Sherkar",
       "React Native Developer",
       "MERN Stack Developer",
       "Frontend Developer",
@@ -44,21 +44,21 @@ export function generateMetadata({
       "Mobile App Developer",
       ...keywords,
     ],
-    authors: [{ name: "Nishitha Reddy Musku", url: BASE_URL }],
-    creator: "Nishitha Reddy Musku",
-    publisher: "Nishitha Reddy Musku",
+    authors: [{ name: "Ganesh Sherkar", url: BASE_URL }],
+    creator: "Ganesh Sherkar",
+    publisher: "Ganesh Sherkar",
     metadataBase: new URL(BASE_URL),
     openGraph: {
       title: fullTitle,
       description: description,
       url: url,
-      siteName: "Nishitha Reddy Musku Portfolio",
+      siteName: "Ganesh Sherkar Portfolio",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: `Nishitha Reddy Musku - ${title || "Portfolio"}`,
+          alt: `Ganesh Sherkar - ${title || "Portfolio"}`,
           type: "image/png",
           secureUrl: imageUrl,
         },
@@ -173,10 +173,10 @@ export function getWebsiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Nishitha Reddy Musku Portfolio",
+    name: "Ganesh Sherkar Portfolio",
     url: BASE_URL,
     description:
-      "Portfolio of Nishitha Reddy Musku, React Native & MERN Stack Developer",
+      "Portfolio of Ganesh Sherkar, React Native & MERN Stack Developer",
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -189,7 +189,7 @@ export function getWebsiteSchema() {
     copyrightYear: new Date().getFullYear(),
     copyrightHolder: {
       "@type": "Person",
-      name: "Nishitha Reddy Musku",
+      name: "Ganesh Sherkar",
     },
   };
 }
@@ -228,12 +228,12 @@ export function getArticleSchema(article) {
     dateModified: article.dateModified || new Date().toISOString(),
     author: {
       "@type": "Person",
-      name: "Nishitha Reddy Musku",
+      name: "Ganesh Sherkar",
       url: BASE_URL,
     },
     publisher: {
       "@type": "Person",
-      name: "Nishitha Reddy Musku",
+      name: "Ganesh Sherkar",
       url: BASE_URL,
     },
     mainEntityOfPage: {
@@ -253,13 +253,13 @@ export function getLocalBusinessSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: "Nishitha Reddy Musku - Freelance Developer",
+    name: "Ganesh Sherkar - Freelance Developer",
     description:
-      "React Native & MERN Stack Developer providing freelance development services for mobile apps, web apps, and modern UI/UX design.",
+      "React & MERN Stack Developer providing freelance development services for web apps, and modern UI/UX design.",
     url: BASE_URL,
-    telephone: "+91-XXXXXXXXXX",
-    email: "muskunishitha2003@gmail.com",
-    image: `${BASE_URL}/Professional.jpg`,
+    telephone: "+91-9356102292",
+    email: "ganeshdex9356@gmail.com",
+    image: `${BASE_URL}/Professional1.jpg`,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Hyderabad",
@@ -295,7 +295,7 @@ export function getLocalBusinessSchema() {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: "React Native Mobile Development",
+            name: "Reactt",
           },
         },
         {

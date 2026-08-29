@@ -5,10 +5,10 @@ const BASE_URL = "https://muskunishitha.vercel.app";
 
 export default function manifest() {
   return {
-    name: "Nishitha Reddy Musku - React Native & MERN Stack Developer",
+    name: "Ganesh Sherkar - React Native & MERN Stack Developer",
     short_name: "Nishitha Portfolio",
     description:
-      "Portfolio of Nishitha Reddy Musku, React Native & MERN Stack Developer specializing in scalable mobile apps, web apps, and modern UI/UX design.",
+      "Portfolio of Ganesh Sherkar, React Native & MERN Stack Developer specializing in scalable mobile apps, web apps, and modern UI/UX design.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

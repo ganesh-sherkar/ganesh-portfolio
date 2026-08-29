@@ -3,7 +3,7 @@ import { generateMetadata } from "@/lib/seo-utils";
 export const metadata = generateMetadata({
   title: "DevBoost AI - AI Code Optimizer",
   description:
-    "Use DevBoost AI, a powerful AI-powered code optimization tool built by Nishitha Reddy Musku. Optimize your code for better performance, readability, and efficiency with artificial intelligence.",
+    "Use DevBoost AI, a powerful AI-powered code optimization tool built by Ganesh Sherkar. Optimize your code for better performance, readability, and efficiency with artificial intelligence.",
   path: "/devboost-ai",
   keywords: [
     "DevBoost AI",

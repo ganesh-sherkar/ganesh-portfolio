@@ -2,9 +2,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "404 - Page Not Found | Nishitha Reddy Musku",
+  title: "404 - Page Not Found | Ganesh Sherkar",
   description:
-    "The page you are looking for does not exist or has been moved. Return to the homepage of Nishitha Reddy Musku, React Native & MERN Stack Developer.",
+    "The page you are looking for does not exist or has been moved. Return to the homepage of Ganesh Sherkar, React Native & MERN Stack Developer.",
   robots: {
     index: false,
     follow: true,

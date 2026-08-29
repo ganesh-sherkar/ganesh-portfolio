@@ -6,7 +6,7 @@ import React from "react";
 export const metadata = generateMetadata({
   title: "Skills",
   description:
-    "Explore the technical skills of Nishitha Reddy Musku, a React Native & MERN Stack Developer. Proficient in React Native, React.js, Node.js, MongoDB, Express.js, Next.js, TypeScript, and modern web technologies.",
+    "Explore the technical skills of Ganesh Sherkar, a React Native & MERN Stack Developer. Proficient in React Native, React.js, Node.js, MongoDB, Express.js, Next.js, TypeScript, and modern web technologies.",
   path: "/skills",
   keywords: [
     "React Native Skills",
@@ -36,9 +36,9 @@ const page = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <section className="sr-only" aria-hidden="false">
-        <h1>Skills - Nishitha Reddy Musku | React Native & MERN Stack Developer</h1>
+        <h1>Skills - Ganesh Sherkar | React Native & MERN Stack Developer</h1>
         <p>
-          Technical skills and expertise of Nishitha Reddy Musku including React Native, React.js, 
+          Technical skills and expertise of Ganesh Sherkar including React Native, React.js, 
           Node.js, Express.js, MongoDB, Next.js, TypeScript, JavaScript, Tailwind CSS, and more.
         </p>
       </section>

@@ -131,25 +131,6 @@ export default function Resume() {
               academic background, and verified certifications.
             </p>
           </div>
-
-          {/* Quick Action: Download Resume */}
-          <div className="flex items-center gap-3">
-            <motion.a
-              whileHover={{ scale: 1.02, y: -1 }}
-              whileTap={{ scale: 0.98 }}
-              href={resumeUrl}
-              download
-              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-md text-white transition-all duration-300"
-              style={{
-                background: "var(--primary)",
-                boxShadow:
-                  "0 6px 20px color-mix(in srgb, var(--primary) 35%, transparent)",
-              }}
-            >
-              <FiDownload className="text-sm" />
-              <span>Download CV</span>
-            </motion.a>
-          </div>
         </div>
 
         {/* =======================================================

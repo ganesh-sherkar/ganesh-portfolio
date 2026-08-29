@@ -29,7 +29,7 @@ export default function Home() {
       {/* SEO Heading - Visible to users and search engines */}
       <section className="sr-only" aria-hidden="false">
         <h1>
-          Ganesh Sherkar - Full Stack Developer Portfolio
+          Ganesh Sherkar - Full Stack Developer
         </h1>
         <p>
           Welcome to the portfolio of Ganesh Sherkar, a skilled Full Stack Developer with 1+ years of experience.

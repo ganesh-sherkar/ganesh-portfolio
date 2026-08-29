@@ -68,7 +68,6 @@ export const metadata = {
     "Full Stack Developer",
     "JavaScript Developer",
     "Hyderabad Software Developer",
-    "React Native Developer Hyderabad",
     "MERN Stack Freelancer",
     "Portfolio Website Developer",
   ],
@@ -91,20 +90,20 @@ export const metadata = {
     siteName: "Ganesh Sherkar Portfolio",
     images: [
       {
-        url: `${BASE_URL}/seo_image.png`,
+        url: `${BASE_URL}/Professional1.jpg`,
         width: 1200,
         height: 630,
         alt: "Ganesh Sherkar - React  & MERN Stack Developer Portfolio - Hyderabad, India",
         type: "image/png",
-        secureUrl: `${BASE_URL}/seo_image.png`,
+        secureUrl: `${BASE_URL}/Professional1.jpg`,
       },
       {
-        url: `${BASE_URL}/og-image.jpg`,
+        url: `${BASE_URL}/Professional1.jpg`,
         width: 1200,
         height: 630,
         alt: "Ganesh Sherkar Portfolio",
         type: "image/jpeg",
-        secureUrl: `${BASE_URL}/og-image.jpg`,
+        secureUrl: `${BASE_URL}/Professional1.jpg`,
       },
     ],
     locale: "en_IN",
@@ -120,7 +119,7 @@ export const metadata = {
       "Portfolio of Ganesh Sherkar - React  & MERN Stack Developer with 1+ years of experience building scalable apps with modern UI/UX.",
     creator: "@yourname",
     site: "@yourname",
-    images: [`${BASE_URL}/seo_image.png`],
+    images: [`${BASE_URL}/Professional1.jpg`],
   },
 
   robots: {
@@ -217,7 +216,7 @@ export default function RootLayout({ children }) {
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
         {/* RSS Feed */}
-        <link rel="alternate" type="application/rss+xml" title="Ganesh Reddy Musku Portfolio RSS Feed" href={`${BASE_URL}/rss.xml`} />
+        <link rel="alternate" type="application/rss+xml" title="Ganesh Sherkar Portfolio " href={`${BASE_URL}/rss.xml`} />
 
         {/* Mobile App Links */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -233,7 +232,7 @@ export default function RootLayout({ children }) {
         <meta name="ICBM" content="17.3850, 78.4867" />
 
         {/* Copyright */}
-        <meta name="copyright" content="Copyright © 2024 Nishitha Reddy Musku. All Rights Reserved." />
+        <meta name="copyright" content="Copyright © 2026 Ganesh Sherkar. All Rights Reserved." />
 
         {/* Revisit After */}
         <meta name="revisit-after" content="7 days" />
@@ -422,7 +421,7 @@ export default function RootLayout({ children }) {
               "@type": "WebPage",
               name: "Ganesh Sherkar Portfolio",
               description:
-                "Portfolio of Ganesh Sherkar, React Native & MERN Stack Developer",
+                "Portfolio of Ganesh Sherkar, React & MERN Stack Developer",
               url: BASE_URL,
               isPartOf: {
                 "@type": "WebSite",

@@ -479,52 +479,6 @@ export default function Contact() {
                 })}
               </div>
 
-              {/* SOCIAL MEDIA CONNECTIONS */}
-              <div
-                className={`mt-6 pt-5 border-t ${
-                  isDarkMode ? "border-white/10" : "border-gray-200"
-                }`}
-              >
-                <p
-                  className={`text-[11px] uppercase tracking-[0.16em] font-semibold mb-3 ${
-                    isDarkMode ? "text-gray-400" : "text-gray-500"
-                  }`}
-                >
-                  Connect Online
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {socialLinksArray.map((s) => {
-                    const Icon =
-                      s.icon === "FaGithub"
-                        ? FiGithub
-                        : s.icon === "FaLinkedin"
-                        ? FiLinkedin
-                        : s.icon === "MdEmail"
-                        ? FiMail
-                        : s.icon === "FaPhone"
-                        ? FiPhone
-                        : null;
-                    return Icon ? (
-                      <motion.a
-                        key={s.name}
-                        href={s.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ y: -2 }}
-                        whileTap={{ scale: 0.96 }}
-                        className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition-all duration-200 ${
-                          isDarkMode
-                            ? "border-white/10 bg-white/[0.02] hover:bg-white/[0.06] text-gray-300 hover:text-white"
-                            : "border-gray-200 bg-gray-50 hover:bg-white text-gray-700 hover:text-gray-900 shadow-sm"
-                        }`}
-                      >
-                        <Icon size={14} style={{ color: "var(--primary)" }} />
-                        <span>{s.name}</span>
-                      </motion.a>
-                    ) : null;
-                  })}
-                </div>
-              </div>
             </div>
           </motion.div>
 

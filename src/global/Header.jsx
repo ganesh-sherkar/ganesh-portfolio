@@ -164,11 +164,6 @@ export default function Header() {
   ];
   const socialLinks = [
     {
-      icon: FiGithub,
-      href: "https://github.com/musku-nishitha",
-      label: "GitHub",
-    },
-    {
       icon: FiLinkedin,
       href: "https://linkedin.com/in/musku-nishitha",
       label: "LinkedIn",

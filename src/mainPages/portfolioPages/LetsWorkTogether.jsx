@@ -10,16 +10,10 @@ export default function LetsWorkTogether() {
   const { isDarkMode } = useTheme();
   const socialLinks = [
     {
-      icon: FiGithub,
-      href: "https://github.com/musku-nishitha",
-      label: "GitHub",
-    },
-    {
       icon: FiLinkedin,
       href: "https://linkedin.com/in/musku-nishitha",
       label: "LinkedIn",
     },
-    { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
   ];
 
   return (

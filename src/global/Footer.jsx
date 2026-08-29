@@ -23,7 +23,6 @@ const navigationItems = [
 ];
 // Map icon strings to actual components
 const iconMap = {
-  FaGithub: FaGithub,
   FaLinkedin: FaLinkedin,
   FaPhone: FaPhone,
   MdEmail: MdEmail,

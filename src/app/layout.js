@@ -171,7 +171,7 @@ export const metadata = {
   classification: "Portfolio Website",
 
   verification: {
-    google: "g2ZRY0pxU_320U7Li0nJA7Oe7IOkdcCW_uuOZn9Ja_s",
+    google: "73vQHEbn381-WixeEE3P2axI_LQ2MXtJF-zjHJDYK5c",
     yandex: "",
     yahoo: "",
     bing: "",

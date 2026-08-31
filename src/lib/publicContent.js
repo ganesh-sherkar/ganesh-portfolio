@@ -18,7 +18,7 @@ export const fallbackHero = {
   socials: {
     linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b/",
     github: "https://github.com/MuskuNishitha",
-    email: "mailto:muskunishitha2003@gmail.com",
+    email: "mailto:ganeshdex9356@gmail.com",
   },
 };
 

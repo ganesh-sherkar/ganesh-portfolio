@@ -18,7 +18,7 @@ export const socialMediaLinks = {
   phone: {
     name: "Phone",
     icon: "FaPhone",
-    link: "tel:7416264657"
+    link: "tel:9356102292"
   }
 };
 

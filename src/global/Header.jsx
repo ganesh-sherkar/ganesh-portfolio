@@ -238,24 +238,22 @@ export default function Header() {
     setSubmitStatus({ type: "", message: "" });
 
     try {
-      if (API_URL) {
-        const response = await fetch(`${API_URL}/api/v1/contacts/new_gmail`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: formData.name.trim(),
-            email: formData.email.trim(),
-            message: formData.message.trim(),
-            phone: formData.phone?.trim() || "",
-          }),
-        });
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone?.trim() || "0000000000",
+          message: formData.message.trim(),
+        }),
+      });
 
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || data.error || "Failed to send message");
-        }
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error || data.message || "Failed to send message");
       }
 
       setSubmitStatus({

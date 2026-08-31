@@ -33,7 +33,7 @@ export default function ContactPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <section className="sr-only" aria-hidden="false">
-        <h1>Contact Ganesh Sherkar - React Native & MERN Stack Developer</h1>
+        <h1>Contact Ganesh Sherkar - MERN Stack Developer</h1>
         <p>
           Have a project in mind? Get in touch with Ganesh Sherkar for freelance 
           opportunities, full-time positions, or collaboration. Let&apos;s build something amazing together.

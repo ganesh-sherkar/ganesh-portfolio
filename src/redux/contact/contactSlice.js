@@ -15,19 +15,38 @@ const staticContent = {
     },
   ],
   services: [
-    "Full-Stack Web Development",
-    "React Native App Development",
     "MERN Stack Solutions",
     "Frontend & UI Engineering",
   ],
 };
 
-// Async thunk for submitting contact form (graceful static simulation)
+// Async thunk for submitting contact form (real email via /api/contact)
 export const submitContactForm = createAsyncThunk(
   "contact/submit",
-  async (formData) => {
-    // Return simulated success instantly without hanging
-    return { success: true, message: "Message sent successfully!", data: formData };
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        return rejectWithValue(
+          data?.error || data?.message || "Failed to send message. Please try again."
+        );
+      }
+
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err?.message || "Network error. Unable to send your message."
+      );
+    }
   }
 );
 
@@ -69,10 +88,15 @@ const contactSlice = createSlice({
       .addCase(submitContactForm.fulfilled, (state, action) => {
         state.formStatus = "succeeded";
         state.formData = action.payload;
+        state.error = null;
       })
       .addCase(submitContactForm.rejected, (state, action) => {
         state.formStatus = "failed";
-        state.error = action.payload?.error || "Failed to submit form";
+        state.error =
+          action.payload?.error ||
+          (typeof action.payload === "string" ? action.payload : null) ||
+          action.error?.message ||
+          "Failed to submit form";
       })
 
       // Fetch contact content cases

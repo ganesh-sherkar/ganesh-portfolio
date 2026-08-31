@@ -13,10 +13,10 @@ const profilePayload = {
   ],
   tagline: "React & React Native Developer | Building Modern Apps",
   description:
-    "I am a passionate React and React Native developer with 2 years of experience in building modern web and mobile applications. I have worked on admin panels and complete app development using technologies like React, Node.js, and MongoDB. I enjoy creating clean UI designs and improving user experience. I am always eager to learn new technologies and grow as a developer.",
+    "I am a passionate React and MERN Stack developer with 1 years of experience in building modern web and mobile applications. I have worked on admin panels and complete app development using technologies like React, Node.js, and MongoDB. I enjoy creating clean UI designs and improving user experience. I am always eager to learn new technologies and grow as a developer.",
   profileImage: "/assets/Professional1.jpg",
   birthdate: "2003-08-11",
-  resumeUrl: "/MUSKU NISHITHA.pdf",
+  resumeUrl: "/Ganesh_sherkar.pdf",
   available: true,
   address: "Ameerpet, Hyderabad, Telangana, India",
   Experience: "2",

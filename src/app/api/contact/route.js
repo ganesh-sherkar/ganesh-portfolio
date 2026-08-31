@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+export const dynamic = "force-dynamic";
+
 // Helper to escape HTML characters and prevent HTML injection in email bodies
 function escapeHtml(str) {
   if (!str) return "";
@@ -14,7 +16,16 @@ function escapeHtml(str) {
 
 export async function POST(request) {
   try {
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { success: false, error: "Invalid JSON request body." },
+        { status: 400 }
+      );
+    }
+
     const {
       name,
       firstName,
@@ -66,39 +77,48 @@ export async function POST(request) {
       );
     }
 
-    if (!trimmedMessage || trimmedMessage.length < 5) {
+    if (!trimmedMessage || trimmedMessage.length < 3) {
       return NextResponse.json(
-        { success: false, error: "Please enter a message (at least 5 characters)." },
+        { success: false, error: "Please enter a message (at least 3 characters)." },
         { status: 400 }
       );
     }
 
-    const emailUser = process.env.EMAIL_USER;
-    const emailPass = process.env.EMAIL_PASS;
-    const emailTo = process.env.EMAIL_TO || "ganeshdex9356@gmail.com";
+    // Clean and normalize environment variables (remove spaces and wrapping quotes)
+    const rawUser = process.env.EMAIL_USER || "";
+    const rawPass = process.env.EMAIL_PASS || "";
+    const rawTo = process.env.EMAIL_TO || "ganeshdex9356@gmail.com";
+
+    const emailUser = rawUser.trim().replace(/^["']|["']$/g, "");
+    const emailPass = rawPass.replace(/\s+/g, "").replace(/^["']|["']$/g, "");
+    const emailTo = rawTo.trim().replace(/^["']|["']$/g, "");
 
     // Verify SMTP credentials exist
     if (!emailUser || !emailPass || emailPass === "your_gmail_app_password_here") {
       console.error(
-        "[Contact API] EMAIL_USER or EMAIL_PASS environment variables are not set properly."
+        "[Contact API] EMAIL_USER or EMAIL_PASS environment variables are not properly configured on server."
       );
       return NextResponse.json(
         {
           success: false,
           error:
-            "Email service is not configured on the server. Please ensure EMAIL_USER and EMAIL_PASS are set.",
+            "Server Email Configuration Missing: EMAIL_USER or EMAIL_PASS is not set in environment variables.",
         },
         { status: 500 }
       );
     }
 
-    // Configure Nodemailer transporter with Gmail SMTP
+    // Configure Nodemailer transporter with Gmail SMTP using Port 465 (SSL)
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
         user: emailUser,
         pass: emailPass,
       },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
     });
 
     // Sanitize user inputs for HTML rendering
@@ -127,7 +147,7 @@ Message:
 ${trimmedMessage}
     `.trim();
 
-    // Responsive, high-quality HTML email template
+    // Responsive HTML email template
     const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -233,12 +253,20 @@ ${trimmedMessage}
     });
   } catch (error) {
     console.error("[Contact API] Error sending email:", error);
+    let errorMessage = error?.message || "Failed to send email message.";
+
+    if (error?.code === "EAUTH" || error?.responseCode === 535) {
+      errorMessage =
+        "Gmail Authentication Failed: Please verify your 16-character Gmail App Password (EMAIL_PASS) in Vercel/Environment settings.";
+    } else if (error?.code === "ESOCKET" || error?.code === "ETIMEDOUT") {
+      errorMessage =
+        "Connection timed out while connecting to Gmail SMTP server. Please try again.";
+    }
+
     return NextResponse.json(
       {
         success: false,
-        error:
-          error?.message ||
-          "Failed to send email message. Please try again later.",
+        error: errorMessage,
       },
       { status: 500 }
     );

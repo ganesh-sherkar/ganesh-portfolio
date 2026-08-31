@@ -1,14 +1,15 @@
 import { generateMetadata, getBreadcrumbSchema } from "@/lib/seo-utils";
+import Projects from "@/mainPages/portfolioPages/Projects";
 import Script from "next/script";
 import React from "react";
 
 export const metadata = generateMetadata({
   title: "Portfolio",
   description:
-    "Explore the complete portfolio of Your Name, featuring projects in React Native, MERN Stack, web development, and mobile applications. See my best work and case studies.",
+    "Explore the complete portfolio of Ganesh Sherkar, featuring projects in React Native, MERN Stack, web development, and mobile applications. See my best work and case studies.",
   path: "/Portfolio",
   keywords: [
-    "Your Name Portfolio",
+    "Ganesh Sherkar Portfolio",
     "React Native Projects",
     "MERN Stack Projects",
     "Web Development Portfolio",
@@ -38,7 +39,7 @@ const page = () => {
           React Native mobile development, MERN Stack web applications, and modern UI/UX design.
         </p>
       </section>
-      <>Portfolio</>
+      <Projects />
     </div>
   );
 };

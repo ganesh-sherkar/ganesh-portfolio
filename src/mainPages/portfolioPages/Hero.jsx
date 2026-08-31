@@ -28,6 +28,11 @@ const content = {
     { value: "10K+", label: "Users Reached" },
     { value: "8+", label: "Projects Built" },
   ],
+  socials: {
+    linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b",
+    github: "https://github.com/Ganeshsherkar2003",
+    email: "mailto:ganeshdex9356@gmail.com",
+  },
 };
 
 const fadeUp = {
@@ -493,6 +498,45 @@ export default function Hero() {
         />
 
 
+        {/* GitHub Button */}
+        <div className="relative group flex items-center">
+          <div className="pointer-events-none absolute right-full mr-3.5 top-1/2 -translate-y-1/2 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out whitespace-nowrap z-50 hidden sm:block">
+            <div
+              className="relative flex items-center gap-2 rounded-xl border px-3 py-1.5 shadow-2xl backdrop-blur-xl"
+              style={{
+                background: "color-mix(in srgb, var(--card) 92%, black)",
+                borderColor: "color-mix(in srgb, #6e5494 50%, var(--border))",
+                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px rgba(168, 85, 247, 0.2)",
+              }}
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-purple-400 shadow-[0_0_8px_#c084fc] animate-pulse" />
+              <span className="text-[11px] font-semibold tracking-wide text-white">GitHub</span>
+              <div
+                className="absolute -right-1 top-1/2 -translate-y-1/2 h-2 w-2 rotate-45 border-t border-r"
+                style={{
+                  background: "color-mix(in srgb, var(--card) 92%, black)",
+                  borderColor: "color-mix(in srgb, #6e5494 50%, var(--border))",
+                }}
+              />
+            </div>
+          </div>
+          <a
+            href={content?.socials?.github || "https://github.com/Ganeshsherkar2003"}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+            className="flex h-8 w-8 sm:h-10 sm:w-10 lg:h-11 lg:w-11 items-center justify-center rounded-xl sm:rounded-2xl border backdrop-blur-xl transition-all duration-200 hover:scale-110 hover:border-purple-400 hover:text-purple-300 hover:shadow-[0_0_22px_rgba(168,85,247,0.5)]"
+            style={{
+              background: "var(--glass)",
+              borderColor: "var(--border)",
+              color: "var(--text-heading)",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+            }}
+          >
+            <FiGithub className="h-3.5 w-3.5 sm:h-4 sm:w-4 lg:h-5 lg:w-5 transition-transform duration-200 group-hover:scale-110" />
+          </a>
+        </div>
+
         {/* LinkedIn Button */}
         <div className="relative group flex items-center">
           <div className="pointer-events-none absolute right-full mr-3.5 top-1/2 -translate-y-1/2 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out whitespace-nowrap z-50 hidden sm:block">
@@ -516,7 +560,7 @@ export default function Hero() {
             </div>
           </div>
           <a
-            href={content.socials.linkedin}
+            href={content?.socials?.linkedin || "https://www.linkedin.com/in/musku-nishitha-7a535b36b"}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
@@ -558,7 +602,7 @@ export default function Hero() {
             </div>
           </div>
           <a
-            href={content.socials.email}
+            href={content?.socials?.email || "mailto:ganeshdex9356@gmail.com"}
             aria-label="Send Message"
             className="flex h-8 w-8 sm:h-10 sm:w-10 lg:h-11 lg:w-11 items-center justify-center rounded-xl sm:rounded-2xl border backdrop-blur-xl transition-all duration-200 hover:scale-110 hover:border-[var(--primary)] hover:text-[var(--primary)] hover:shadow-[0_0_22px_color-mix(in_srgb,var(--primary)_50%,transparent)]"
             style={{

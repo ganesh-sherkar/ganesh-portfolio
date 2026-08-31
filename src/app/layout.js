@@ -171,7 +171,7 @@ export const metadata = {
   classification: "Portfolio Website",
 
   verification: {
-    google: "d0rdKhmxIWpDC4lXnL_h7Bynf697jpQDh5YzSgC2ZWo",
+    google: "os8mQrANwoKsm-njO9Uh1XyUHiK0w5AVJm1SyqkvmYg",
     yandex: "",
     yahoo: "",
     bing: "",
@@ -179,7 +179,6 @@ export const metadata = {
 
   other: {
     "facebook-domain-verification": "your-facebook-verification-code",
-    "google-site-verification": "d0rdKhmxIWpDC4lXnL_h7Bynf697jpQDh5YzSgC2ZWo",
     "msvalidate.01": "",
     "yandex-verification": "",
   },
